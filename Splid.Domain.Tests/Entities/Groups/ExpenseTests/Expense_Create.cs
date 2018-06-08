@@ -1,10 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using NUnit.Framework;
+using Splid.Domain.Main.Entities.Groups;
 
 namespace Splid.Domain.Tests.Entities.Groups.ExpenseTests
 {
-    class Expense_Create
+    [TestFixture]
+    public class Expense_Create
     {
+        [Test]
+        public void foo()
+        {
+            //new Expense();
+        }
     }
 }

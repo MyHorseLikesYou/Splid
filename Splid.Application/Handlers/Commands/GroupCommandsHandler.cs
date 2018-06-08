@@ -99,7 +99,7 @@ namespace Splid.Application.Handlers.Commands
             _groupsService.CreateGroup(createGroupCommand.GroupId, createGroupCommand.Group);
 
             foreach (var person in createGroupCommand.Persons)
-                _groupsService.AddPerson(createGroupCommand.GroupId, person);
+                _groupsService.AddPerson(createGroupCommand.GroupId, person.Key, person.Value);
 
             //if (createGroupCommand.AuthorId.HasValue)
             //    _membershipsService.CreatePermission(createGroupCommand.GroupId, createGroupCommand.AuthorId.Value);
@@ -120,13 +120,13 @@ namespace Splid.Application.Handlers.Commands
         private void CreateExpenseCommandHandler(CreateExpenseCommand command)
         {
             this.ValidateGroupChanging(command.GroupId, command.AuthorId);
-            _groupsService.AddExpense(command.GroupId, command.Expense);
+            _groupsService.AddExpense(command.GroupId, command.ExpenseId, command.Expense);
         }
 
         private void ChangeExpenseCommandHandler(ChangeExpenseCommand command)
         {
             this.ValidateGroupChanging(command.GroupId, command.AuthorId);
-            _groupsService.ChangeExpense(command.GroupId, command.Expense);
+            _groupsService.ChangeExpense(command.GroupId, command.ExpenseId, command.Expense);
         }
 
         private void DeleteExpenseCommandHandler(DeleteExpenseCommand command)
@@ -138,13 +138,13 @@ namespace Splid.Application.Handlers.Commands
         private void CreatePaymentCommandHandler(CreatePaymentCommand command)
         {
             this.ValidateGroupChanging(command.GroupId, command.AuthorId);
-            _groupsService.AddPayment(command.GroupId, command.Payment);
+            _groupsService.AddPayment(command.GroupId, command.PaymentId, command.Payment);
         }
 
         private void ChangePaymentCommandHandler(ChangePaymentCommand command)
         {
             this.ValidateGroupChanging(command.GroupId, command.AuthorId);
-            _groupsService.ChangePayment(command.GroupId, command.Payment);
+            _groupsService.ChangePayment(command.GroupId, command.PaymentId, command.Payment);
         }
 
         private void DeletePaymentCommandHandler(DeletePaymentCommand command)
@@ -156,13 +156,13 @@ namespace Splid.Application.Handlers.Commands
         private void CreatePersonCommandHandler(CreatePersonCommand command)
         {
             this.ValidateGroupChanging(command.GroupId, command.AuthorId);
-            _groupsService.AddPerson(command.GroupId, command.Person);
+            _groupsService.AddPerson(command.GroupId, command.PersonId, command.Person);
         }
 
         private void ChangePersonCommandHandler(ChangePersonCommand command)
         {
             this.ValidateGroupChanging(command.GroupId, command.AuthorId);
-            _groupsService.ChangePerson(command.GroupId, command.Person);
+            _groupsService.ChangePerson(command.GroupId, command.PersonId, command.Person);
         }
 
         private void DeletePersonCommandHandler(DeletePersonCommand command)

@@ -11,7 +11,7 @@ namespace MyApp.Core.Domain
             _id = id;
         }
 
-        public Guid Id { get; }
+        public Guid Id => _id;
 
         public override bool Equals(object obj)
         {

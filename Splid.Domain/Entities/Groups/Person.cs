@@ -1,19 +1,27 @@
 ﻿using MyApp.Core.Domain;
+using Splid.Domain.Models.Groups;
 using System;
 
 namespace Splid.Domain.Main.Entities.Groups
 {
     public class Person : Entity
     {
-        public Person(Guid id) : base(id)
-        {
-        }
-
         public string Name { get; }
 
-        //public Person(string name)
-        //{
-        //    this.Name = name ?? throw new ArgumentException(nameof(Person.Name), "Имя участника группы не может быть пустым.");
-        //}
+        public Person(Guid id, string name) 
+            : base(id)
+        {
+            this.Name = name ?? throw new ArgumentException(nameof(Person.Name), "Имя участника группы не может быть пустым.");
+        }        
+
+        public void Change(PersonInput personInput)
+        {
+            throw new NotImplementedException();
+        }
+
+        internal static Person Create(Guid personId, PersonInput personInput)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

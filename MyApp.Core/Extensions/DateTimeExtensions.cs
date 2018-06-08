@@ -9,5 +9,10 @@ namespace MyApp.Core.Extensions
           => (long)Math.Round((date.ToUniversalTime() -
                                new DateTimeOffset(1970, 1, 1, 0, 0, 0, TimeSpan.Zero))
                               .TotalSeconds);
+
+        public static bool IsInFuture(this DateTimeOffset dateTime)
+        {
+            return dateTime > DateTimeOffset.Now;
+        }
     }
 }

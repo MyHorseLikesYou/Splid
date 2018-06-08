@@ -8,66 +8,20 @@ namespace Splid.Domain.Main.Entities.Groups
     public class Payment : Entity
     {
         private DateTimeOffset _createdAt;
-
-        private Guid _personFromId { get; set; }
-        public Guid PersonFromId
-        {
-            get => _personFromId;
-            set
-            {
-                ValidateAreNotEqual(value, _personToId);
-                _personFromId = value;
-            }
-        }
-
-        public Guid _personToId { get; set; }
-        public Guid PersonToId
-        {
-            get => _personToId;
-            set
-            {
-                ValidateAreNotEqual(_personFromId, value);
-                _personToId = value;
-            }
-        }
-
+        private Guid _personFromId;
+        private Guid _personToId;
         private Money _amount;
-        public Money Amount
-        {
-            get => _amount;
-            set
-            {
-                ValidateNotNull(value);
-                _amount = value;
-            }
-        }
-
         private DateTimeOffset _date;
-        public DateTimeOffset Date
-        {
-            get => _date;
-            set
-            {
-                ValidateNotInFuture(value.Date);
-                _date = value.Date;
-            }
-        }
-
-        public Payment(PaymentInput paymentInput)
-            : this(paymentInput.Id, paymentInput.PersonFromId, paymentInput.PersonToId, paymentInput.Amount, paymentInput.Date)
-        { }
-
-        public Payment(Guid id, Guid personFromId, Guid personToId, Money amount, DateTimeOffset date)
-            : this(id, personFromId, personToId, amount, date, DateTime.Now)
-        { }
+        private Guid paymentId;
+        private PaymentInput paymentInput;
 
         public Payment(Guid id, Guid personFromId, Guid personToId, Money amount, DateTimeOffset date, DateTimeOffset createdAt)
             : base(id)
         {
-            ValidateAreNotEqual(personFromId, personToId);
-            ValidateNotInFuture(createdAt);
-            ValidateNotInFuture(date);
-            ValidateNotNull(amount);
+            ValidatePersonsAreNotEqual(personFromId, personToId);
+            ValidateDateNotInFuture(createdAt);
+            ValidateDateNotInFuture(date);
+            ValidateArgumentForAmount(amount);
 
             _personFromId = personFromId;
             _personToId = personToId;
@@ -76,22 +30,75 @@ namespace Splid.Domain.Main.Entities.Groups
             _createdAt = createdAt;
         }
 
-        private static void ValidateAreNotEqual(Guid personFromId, Guid personToId)
+        public Guid PersonFromId
+        {
+            get => _personFromId;
+            set
+            {
+                ValidatePersonsAreNotEqual(value, _personToId);
+                _personFromId = value;
+            }
+        }
+
+        public Guid PersonToId
+        {
+            get => _personToId;
+            set
+            {
+                ValidatePersonsAreNotEqual(_personFromId, value);
+                _personToId = value;
+            }
+        }
+
+        public Money Amount
+        {
+            get => _amount;
+            set
+            {
+                ValidateArgumentForAmount(value);
+                _amount = value;
+            }
+        }
+
+        public DateTimeOffset Date
+        {
+            get => _date;
+            set
+            {
+                ValidateDateNotInFuture(value.Date);
+                _date = value.Date;
+            }
+        }
+
+        private static void ValidatePersonsAreNotEqual(Guid personFromId, Guid personToId)
         {
             if (personFromId == personToId)
                 throw new ArgumentException($"{nameof(personFromId)} не может быть равно {nameof(personToId)}.");
         }
 
-        private static void ValidateNotInFuture(DateTimeOffset dateTime)
+        private static void ValidateArgumentForAmount(Money amount)
+        {
+            if (amount == null)
+                throw new ArgumentNullException();
+        }
+
+        private static void ValidateDateNotInFuture(DateTimeOffset dateTime)
         {
             if (dateTime > DateTimeOffset.Now)
                 throw new ArgumentException();
         }
 
-        private static void ValidateNotNull(object obj)
+        internal void Change(PaymentInput paymentInput)
         {
-            if (obj == null)
+            throw new NotImplementedException();
+        }
+
+        public static Payment Create(Guid id, PaymentInput paymentInput)
+        {
+            if (paymentInput == null)
                 throw new ArgumentNullException();
+
+            return new Payment(id, paymentInput.PersonById, paymentInput.PersonForId, paymentInput.Amount, paymentInput.Date, DateTimeOffset.Now);
         }
     }
 }

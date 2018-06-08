@@ -1,6 +1,5 @@
 ﻿using MyApp.Core.Contracts;
 using MyApp.Core.Domain;
-using Splid.Domain.Main.Values;
 using Splid.Domain.Models.Groups;
 using System;
 using System.Collections.Generic;
@@ -11,257 +10,244 @@ namespace Splid.Domain.Main.Entities.Groups
     public sealed class Group : Entity, IAgregateRoot
     {
         private string _name;
-        public string Name
-        {
-            private get => _name;
-            set
-            {
-                if (String.IsNullOrWhiteSpace(value))
-                    throw new ArgumentException(nameof(Group.Name), "Имя группы не может быть пустым.");
-
-                _name = value;
-            }
-        }
-
         private List<Person> _persons;
         private List<Payment> _payments;
-        private List<Expense> _expenses;
-        private Guid groupId;
-        private GroupInput groupInput;
-
-        public Group(Guid groupId, string name)
-            : this(groupId, name, new List<Person>(), new List<Payment>(), new List<Expense>())
-        { }
+        private List<Expense> _expenses;        
 
         public Group(Guid groupId, string name, IEnumerable<Person> persons, IEnumerable<Payment> payments, IEnumerable<Expense> expenses)
             : base(groupId)
         {
-            if (persons == null)
-                throw new ArgumentNullException(nameof(persons));
+            ValidateArgumentForName(name);
+            ValidateArgumentForPersons(persons);
+            ValidateArgumentForPayments(payments);
+            ValidateArgumentForExpenses(expenses);
 
-            if (payments == null)
-                throw new ArgumentNullException(nameof(payments));
+            ValidatePersonsNotHaveDuplicateName(persons);
 
-            if (expenses == null)
-                throw new ArgumentNullException(nameof(expenses));
+            foreach (var payment in payments)
+                ValidatePaymentNotHaveUnknownPersons(payment.PersonFromId, payment.PersonToId, persons);
 
-            this.Name = name;
+            foreach (var expense in expenses)
+            {
+                var expensesByPersonsIds = expense.ExpensesBy.Select(e => e.PersonId).ToList();
+                var expensesForPersonsIds = expense.ExpensesFor.Select(e => e.PersonId).ToList();
+                ValidateExpenseNotHaveUnknownPersons(expensesByPersonsIds, expensesForPersonsIds, persons);
+            }
+
+            _name = name;
             _persons = persons.ToList();
             _payments = payments.ToList();
             _expenses = expenses.ToList();
         }
 
-        internal void Change(GroupInput groupInput)
+        public IReadOnlyCollection<Expense> Expenses => _expenses;
+
+        public void Change(GroupInput groupInput)
         {
-            throw new NotImplementedException();
+            if (groupInput == null)
+                throw new ArgumentNullException();
+
+            ValidateArgumentForName(groupInput.Name);
+
+            _name = groupInput.Name;
         }
 
-        public Group(Guid groupId, GroupInput groupInput)
-            :this(groupId, groupInput?.Name)
-        { }
-
-        public Group AddPersons(IEnumerable<Person> persons)
+        public void AddPayment(Guid paymentId, PaymentInput paymentInput)
         {
-            throw new NotImplementedException();
+            if (paymentInput == null)
+                throw new ArgumentNullException(nameof(paymentInput));
+
+            ValidatePaymentNotHaveUnknownPersons(paymentInput.PersonById, paymentInput.PersonForId, _persons);
+
+            var paymentById = this.GetPaymentById(paymentId);
+            if (paymentById != null)
+                throw new ArgumentException($"Платёж c Id {paymentById.Id} уже есть в группе.");
+
+            var paymentToAdd = Payment.Create(paymentId, paymentInput);
+            _payments.Add(paymentById);
         }
 
-        private void AddPerson(Person person)
+        public void ChangePayment(Guid paymentId, PaymentInput paymentInput)
         {
-            if (person == null)
-                throw new ArgumentNullException(nameof(person));
+            if (paymentInput == null)
+                throw new ArgumentNullException(nameof(paymentInput));
 
-            if (this.HasPerson(person))
-                throw new ArgumentException(nameof(person), $"Участник c Id {person.Id} уже есть в группе.");
+            ValidatePaymentNotHaveUnknownPersons(paymentInput.PersonById, paymentInput.PersonForId, _persons);
 
-            if (this.HasPersonWithName(person.Name))
-                throw new ArgumentException(nameof(person), $"Участник c именем {person.Name} уже есть в группе.");
+            var paymentToChange = this.GetPaymentById(paymentId);
+            if (paymentToChange == null)
+                throw new ArgumentException($"Платежа c Id {paymentToChange.Id} нет в группе.");
 
-            _persons.Add(person);
+            paymentToChange.Change(paymentInput);
         }
 
-        public Group ChangeName(string name)
+        public void DeletePayment(Guid id)
         {
-            throw new NotImplementedException();
-        }
-
-        private bool HasPerson(Person person)
-        {
-            if (person == null)
-                throw new ArgumentNullException(nameof(person));
-
-            return _persons.Contains(person);
-        }
-
-        private bool HasPersonWithId(Guid id)
-        {
-            return _persons.Any(p => p.Id == id);
-        }
-
-        private bool HasPersonWithName(string personName)
-        {
-            if (String.IsNullOrWhiteSpace(personName))
-                return false;
-
-            return _persons.Any(p => p.Name == personName);
-        }
-
-        public void AddPayment(PaymentInput paymentInput)
-        {
-            this.AddPayment(new Payment(paymentInput));
-        }
-
-        private void AddPayment(Payment payment)
-        {
-            if (payment == null)
-                throw new ArgumentNullException(nameof(payment));
-
-            if (this.HasPayment(payment))
-                throw new ArgumentException(nameof(payment), $"Платёж c Id {payment.Id} уже есть в группе.");
-
-            if (!this.HasPersonWithId(payment.PersonFromId))
-                throw new ArgumentException(nameof(Payment.PersonFromId), $"Участник c Id {payment.PersonFromId} не привязан к группе.");
-
-            if (!this.HasPersonWithId(payment.PersonToId))
-                throw new ArgumentException(nameof(Payment.PersonToId), $"Участник c Id {payment.PersonToId} не привязан к группе.");
-
-            _payments.Add(payment);
-        }
-
-        internal void AddExpense(ExpenseInput expenseInput)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void ChangePayment(PaymentInput paymentInput)
-        {
-            this.ChangePayment(paymentInput.Id, paymentInput.PersonFromId, paymentInput.PersonToId, paymentInput.Amount, paymentInput.Date);
-        }
-
-        internal void ChangePayment(ExpenseInput expenseInput)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void ChangePayment(Guid paymentId, Guid personFromId, Guid personToId, Money amount, DateTime date)
-        {
-            var payment = this.GetPayment(paymentId);
-            if (payment == null)
-                throw new ArgumentNullException(nameof(payment));
-
-            if (!this.HasPersonWithId(personFromId))
-                throw new ArgumentException(nameof(Payment.PersonFromId), $"Участник c Id {payment.PersonFromId} не привязан к группе.");
-
-            if (!this.HasPersonWithId(personToId))
-                throw new ArgumentException(nameof(Payment.PersonToId), $"Участник c Id {payment.PersonToId} не привязан к группе.");
-
-            payment.PersonFromId = personFromId;
-            payment.PersonToId = personToId;
-            payment.Amount = amount;
-            payment.Date = date;
-        }
-
-        internal void ChangeExpense(ExpenseInput expenseInput)
-        {
-            throw new NotImplementedException();
-        }
-
-        internal void AddPerson(PersonInput personInput)
-        {
-            throw new NotImplementedException();
-        }
-
-        private bool HasPayment(Payment payment)
-        {
-            if (payment == null)
-                throw new ArgumentNullException(nameof(payment));
-
-            return _payments.Contains(payment);
-        }
-
-        internal void ChangePerson(PersonInput personInput)
-        {
-            throw new NotImplementedException();
-        }
-
-        private Payment GetPayment(Guid id)
-        {
-            return _payments.FirstOrDefault(e => e.Id == id);
-        }
-
-        public void DelelePayment(Guid id)
-        {
-            var payment = this.GetPayment(id);
+            var payment = this.GetPaymentById(id);
             if (payment == null)
                 throw new InvalidOperationException();
 
             _payments.Remove(payment);
         }
 
-        internal void DeletePerson(Guid personId)
+        public void AddExpense(Guid expenseId, ExpenseInput expenseInput)
         {
-            throw new NotImplementedException();
+            if (expenseInput == null)
+                throw new ArgumentNullException(nameof(expenseInput));
+
+            ValidateExpenseNotHaveUnknownPersons(expenseInput.By.Select(e => e.PersonId), expenseInput.For.Select(e => e.PersonId), _persons);
+
+            var expenseById = this.GetExpenseById(expenseId);
+            if (expenseById != null)
+                throw new ArgumentException($"Трата c Id {expenseId} уже есть в группе.");
+
+            var expenseToAdd = Expense.Create(expenseId, expenseInput);
+            _expenses.Add(expenseToAdd);
         }
 
-        public void AddExpense(string title, IDictionary<Guid, Money> expensesBy, IDictionary<Guid, Money> expensesFor, DateTime date)
+        public void ChangeExpense(Guid expenseId, ExpenseInput expenseInput)
         {
-            //this.AddExpense(new Expense(title, expensesBy, expensesFor, date));
-        }
+            if (expenseInput == null)
+                throw new ArgumentNullException(nameof(expenseInput));
 
-        private void AddExpense(Expense expense)
-        {
-            if (expense == null)
-                throw new ArgumentNullException(nameof(expense));
+            ValidateExpenseNotHaveUnknownPersons(expenseInput.By.Select(e => e.PersonId), expenseInput.For.Select(e => e.PersonId), _persons);
 
-            if (this.HasExpense(expense))
-                throw new ArgumentException(nameof(expense), $"Трата c Id {expense.Id} уже есть в группе.");
+            var expenseToChange = this.GetExpenseById(expenseId);
+            if (expenseToChange == null)
+                throw new ArgumentException($"Траты c Id {expenseId} нет в группе.");
 
-            var notBelongingToGroupPersonsIds = new List<Guid>();
-            notBelongingToGroupPersonsIds.AddRange(expense.GetPersonsExpensesBy().Where(id => !this.HasPersonWithId(id)));
-            notBelongingToGroupPersonsIds.AddRange(expense.GetPersonsExpensesFor().Where(id => !this.HasPersonWithId(id)));
-            if (notBelongingToGroupPersonsIds.Any())
-                throw new ArgumentException(nameof(expense), $"Участник(и) c Id {String.Join(", ", notBelongingToGroupPersonsIds)} не привязаны к группе.");
-
-            _expenses.Add(expense);
-        }
-
-        public void ChangeExpense(Guid expenseId, string title, IDictionary<Guid, Money> expensesBy, IDictionary<Guid, Money> expensesFor, DateTime date)
-        {
-            var expense = this.GetExpense(expenseId);
-            if (expense == null)
-                throw new InvalidOperationException();
-
-            var notBelongingToGroupPersonsIds = new List<Guid>();
-            notBelongingToGroupPersonsIds.AddRange(expensesBy.Where(e => !this.HasPersonWithId(e.Key)).Select(e => e.Key));
-            notBelongingToGroupPersonsIds.AddRange(expensesFor.Where(e => !this.HasPersonWithId(e.Key)).Select(e => e.Key));
-            if (notBelongingToGroupPersonsIds.Any())
-                throw new ArgumentException(nameof(expense), $"Участник(и) c Id {String.Join(", ", notBelongingToGroupPersonsIds)} не привязаны к группе.");
-
-            expense.Title = title;
-            expense.Date = date;
-            expense.SetExpensesBy(expensesBy);
-            expense.SetExpensesFor(expensesFor);
+            expenseToChange.Change(expenseInput);
         }
 
         public void DeleteExpense(Guid expenseId)
         {
-            var expense = this.GetExpense(expenseId);
+            var expense = this.GetExpenseById(expenseId);
             if (expense == null)
                 throw new InvalidOperationException();
 
             _expenses.Remove(expense);
         }
 
-        private bool HasExpense(Expense expense)
+        public void AddPerson(Guid personId, PersonInput personInput)
         {
-            if (expense == null)
-                throw new ArgumentNullException(nameof(expense));
+            if (personInput == null)
+                throw new ArgumentNullException(nameof(personInput));
 
-            return _expenses.Contains(expense);
+            var personById = this.GetPersonById(personId);
+            if (personById != null)
+                throw new ArgumentException($"Участник c Id {personId} уже есть в группе.");
+
+            var personByName = this.GetPersonByName(personInput.Name);
+            if (personByName != null)
+                throw new ArgumentException($"Участник c именем {personInput.Name} уже есть в группе.");
+
+            var personToAdd = Person.Create(personId, personInput);
+            _persons.Add(personToAdd);
         }
 
-        private Expense GetExpense(Guid id)
+        public void ChangePerson(Guid personId, PersonInput personInput)
         {
-            return _expenses.FirstOrDefault(e => e.Id == id);
+            if (personInput == null)
+                throw new ArgumentNullException(nameof(personInput));
+
+            var personByName = this.GetPersonByName(personInput.Name);
+            if (personByName != null && personByName.Id != personId)
+                throw new ArgumentException($"Участник c именем {personInput.Name} уже есть в группе.");
+
+            var personToChange = personByName ?? this.GetPersonById(personId);
+            if (personToChange == null)
+                throw new ArgumentException($"Участника c Id {personId} нет в группе.");
+
+            personToChange.Change(personInput);
+        }
+
+        public void DeletePerson(Guid personId)
+        {
+            var person = this.GetPersonById(personId);
+            if (person == null)
+                throw new ArgumentException($"Участника c Id {personId} нет в группе.");
+
+            _persons.Remove(person);
+        }
+
+        private Payment GetPaymentById(Guid paymentId) => _payments.FirstOrDefault(e => e.Id == paymentId);
+
+        private Expense GetExpenseById(Guid expenseId) => _expenses.FirstOrDefault(e => e.Id == expenseId);
+
+        private Person GetPersonById(Guid personId) => _persons.SingleOrDefault(p => p.Id == personId);
+
+        private Person GetPersonByName(string personName) => _persons.SingleOrDefault(p => p.Name == personName);
+
+        private bool HasPersonWithSameId(Guid personId) => HasPersonWithSameId(personId, _persons);
+
+        private bool HasPersonWithSameName(string personName) => _persons.Any(p => p.Name == personName);
+
+        private void ValidatePersonsNotHaveDuplicateName(IEnumerable<Person> persons)
+        {
+            var personsHaveDuplicatesByName = persons
+                .GroupBy(p => p.Name)
+                .Select(personsByName => personsByName.Count())
+                .Any(countByName => countByName > 1);
+
+            if (personsHaveDuplicatesByName)
+                throw new ArgumentException();
+        }
+
+        private static void ValidateExpenseNotHaveUnknownPersons(IEnumerable<Guid> expensesByPersonsIds, IEnumerable<Guid> expensesForPersonsIds, IEnumerable<Person> groupPersons)
+        {
+            var unkownPersonsIds = Enumerable
+                .Concat(expensesByPersonsIds, expensesForPersonsIds)
+                .Where(personId => !HasPersonWithSameId(personId, groupPersons))
+                .ToList();
+
+            if (unkownPersonsIds.Any())
+                throw new ArgumentException($"Участник(и) c Id {String.Join(", ", unkownPersonsIds)} не привязаны к группе.");
+        }
+
+        private static void ValidatePaymentNotHaveUnknownPersons(Guid paymentByPersonId, Guid paymentForPersonId, IEnumerable<Person> persons)
+        {
+            if (!HasPersonWithSameId(paymentByPersonId, persons))
+                throw new ArgumentException($"Участник c Id {paymentByPersonId} не привязан к группе.");
+
+            if (!HasPersonWithSameId(paymentForPersonId, persons))
+                throw new ArgumentException($"Участник c Id {paymentForPersonId} не привязан к группе.");
+        }
+
+        private static bool HasPersonWithSameId(Guid personId, IEnumerable<Person> persons)
+        {
+            return persons.Any(p => p.Id == personId);
+        }
+
+        private static void ValidateArgumentForName(string name)
+        {
+            if (String.IsNullOrWhiteSpace(name))
+                throw new ArgumentException("Имя группы не может быть пустым.");
+        }
+
+        private static void ValidateArgumentForPayments(IEnumerable<Payment> payments)
+        {
+            if (payments == null)
+                throw new ArgumentNullException(nameof(payments));
+        }
+
+        private static void ValidateArgumentForExpenses(IEnumerable<Expense> expenses)
+        {
+            if (expenses == null)
+                throw new ArgumentNullException(nameof(expenses));
+        }
+
+        private static void ValidateArgumentForPersons(IEnumerable<Person> persons)
+        {
+            if (persons == null)
+                throw new ArgumentNullException(nameof(persons));
+        }
+
+        public static Group Create(Guid groupId, GroupInput groupInput)
+        {
+            if (groupInput == null)
+                throw new ArgumentNullException(nameof(groupInput));
+
+            return new Group(groupId, groupInput.Name, new List<Person>(), new List<Payment>(), new List<Expense>());
         }
     }
 }

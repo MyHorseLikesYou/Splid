@@ -17,23 +17,17 @@ namespace Splid.Domain.Main.Services
 
         public void CreateGroup(Guid groupId, GroupInput groupInput)
         {
-            if (groupInput == null)
-                throw new ArgumentNullException(nameof(groupInput));
-
             var isGroupExists = _groupsRepository.IsGroupExists(groupId);
             if (isGroupExists)
                 throw new EntityExistsException(groupId);
 
-            var group = new Group(groupId, groupInput);
+            var group = Group.Create(groupId, groupInput);
 
             _groupsRepository.Add(group);            
         }
 
         public void ChangeGroup(Guid groupId, GroupInput groupInput)
         {
-            if (groupInput == null)
-                throw new ArgumentNullException(nameof(groupInput));
-
             var group = _groupsRepository.GetById(groupId);
             if (group == null)
                 throw new EntityNotFoundException(groupId);
@@ -51,34 +45,28 @@ namespace Splid.Domain.Main.Services
             _groupsRepository.Remove(groupId);            
         }
 
-        public void AddPayment(Guid groupId, PaymentInput paymentInput)
+        public void AddPayment(Guid groupId, Guid paymentId, PaymentInput paymentInput)
         {
-            if (paymentInput == null)
-                throw new ArgumentNullException(nameof(paymentInput));
-
-            var isPaymentExists = _groupsRepository.IsPaymentExists(paymentInput.Id);
+            var isPaymentExists = _groupsRepository.IsPaymentExists(paymentId);
             if (isPaymentExists)
-                throw new EntityExistsException(paymentInput.Id);
+                throw new EntityExistsException(paymentId);
 
             var group = _groupsRepository.GetById(groupId);
             if (group == null)
                 throw new EntityNotFoundException(groupId);
 
-            group.AddPayment(paymentInput);
+            group.AddPayment(paymentId, paymentInput);
 
             _groupsRepository.Update(group);            
         }
 
-        public void ChangePayment(Guid groupId, PaymentInput paymentInput)
+        public void ChangePayment(Guid groupId, Guid paymentId, PaymentInput paymentInput)
         {
-            if (paymentInput == null)
-                throw new ArgumentNullException(nameof(paymentInput));
-
             var group = _groupsRepository.GetById(groupId);
             if (group == null)
-                throw new EntityNotFoundException(paymentInput.Id);
+                throw new EntityNotFoundException(paymentId);
 
-            group.ChangePayment(paymentInput);
+            group.ChangePayment(paymentId, paymentInput);
 
             _groupsRepository.Update(group);            
         }
@@ -89,36 +77,33 @@ namespace Splid.Domain.Main.Services
             if (group == null)
                 throw new EntityNotFoundException(groupId);
 
-            group.DelelePayment(paymentId);
+            group.DeletePayment(paymentId);
 
             _groupsRepository.Update(group);            
         }
 
-        public void AddExpense(Guid groupId, ExpenseInput expenseInput)
+        public void AddExpense(Guid groupId, Guid expenseId, ExpenseInput expenseInput)
         {
-            if (expenseInput == null)
-                throw new ArgumentNullException(nameof(expenseInput));
-
-            var isExpenseExists = _groupsRepository.IsExpenseExists(expenseInput.Id);
+            var isExpenseExists = _groupsRepository.IsExpenseExists(expenseId);
             if (isExpenseExists)
-                throw new EntityExistsException(expenseInput.Id);
+                throw new EntityExistsException(expenseId);
 
             var group = _groupsRepository.GetById(groupId);
             if (group == null)
                 throw new EntityNotFoundException(groupId);
 
-            group.AddExpense(expenseInput);
+            group.AddExpense(expenseId, expenseInput);
 
             _groupsRepository.Update(group);            
         }
 
-        public void ChangeExpense(Guid groupId, ExpenseInput expenseInput)
+        public void ChangeExpense(Guid groupId, Guid expenseId, ExpenseInput expenseInput)
         {
-            var group = _groupsRepository.GetById(expenseInput.Id);
+            var group = _groupsRepository.GetById(groupId);
             if (group == null)
-                throw new EntityNotFoundException(expenseInput.Id);
+                throw new EntityNotFoundException(expenseId);
 
-            group.ChangeExpense(expenseInput);
+            group.ChangeExpense(expenseId, expenseInput);
 
             _groupsRepository.Update(group);            
         }
@@ -134,12 +119,9 @@ namespace Splid.Domain.Main.Services
             _groupsRepository.Update(group);
         }
 
-        public void AddPerson(Guid groupId, PersonInput personInput)
+        public void AddPerson(Guid groupId, Guid personId, PersonInput personInput)
         {
-            if (personInput == null)
-                throw new ArgumentNullException(nameof(personInput));
-
-            var isPersonExists = _groupsRepository.IsPersonExists(personInput.PersonId);
+            var isPersonExists = _groupsRepository.IsPersonExists(personId);
             if (isPersonExists)
                 throw new EntityExistsException(groupId);
 
@@ -147,21 +129,18 @@ namespace Splid.Domain.Main.Services
             if (group == null)
                 throw new EntityNotFoundException(groupId);
 
-            group.AddPerson(personInput);
+            group.AddPerson(personId, personInput);
 
             _groupsRepository.Update(group);            
         }
 
-        public void ChangePerson(Guid groupId, PersonInput personInput)
+        public void ChangePerson(Guid groupId, Guid personId, PersonInput personInput)
         {
-            if (personInput == null)
-                throw new ArgumentNullException(nameof(personInput));
-
             var group = _groupsRepository.GetById(groupId);
             if (group == null)
                 throw new EntityNotFoundException(groupId);
 
-            group.ChangePerson(personInput);
+            group.ChangePerson(personId, personInput);
 
             _groupsRepository.Update(group);            
         }

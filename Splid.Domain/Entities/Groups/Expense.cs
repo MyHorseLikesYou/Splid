@@ -1,78 +1,107 @@
 ﻿using MyApp.Core.Domain;
+using MyApp.Core.Extensions;
 using Splid.Domain.Main.Values;
+using Splid.Domain.Models.Groups;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Splid.Domain.Main.Entities.Groups
 {
     public class Expense : Entity
     {
-        //private List<ExpenseBy> _expensesBy;
-        //private List<ExpenseFor> _expensesFor;
-
         private string _title;
+        private List<PersonMoney> _expensesBy;
+        private List<PersonMoney> _expensesFor;
+        private DateTimeOffset _date;
+        private Guid expenseId;
+        private ExpenseInput expenseInput;
+
+        public Expense(Guid id, string title, IEnumerable<PersonMoney> expensesBy, IEnumerable<PersonMoney> expensesFor, DateTimeOffset date, DateTimeOffset createdAt)
+            : base(id)
+        {
+            ValidateArgumentForTitle(title);
+            ValidateArgumentForDate(date);
+            ValidateArgumentForExpensesBy(expensesBy);
+            ValidateArgumentForExpensesFor(expensesBy);
+
+            _title = title;
+            _expensesBy = expensesBy.ToList();
+            _expensesFor = expensesFor.ToList();
+            _date = date;
+        }
+
         public string Title
         {
             get => _title;
             set
             {
-                if (String.IsNullOrWhiteSpace(value))
-                    throw new ArgumentException(nameof(Expense.Title), "Название траты не может быть пустым.");
-
+                ValidateArgumentForTitle(value);
                 _title = value;
             }
         }
 
-        private DateTime _date;
-        public DateTime Date
+        public DateTimeOffset Date
         {
             get => _date;
-            set => _date = value.Date;
+            set
+            {
+                ValidateArgumentForDate(value);
+                _date = value.Date;
+            }
         }
 
-        public Expense(Guid id, string title,/* IEnumerable<ExpenseBy> expensesBy, IEnumerable<ExpenseFor> expensesFor, */DateTime date)
-            : base(id)
+        public IReadOnlyCollection<PersonMoney> ExpensesFor => _expensesFor;
+
+        public IReadOnlyCollection<PersonMoney> ExpensesBy => _expensesBy;
+
+        public void SetExpensesFor(IEnumerable<PersonMoney> expensesFor)
         {
-            //this.Title = title;
-            //_expensesBy = expensesBy?.ToList() ?? throw new ArgumentNullException(nameof(expensesBy));
-            //_expensesFor = expensesFor?.ToList() ?? throw new ArgumentNullException(nameof(expensesFor));
-            //this.Date = date;
+            ValidateArgumentForExpensesFor(expensesFor);
+            _expensesFor = expensesFor.ToList();
         }
 
-        public IEnumerable<Guid> GetPersonsExpensesBy()
+        public void SetExpensesBy(IEnumerable<PersonMoney> expensesBy)
         {
-            //return _expensesBy
-            //    .Select(e => e.PersonId)
-            //    .ToList();
-
-            throw new Exception();
+            ValidateArgumentForExpensesBy(expensesBy);
+            _expensesBy = expensesBy.ToList();
         }
 
-        public IEnumerable<Guid> GetPersonsExpensesFor()
+        private static void ValidateArgumentForTitle(string title)
         {
-            //return _expensesFor
-            //    .Select(e => e.PersonId)
-            //    .ToList();
-
-            throw new Exception();
+            if (String.IsNullOrWhiteSpace(title))
+                throw new ArgumentException("Название траты не может быть пустым.");
         }
 
-        public void SetExpensesFor(IDictionary<Guid, Money> expensesFor)
+        private static void ValidateArgumentForDate(DateTimeOffset date)
         {
-            if (expensesFor == null)
-                throw new ArgumentNullException(nameof(expensesFor));
-
-            //_expensesFor.Clear();
-            //_expensesFor.AddRange(ExpenseFor.Create(expensesFor));
+            if (date.IsInFuture())
+                throw new ArgumentException("Дата траты не может быть в будующем.");
         }
 
-        public void SetExpensesBy(IDictionary<Guid, Money> expensesBy)
+        private static void ValidateArgumentForExpensesFor(IEnumerable<PersonMoney> expensesBy)
         {
             if (expensesBy == null)
                 throw new ArgumentNullException(nameof(expensesBy));
+        }
 
-            //_expensesBy.Clear();
-            //_expensesBy.AddRange(ExpenseBy.Create(expensesBy));
+        private static void ValidateArgumentForExpensesBy(IEnumerable<PersonMoney> expensesBy)
+        {
+            if (expensesBy == null)
+                throw new ArgumentNullException(nameof(expensesBy));
+        }
+
+        internal void Change(ExpenseInput expenseInput)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static Expense Create(Guid id, ExpenseInput expenseInput)
+        {
+            if (expenseInput == null)
+                throw new ArgumentNullException();
+
+            return new Expense(id, expenseInput.Title, expenseInput.By, expenseInput.For, expenseInput.Date, DateTimeOffset.Now);
         }
     }
 }
