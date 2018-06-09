@@ -2,6 +2,7 @@
 using Splid.Domain.Main.Entities.Groups;
 using Splid.Domain.Main.Values;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace Splid.Domain.Tests.Entities.Groups.GroupTests
@@ -33,7 +34,7 @@ namespace Splid.Domain.Tests.Entities.Groups.GroupTests
         }
 
 
-        private static IEnumerable<TestCaseData> Construct_PaymentsHaveUnknownPerson_ArgumentsFactory()
+        private static IEnumerable Construct_PaymentsHaveUnknownPerson_ArgumentsFactory()
         {
             var persons = new[]
             {
@@ -64,7 +65,7 @@ namespace Splid.Domain.Tests.Entities.Groups.GroupTests
             Assert.Throws<ArgumentException>(() => new Group(Guid.NewGuid(), "test_group", persons, payments, new List<Expense>()));
         }
 
-        private static IEnumerable<TestCaseData> Construct_ExpensesHaveUnknownPerson_ArgumentsFactory()
+        private static IEnumerable Construct_ExpensesHaveUnknownPerson_ArgumentsFactory()
         {
             var persons = new[]
             {

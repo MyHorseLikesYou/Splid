@@ -26,6 +26,7 @@ namespace Splid.Domain.Tests.Entities.Groups.GroupTests
             var group = Group.Create(Guid.NewGuid(), groupInput);
 
             Assert.NotNull(group);
+            Assert.AreEqual(groupInput.Name, group.Name);
         }
     }
 }

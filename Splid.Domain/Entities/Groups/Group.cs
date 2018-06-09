@@ -40,6 +40,8 @@ namespace Splid.Domain.Main.Entities.Groups
             _expenses = expenses.ToList();
         }
 
+        public string Name => _name;
+
         public IReadOnlyCollection<Expense> Expenses => _expenses;
 
         public void Change(GroupInput groupInput)
@@ -201,7 +203,7 @@ namespace Splid.Domain.Main.Entities.Groups
                 .ToList();
 
             if (unkownPersonsIds.Any())
-                throw new ArgumentException($"Участник(и) c Id {String.Join(", ", unkownPersonsIds)} не привязаны к группе.");
+                throw new ArgumentException($"Участник(и) c Id {String.Join(", ", unkownPersonsIds)} не привязан(ы) к группе.");
         }
 
         private static void ValidatePaymentNotHaveUnknownPersons(Guid paymentByPersonId, Guid paymentForPersonId, IEnumerable<Person> persons)
