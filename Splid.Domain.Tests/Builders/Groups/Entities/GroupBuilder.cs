@@ -12,7 +12,12 @@ namespace Splid.Domain.Tests.Builders.Groups.Entities
         private string _name;
         private List<Person> _persons;
         private List<Payment> _payments;
-        private List<Expense> _expenses;
+        private List<GroupExpense> _expenses;
+
+        internal GroupBuilder AddPayment(Guid paymentId)
+        {
+            throw new NotImplementedException();
+        }
 
         public GroupBuilder()
         { }
@@ -22,10 +27,15 @@ namespace Splid.Domain.Tests.Builders.Groups.Entities
             return this.AddExpense(expenseId, Guid.NewGuid(), Guid.NewGuid(), 100);
         }
 
+        public GroupBuilder HavePersonsWithNames(params string[] personsNames)
+        {
+            throw new NotImplementedException();
+        }
+
         public GroupBuilder AddExpense(Guid expenseId, Guid expenseByPersonId, Guid expenseForPersonId, decimal amount)
         {
             if (_expenses == null)
-                _expenses = new List<Expense>();
+                _expenses = new List<GroupExpense>();
 
             if (_persons == null)
                 _persons = new List<Person>();
@@ -36,15 +46,20 @@ namespace Splid.Domain.Tests.Builders.Groups.Entities
             if (!_persons.Any(p => p.Id == expenseForPersonId))
                 _persons.Add(new Person(expenseForPersonId, $"test_person_2"));
 
-            var expensesBy = new List<PersonMoney>() { new PersonMoney(expenseByPersonId, new Money(amount)) };
-            var expensesFor = new List<PersonMoney>() { new PersonMoney(expenseForPersonId, new Money(amount)) };
+            var expensesBy = new List<PersonMoneyOperation>() { new PersonMoneyOperation(expenseByPersonId, new Money(amount)) };
+            var expensesFor = new List<PersonMoneyOperation>() { new PersonMoneyOperation(expenseForPersonId, new Money(amount)) };
 
-            _expenses.Add(new Expense(expenseId, "test_expense", expensesBy, expensesFor, DateTimeOffset.Now, DateTimeOffset.Now));
+            _expenses.Add(new GroupExpense(expenseId, "test_expense", expensesBy, expensesFor, DateTimeOffset.Now, DateTimeOffset.Now));
 
             return this;
         }
 
-        public GroupBuilder SetPersons(params Guid[] personsIds)
+        internal GroupBuilder AddPayment(Guid paymentId, Guid paymentByPersonId, Guid paymentForPersonId, int v)
+        {
+            throw new NotImplementedException();
+        }
+
+        public GroupBuilder HavePersonsWithIds(params Guid[] personsIds)
         {
             _persons = new List<Person>();
 
@@ -62,7 +77,7 @@ namespace Splid.Domain.Tests.Builders.Groups.Entities
                     !String.IsNullOrWhiteSpace(_name) ? _name : "test_name",
                     _persons ?? new List<Person>(),
                     _payments ?? new List<Payment>(),
-                    _expenses ?? new List<Expense>()
+                    _expenses ?? new List<GroupExpense>()
                 );
         }
 

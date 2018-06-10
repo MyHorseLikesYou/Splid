@@ -12,8 +12,6 @@ namespace Splid.Domain.Main.Entities.Groups
         private Guid _personToId;
         private Money _amount;
         private DateTimeOffset _date;
-        private Guid paymentId;
-        private PaymentInput paymentInput;
 
         public Payment(Guid id, Guid personFromId, Guid personToId, Money amount, DateTimeOffset date, DateTimeOffset createdAt)
             : base(id)

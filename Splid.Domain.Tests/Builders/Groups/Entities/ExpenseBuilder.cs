@@ -5,26 +5,26 @@ using System.Text;
 
 namespace Splid.Domain.Tests.Builders.Groups.Entities
 {
-    public class ExpenseBuilder : IBuilder<Expense>
+    public class GroupExpenseBuilder : IBuilder<GroupExpense>
     {
-        public ExpenseBuilder SetId(Guid expenseId)
+        public GroupExpenseBuilder SetId(Guid expenseId)
         {
             throw new NotImplementedException();
         }
 
-        public ExpenseBuilder Set(Person expenseByPerson, Person expenseForPerson, int v)
+        public GroupExpenseBuilder Set(Person expenseByPerson, Person expenseForPerson, int v)
         {
             throw new NotImplementedException();
         }
 
-        public Expense Build()
+        public GroupExpense Build()
         {
             throw new NotImplementedException();
         }
 
-        public static ExpenseBuilder Create()
+        public GroupExpenseBuilder WithFutureDate()
         {
-            return new ExpenseBuilder();
+            throw new NotImplementedException();
         }
     }
 }

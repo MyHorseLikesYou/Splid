@@ -3,12 +3,12 @@ using System;
 
 namespace Splid.Domain.Main.Values
 {
-    public class PersonMoney : Value
+    public class PersonMoneyOperation : Value
     {
         public Guid PersonId { get; }
         public Money Amount { get; }
 
-        public PersonMoney(Guid personId, Money amount)
+        public PersonMoneyOperation(Guid personId, Money amount)
         {
             this.PersonId = personId;
             this.Amount = amount ?? throw new ArgumentNullException(nameof(amount));

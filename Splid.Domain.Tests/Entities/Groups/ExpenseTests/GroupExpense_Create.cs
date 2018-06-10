@@ -4,7 +4,7 @@ using Splid.Domain.Main.Entities.Groups;
 namespace Splid.Domain.Tests.Entities.Groups.ExpenseTests
 {
     [TestFixture]
-    public class Expense_Create
+    public class GroupExpense_Create
     {
     }
 }

@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+using Splid.Domain.Tests.Builders;
 using Splid.Domain.Tests.Builders.Groups.Entities;
 using Splid.Domain.Tests.Builders.Groups.Inputs;
 using System;
@@ -22,11 +23,11 @@ namespace Splid.Domain.Tests.Entities.Groups.GroupTests
         {
             var expenseForPersonId = Guid.NewGuid();
             var group = GroupBuilder.New()
-                .SetPersons(expenseForPersonId)
+                .HavePersonsWithIds(expenseForPersonId)
                 .Build();
 
             var unknownExpenseByPersonId = Guid.NewGuid();
-            var expenseInput = ExpenseInputBuilder.New()
+            var expenseInput = New().GroupExpenseInput()
                 .Set(unknownExpenseByPersonId, expenseForPersonId, 100)
                 .Build();
 
@@ -38,11 +39,11 @@ namespace Splid.Domain.Tests.Entities.Groups.GroupTests
         {
             var expenseByPersonId = Guid.NewGuid();
             var group = GroupBuilder.New()
-                .SetPersons(expenseByPersonId)
+                .HavePersonsWithIds(expenseByPersonId)
                 .Build();
 
             var unknownExpenseForPersonId = Guid.NewGuid();
-            var expenseInput = ExpenseInputBuilder.New()
+            var expenseInput = New().GroupExpenseInput()
                 .Set(expenseByPersonId, unknownExpenseForPersonId, 100)
                 .Build();
 
@@ -56,17 +57,22 @@ namespace Splid.Domain.Tests.Entities.Groups.GroupTests
             var expenseForPersonId = Guid.NewGuid();
 
             var group = GroupBuilder.New()
-                .SetPersons(expenseByPersonId, expenseForPersonId)
+                .HavePersonsWithIds(expenseByPersonId, expenseForPersonId)
                 .Build();
 
             var expenseId = Guid.NewGuid();
-            var expenseInput = ExpenseInputBuilder.New()
+            var expenseInput = New().GroupExpenseInput()
                 .Set(expenseByPersonId, expenseForPersonId, 1000)
                 .Build();
 
             group.AddExpense(expenseId, expenseInput);
 
             Assert.That(group.Expenses.Any(e => e.Id == expenseId));
+        }
+
+        private BuilderFactory New()
+        {
+            return new BuilderFactory();
         }
     }
 }

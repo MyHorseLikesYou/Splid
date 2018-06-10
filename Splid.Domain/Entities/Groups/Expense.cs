@@ -8,26 +8,24 @@ using System.Linq;
 
 namespace Splid.Domain.Main.Entities.Groups
 {
-    public class Expense : Entity
+    public class GroupExpense : Entity
     {
         private string _title;
-        private List<PersonMoney> _expensesBy;
-        private List<PersonMoney> _expensesFor;
+        private List<PersonMoneyOperation> _personPayments;
+        private List<PersonMoneyOperation> _personExpenses;
         private DateTimeOffset _date;
-        private Guid expenseId;
-        private ExpenseInput expenseInput;
 
-        public Expense(Guid id, string title, IEnumerable<PersonMoney> expensesBy, IEnumerable<PersonMoney> expensesFor, DateTimeOffset date, DateTimeOffset createdAt)
+        public GroupExpense(Guid id, string title, IEnumerable<PersonMoneyOperation> personsPayments, IEnumerable<PersonMoneyOperation> personsExpenses, DateTimeOffset date, DateTimeOffset createdAt)
             : base(id)
         {
             ValidateArgumentForTitle(title);
             ValidateArgumentForDate(date);
-            ValidateArgumentForExpensesBy(expensesBy);
-            ValidateArgumentForExpensesFor(expensesBy);
+            ValidateArgumentForExpensesBy(personsPayments);
+            ValidateArgumentForExpensesFor(personsExpenses);
 
             _title = title;
-            _expensesBy = expensesBy.ToList();
-            _expensesFor = expensesFor.ToList();
+            _personPayments = personsPayments.ToList();
+            _personExpenses = personsExpenses.ToList();
             _date = date;
         }
 
@@ -51,20 +49,26 @@ namespace Splid.Domain.Main.Entities.Groups
             }
         }
 
-        public IReadOnlyCollection<PersonMoney> ExpensesFor => _expensesFor;
+        public IReadOnlyCollection<PersonMoneyOperation> ExpensesFor => _personExpenses;
 
-        public IReadOnlyCollection<PersonMoney> ExpensesBy => _expensesBy;
+        public IReadOnlyCollection<PersonMoneyOperation> ExpensesBy => _personPayments;
 
-        public void SetExpensesFor(IEnumerable<PersonMoney> expensesFor)
+        public void Change(ExpenseInput expenseInput)
         {
-            ValidateArgumentForExpensesFor(expensesFor);
-            _expensesFor = expensesFor.ToList();
+            if (expenseInput == null)
+                throw new ArgumentNullException();
         }
 
-        public void SetExpensesBy(IEnumerable<PersonMoney> expensesBy)
+        private void SetExpensesFor(IEnumerable<PersonMoneyOperation> expensesFor)
+        {
+            ValidateArgumentForExpensesFor(expensesFor);
+            _personExpenses = expensesFor.ToList();
+        }
+
+        private void SetExpensesBy(IEnumerable<PersonMoneyOperation> expensesBy)
         {
             ValidateArgumentForExpensesBy(expensesBy);
-            _expensesBy = expensesBy.ToList();
+            _personPayments = expensesBy.ToList();
         }
 
         private static void ValidateArgumentForTitle(string title)
@@ -79,29 +83,24 @@ namespace Splid.Domain.Main.Entities.Groups
                 throw new ArgumentException("Дата траты не может быть в будующем.");
         }
 
-        private static void ValidateArgumentForExpensesFor(IEnumerable<PersonMoney> expensesBy)
+        private static void ValidateArgumentForExpensesFor(IEnumerable<PersonMoneyOperation> expensesBy)
         {
             if (expensesBy == null)
                 throw new ArgumentNullException(nameof(expensesBy));
         }
 
-        private static void ValidateArgumentForExpensesBy(IEnumerable<PersonMoney> expensesBy)
+        private static void ValidateArgumentForExpensesBy(IEnumerable<PersonMoneyOperation> expensesBy)
         {
             if (expensesBy == null)
                 throw new ArgumentNullException(nameof(expensesBy));
         }
 
-        internal void Change(ExpenseInput expenseInput)
-        {
-            throw new NotImplementedException();
-        }
-
-        public static Expense Create(Guid id, ExpenseInput expenseInput)
+        public static GroupExpense Create(Guid id, ExpenseInput expenseInput)
         {
             if (expenseInput == null)
                 throw new ArgumentNullException();
 
-            return new Expense(id, expenseInput.Title, expenseInput.By, expenseInput.For, expenseInput.Date, DateTimeOffset.Now);
+            return new GroupExpense(id, expenseInput.Title, expenseInput.By, expenseInput.For, expenseInput.Date, DateTimeOffset.Now);
         }
     }
 }

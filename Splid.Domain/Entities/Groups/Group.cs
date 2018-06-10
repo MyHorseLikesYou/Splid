@@ -12,9 +12,9 @@ namespace Splid.Domain.Main.Entities.Groups
         private string _name;
         private List<Person> _persons;
         private List<Payment> _payments;
-        private List<Expense> _expenses;        
+        private List<GroupExpense> _expenses;        
 
-        public Group(Guid groupId, string name, IEnumerable<Person> persons, IEnumerable<Payment> payments, IEnumerable<Expense> expenses)
+        public Group(Guid groupId, string name, IEnumerable<Person> persons, IEnumerable<Payment> payments, IEnumerable<GroupExpense> expenses)
             : base(groupId)
         {
             ValidateArgumentForName(name);
@@ -42,7 +42,11 @@ namespace Splid.Domain.Main.Entities.Groups
 
         public string Name => _name;
 
-        public IReadOnlyCollection<Expense> Expenses => _expenses;
+        public IReadOnlyCollection<GroupExpense> Expenses => _expenses;
+
+        public IReadOnlyCollection<Payment> Payments => _payments;
+
+        public IReadOnlyCollection<Person> Persons => _persons;
 
         public void Change(GroupInput groupInput)
         {
@@ -103,7 +107,7 @@ namespace Splid.Domain.Main.Entities.Groups
             if (expenseById != null)
                 throw new ArgumentException($"Трата c Id {expenseId} уже есть в группе.");
 
-            var expenseToAdd = Expense.Create(expenseId, expenseInput);
+            var expenseToAdd = GroupExpense.Create(expenseId, expenseInput);
             _expenses.Add(expenseToAdd);
         }
 
@@ -174,7 +178,7 @@ namespace Splid.Domain.Main.Entities.Groups
 
         private Payment GetPaymentById(Guid paymentId) => _payments.FirstOrDefault(e => e.Id == paymentId);
 
-        private Expense GetExpenseById(Guid expenseId) => _expenses.FirstOrDefault(e => e.Id == expenseId);
+        private GroupExpense GetExpenseById(Guid expenseId) => _expenses.FirstOrDefault(e => e.Id == expenseId);
 
         private Person GetPersonById(Guid personId) => _persons.SingleOrDefault(p => p.Id == personId);
 
@@ -232,7 +236,7 @@ namespace Splid.Domain.Main.Entities.Groups
                 throw new ArgumentNullException(nameof(payments));
         }
 
-        private static void ValidateArgumentForExpenses(IEnumerable<Expense> expenses)
+        private static void ValidateArgumentForExpenses(IEnumerable<GroupExpense> expenses)
         {
             if (expenses == null)
                 throw new ArgumentNullException(nameof(expenses));
@@ -249,7 +253,7 @@ namespace Splid.Domain.Main.Entities.Groups
             if (groupInput == null)
                 throw new ArgumentNullException(nameof(groupInput));
 
-            return new Group(groupId, groupInput.Name, new List<Person>(), new List<Payment>(), new List<Expense>());
+            return new Group(groupId, groupInput.Name, new List<Person>(), new List<Payment>(), new List<GroupExpense>());
         }
     }
 }

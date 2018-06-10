@@ -15,20 +15,20 @@ namespace Splid.Domain.Tests.Entities.Groups.GroupTests
         [TestCase(" ")]
         public void Construct_InvalidName_ThrowArgumentException(string groupName)
         {
-            Assert.Throws<ArgumentException>(() => new Group(Guid.NewGuid(), groupName, new List<Person>(), new List<Payment>(), new List<Expense>()));
+            Assert.Throws<ArgumentException>(() => new Group(Guid.NewGuid(), groupName, new List<Person>(), new List<Payment>(), new List<GroupExpense>()));
         }
 
 
         private static IEnumerable<TestCaseData> ConstructGroup_Arguments_NullPersonsOrPaymentsOrExpenses =>
             new[]
             {
-                new TestCaseData(null, new List<Payment>(), new List<Expense>()),
-                new TestCaseData(new List<Person>(), null, new List<Expense>()),
+                new TestCaseData(null, new List<Payment>(), new List<GroupExpense>()),
+                new TestCaseData(new List<Person>(), null, new List<GroupExpense>()),
                 new TestCaseData(new List<Person>(), new List<Payment>(), null)
             };
 
         [Test, TestCaseSource(nameof(ConstructGroup_Arguments_NullPersonsOrPaymentsOrExpenses))]
-        public void Construct_NullPersonsOrPaymentsOrExpenses_ThrowArgumentNullException(IEnumerable<Person> persons, IEnumerable<Payment> payments, IEnumerable<Expense> expenses)
+        public void Construct_NullPersonsOrPaymentsOrExpenses_ThrowArgumentNullException(IEnumerable<Person> persons, IEnumerable<Payment> payments, IEnumerable<GroupExpense> expenses)
         {
             Assert.Throws<ArgumentNullException>(() => new Group(Guid.NewGuid(), "test_group", persons, payments, expenses));
         }
@@ -62,7 +62,7 @@ namespace Splid.Domain.Tests.Entities.Groups.GroupTests
                 )
             };
 
-            Assert.Throws<ArgumentException>(() => new Group(Guid.NewGuid(), "test_group", persons, payments, new List<Expense>()));
+            Assert.Throws<ArgumentException>(() => new Group(Guid.NewGuid(), "test_group", persons, payments, new List<GroupExpense>()));
         }
 
         private static IEnumerable Construct_ExpensesHaveUnknownPerson_ArgumentsFactory()
@@ -80,17 +80,17 @@ namespace Splid.Domain.Tests.Entities.Groups.GroupTests
         [Test, TestCaseSource(nameof(Construct_ExpensesHaveUnknownPerson_ArgumentsFactory))]
         public void Construct_ExpensesHaveUnknownPerson_ThrowArgumentException(Guid personById, Guid personForId, Person[] persons)
         {
-            var expenseBy = new PersonMoney(Guid.NewGuid(), new Money(100));
-            var expenseFor = new PersonMoney(persons[0].Id, new Money(100));
+            var expenseBy = new PersonMoneyOperation(Guid.NewGuid(), new Money(100));
+            var expenseFor = new PersonMoneyOperation(persons[0].Id, new Money(100));
 
-            var expenses = new List<Expense>()
+            var expenses = new List<GroupExpense>()
             {
-                new Expense
+                new GroupExpense
                 (
                     id: Guid.NewGuid(),
                     title: "test_expense",
-                    expensesBy: new List<PersonMoney>() { expenseBy },
-                    expensesFor: new List<PersonMoney>() { expenseFor },
+                    personsPayments: new List<PersonMoneyOperation>() { expenseBy },
+                    personsExpenses: new List<PersonMoneyOperation>() { expenseFor },
                     date: DateTimeOffset.Now,
                     createdAt: DateTimeOffset.Now
                 )
@@ -108,7 +108,7 @@ namespace Splid.Domain.Tests.Entities.Groups.GroupTests
                 new Person(Guid.NewGuid(), "test_name"),
             };
 
-            Assert.Throws<ArgumentException>(() => new Group(Guid.NewGuid(), "test_group", persons, new List<Payment>(), new List<Expense>()));
+            Assert.Throws<ArgumentException>(() => new Group(Guid.NewGuid(), "test_group", persons, new List<Payment>(), new List<GroupExpense>()));
         }
     }
 }

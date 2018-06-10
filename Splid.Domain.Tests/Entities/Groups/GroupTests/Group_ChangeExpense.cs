@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+using Splid.Domain.Tests.Builders;
 using Splid.Domain.Tests.Builders.Groups.Entities;
 using Splid.Domain.Tests.Builders.Groups.Inputs;
 using System;
@@ -23,7 +24,7 @@ namespace Splid.Domain.Tests.Entities.Groups.GroupTests
         public void ChangeExpense_UnknownExpense_ThrowArgumentException()
         {
             var group = GroupBuilder.New().Build();
-            var expenseInput = ExpenseInputBuilder.New().Build();
+            var expenseInput = New().GroupExpenseInput().Build();
             var unknownExpenseId = Guid.NewGuid();
 
             Assert.Throws<ArgumentException>(() => group.ChangeExpense(unknownExpenseId, expenseInput));
@@ -40,7 +41,7 @@ namespace Splid.Domain.Tests.Entities.Groups.GroupTests
                 .Build();
 
             var unknowExpenseByPersonId = Guid.NewGuid();
-            var expenseInput = ExpenseInputBuilder.New()
+            var expenseInput = New().GroupExpenseInput()
                 .Set(unknowExpenseByPersonId, expenseForPersonId, 100)
                 .Build();
 
@@ -58,7 +59,7 @@ namespace Splid.Domain.Tests.Entities.Groups.GroupTests
                 .Build();
 
             var unknowExpenseForPersonId = Guid.NewGuid();
-            var expenseInput = ExpenseInputBuilder.New()
+            var expenseInput = New().GroupExpenseInput()
                 .Set(expenseByPersonId, unknowExpenseForPersonId, 100)
                 .Build();
 
@@ -75,11 +76,16 @@ namespace Splid.Domain.Tests.Entities.Groups.GroupTests
                 .AddExpense(expenseId, expenseByPersonId, expenseForPersonId, 100)
                 .Build();
             
-            var expenseInput = ExpenseInputBuilder.New()
+            var expenseInput = New().GroupExpenseInput()
                 .Set(expenseByPersonId, expenseForPersonId, 1000)
                 .Build();
 
             Assert.DoesNotThrow(() => group.ChangeExpense(expenseId, expenseInput));
+        }
+
+        private BuilderFactory New()
+        {
+            return new BuilderFactory();
         }
     }
 }
