@@ -16,9 +16,9 @@ namespace Splid.Domain.Tests.Builders
             return new GroupExpenseBuilder();
         }
 
-        public ExpenseInputBuilder GroupExpenseInput()
+        public GroupExpenseInputBuilder GroupExpenseInput()
         {
-            return new ExpenseInputBuilder();
+            return new GroupExpenseInputBuilder();
         }
 
         public PersonBuilder Person()

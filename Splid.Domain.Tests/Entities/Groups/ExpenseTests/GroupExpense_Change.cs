@@ -1,5 +1,4 @@
 ﻿using NUnit.Framework;
-using Splid.Domain.Tests.Builders;
 using System;
 
 namespace Splid.Domain.Tests.Entities.Groups.ExpenseTests
@@ -64,7 +63,7 @@ namespace Splid.Domain.Tests.Entities.Groups.ExpenseTests
 
         [Test]
         public void ChangeGroupExpense_DuplicatePaymentPerson_ThrowArgumentExeption()
-        {            
+        {
             var groupExpense = New().GroupExpense().Build();
 
             var personIdThatWillDuplicate = Guid.NewGuid();
@@ -97,8 +96,8 @@ namespace Splid.Domain.Tests.Entities.Groups.ExpenseTests
 
         [Test]
         public void ChangeGroupExpense_ExpensesHaveZeroAmountExpense_ThrowArgumentExeption()
-        {            
-            var groupExpense = New().GroupExpense().Build();            
+        {
+            var groupExpense = New().GroupExpense().Build();
             var groupExpenseInput = New().GroupExpenseInput().HasExpense(0).Build();
 
             Assert.Throws<ArgumentException>(() => groupExpense.Change(groupExpenseInput));
@@ -120,6 +119,18 @@ namespace Splid.Domain.Tests.Entities.Groups.ExpenseTests
         }
 
         [Test]
+        public void ChangeGroupExpense_ExpensesHaveNullExpense_ThrowArgumentException()
+        {
+            var groupExpense = New().GroupExpense().Build();
+            var groupExpenseInput = New().GroupExpenseInput()
+                .HasNullExpense()                
+                .HasPayment(100)
+                .Build();
+
+            Assert.Throws<ArgumentException>(() => groupExpense.Change(groupExpenseInput));
+        }
+
+        [Test]
         public void ChangeGroupExpense_PaymentsTotalAmountIsNotEqualExpensesTotalAmount_ThrowArgumentExeption()
         {
             var groupExpense = New().GroupExpense().Build();
@@ -127,7 +138,7 @@ namespace Splid.Domain.Tests.Entities.Groups.ExpenseTests
             var personIdThatWillDuplicate = Guid.NewGuid();
             var groupExpenseInput = New().GroupExpenseInput()
                 .HasPayment(200)
-                .HasExpense(100)                
+                .HasExpense(100)
                 .Build();
 
             Assert.Throws<ArgumentException>(() => groupExpense.Change(groupExpenseInput));

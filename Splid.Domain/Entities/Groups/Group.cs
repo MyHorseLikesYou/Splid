@@ -96,12 +96,12 @@ namespace Splid.Domain.Main.Entities.Groups
             _payments.Remove(payment);
         }
 
-        public void AddExpense(Guid expenseId, ExpenseInput expenseInput)
+        public void AddGroupExpense(Guid expenseId, GroupExpenseInput expenseInput)
         {
             if (expenseInput == null)
                 throw new ArgumentNullException(nameof(expenseInput));
 
-            ValidateExpenseNotHaveUnknownPersons(expenseInput.By.Select(e => e.PersonId), expenseInput.For.Select(e => e.PersonId), _persons);
+            ValidateExpenseNotHaveUnknownPersons(expenseInput.Payments.Select(e => e.PersonId), expenseInput.Expenses.Select(e => e.PersonId), _persons);
 
             var expenseById = this.GetExpenseById(expenseId);
             if (expenseById != null)
@@ -111,12 +111,12 @@ namespace Splid.Domain.Main.Entities.Groups
             _expenses.Add(expenseToAdd);
         }
 
-        public void ChangeExpense(Guid expenseId, ExpenseInput expenseInput)
+        public void ChangeGroupExpense(Guid expenseId, GroupExpenseInput expenseInput)
         {
             if (expenseInput == null)
                 throw new ArgumentNullException(nameof(expenseInput));
 
-            ValidateExpenseNotHaveUnknownPersons(expenseInput.By.Select(e => e.PersonId), expenseInput.For.Select(e => e.PersonId), _persons);
+            ValidateExpenseNotHaveUnknownPersons(expenseInput.Payments.Select(e => e.PersonId), expenseInput.Expenses.Select(e => e.PersonId), _persons);
 
             var expenseToChange = this.GetExpenseById(expenseId);
             if (expenseToChange == null)

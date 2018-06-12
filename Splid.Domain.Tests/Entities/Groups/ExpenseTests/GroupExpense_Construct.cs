@@ -1,6 +1,7 @@
 ﻿using NUnit.Framework;
 using Splid.Domain.Main.Entities.Groups;
 using Splid.Domain.Main.Values;
+using Splid.Domain.Tests.Entities.Groups.ExpenseTests.DataSets;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -11,51 +12,47 @@ namespace Splid.Domain.Tests.Entities.Groups.ExpenseTests
     [TestFixture]
     public class GroupExpense_Construct
     {
-        [Test]
-        public void Construct_InvalidId_ThrowArgumentException()
-        {
-            //Assert.Throws<ArgumentNullException>(() => new GroupExpense(Guid.Empty, ));
-        }
-
         [TestCase(null)]
         [TestCase("")]
         [TestCase(" ")]
-        public void Construct_InvalidTitle_ThrowArgumentException()
+        public void ConstructGroupExpense_InvalidTitle_ThrowArgumentException()
         {
 
         }
 
         [Test]
-        public void Construct_DateInFuture_ThrowArgumentException()
+        public void ConstructGroupExpense_DateInFuture_ThrowArgumentException()
         {
 
         }
 
         [Test]
-        public void Construct_CreatedAtDateTimeInFuture_ThrowArgumentException()
+        public void ConstructGroupExpense_CreatedAtDateTimeInFuture_ThrowArgumentException()
         {
         }
 
-        [Test, TestCaseSource(nameof(Construct_InvalidPayments_Set))]
-        public void Construct_InvalidPayments_ThrowArgumentException()
+        [Test, TestCaseSource(nameof(ConstructGroupExpense_InvalidPayments_DataSet))]
+        public void ConstructGroupExpense_InvalidPayments_ThrowArgumentException()
         {
 
         }
 
-
-        private class Construct_InvalidPayments_Set : IEnumerable
+        [Test, TestCaseSource(nameof(ConstructGroupExpense_InvalidExpenses_DataSet))]
+        public void ConstructGroupExpense_InvalidExpenses_ThrowArgumentException()
         {
-            public Construct_InvalidPayments_Set()
-            {
 
-            }
+        }
 
-            public IEnumerator GetEnumerator()
-            {
-                yield return null;
-                yield return new List<PersonMoneyOperation>();
-                yield return new List<PersonMoneyOperation>();
-            }
+        [Test]
+        public void ConstructGroupExpense_PaymentsTotalAmountIsNotEqualExpensesTotalAmount_ThrowArgumentExeption()
+        {
+
+        }
+
+        [Test]
+        public void ConstructGroupExpense_ValidArguments_DoesNotThrow()
+        {
+            
         }
     }
 }

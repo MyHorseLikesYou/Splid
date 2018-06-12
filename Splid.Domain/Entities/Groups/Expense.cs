@@ -53,7 +53,7 @@ namespace Splid.Domain.Main.Entities.Groups
 
         public IReadOnlyCollection<PersonMoneyOperation> ExpensesBy => _personPayments;
 
-        public void Change(ExpenseInput expenseInput)
+        public void Change(GroupExpenseInput expenseInput)
         {
             if (expenseInput == null)
                 throw new ArgumentNullException();
@@ -95,12 +95,12 @@ namespace Splid.Domain.Main.Entities.Groups
                 throw new ArgumentNullException(nameof(expensesBy));
         }
 
-        public static GroupExpense Create(Guid id, ExpenseInput expenseInput)
+        public static GroupExpense Create(Guid id, GroupExpenseInput expenseInput)
         {
             if (expenseInput == null)
                 throw new ArgumentNullException();
 
-            return new GroupExpense(id, expenseInput.Title, expenseInput.By, expenseInput.For, expenseInput.Date, DateTimeOffset.Now);
+            return new GroupExpense(id, expenseInput.Title, expenseInput.Payments, expenseInput.Expenses, expenseInput.Date, DateTimeOffset.Now);
         }
     }
 }

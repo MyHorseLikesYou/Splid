@@ -1,14 +1,13 @@
 ﻿using NUnit.Framework;
-using Splid.Domain.Tests.Builders;
 using System;
 
 namespace Splid.Domain.Tests.Entities.Groups.PersonTests
 {
     [TestFixture]
-    public class Person_Change
+    public class Person_Change : BaseTest
     {
         [Test]
-        public void Change_NullInput_ThrowArgumentNullException()
+        public void ChangePerson_NullInput_ThrowArgumentNullException()
         {
             var person = New().Person().Build();
 
@@ -18,7 +17,7 @@ namespace Splid.Domain.Tests.Entities.Groups.PersonTests
         [TestCase(null)]
         [TestCase("")]
         [TestCase(" ")]
-        public void Change_InvalidName_ThrowArgumentException(string name)
+        public void ChangePerson_InvalidName_ThrowArgumentException(string name)
         {
             var person = New().Person().Build();
             var personInput = New().PersonInput()
@@ -29,17 +28,12 @@ namespace Splid.Domain.Tests.Entities.Groups.PersonTests
         }
 
         [Test]
-        public void Change_ValidInput_DoesNotThrow()
+        public void ChangePerson_ValidInput_DoesNotThrow()
         {
             var person = New().Person().Build();
             var personInput = New().PersonInput().Build();
 
             Assert.DoesNotThrow(() => person.Change(personInput));
-        }
-
-        private BuilderFactory New()
-        {
-            return new BuilderFactory();
         }
     }
 }

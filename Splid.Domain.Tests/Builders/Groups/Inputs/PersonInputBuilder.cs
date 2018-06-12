@@ -1,30 +1,28 @@
 ﻿using Splid.Domain.Models.Groups;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Splid.Domain.Tests.Builders.Groups.Inputs
 {
     public class PersonInputBuilder : IBuilder<PersonInput>
     {
-        public PersonInput Build()
-        {
-            throw new NotImplementedException();
-        }
+        private string _name;
 
-        public static PersonInputBuilder New()
+        public PersonInputBuilder()
         {
-            throw new NotImplementedException();
+            _name = "person_name";
         }
 
         public PersonInputBuilder WithName(string name)
         {
-            throw new NotImplementedException();
+            _name = name;
+            return this;
         }
 
-        public PersonInputBuilder With(Guid id, string name)
+        public PersonInput Build()
         {
-            throw new NotImplementedException();
+            return new PersonInput()
+            {
+                Name = _name
+            };
         }
     }
 }

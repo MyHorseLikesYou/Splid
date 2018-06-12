@@ -1,105 +1,134 @@
 ﻿using Splid.Domain.Main.Values;
 using Splid.Domain.Models.Groups;
+using Splid.Domain.Tests.Builders.Groups.Entities;
 using System;
 using System.Collections.Generic;
 
 namespace Splid.Domain.Tests.Builders.Groups.Inputs
 {
-    public class ExpenseInputBuilder : IBuilder<ExpenseInput>
+    public class GroupExpenseInputBuilder : IBuilder<GroupExpenseInput>
     {
-        private ExpenseInput _expenseInput;
+        private GroupExpenseInput _expenseInput;
 
-        public ExpenseInputBuilder()
+        public GroupExpenseInputBuilder()
         {
-            _expenseInput = new ExpenseInput();
+            _expenseInput = new GroupExpenseInput()
+            {
+                Title = GroupExpenseBuilder.DefaultTitle,
+                Payments = GroupExpenseBuilder.DefaultPayments,
+                Expenses = GroupExpenseBuilder.DefaultExpenses,
+                Date = GroupExpenseBuilder.DefaultDate,
+            };
         }
 
-        public ExpenseInputBuilder Set(Guid expenseByPersonId, Guid expenseForPersonId, decimal amount)
+        public GroupExpenseInputBuilder With(Guid paymentPersonId, Guid expensePersonId, decimal amount)
         {
-            if (_expenseInput == null)
-                _expenseInput = new ExpenseInput();
-
-            _expenseInput.By = new List<PersonMoneyOperation>() { new PersonMoneyOperation(expenseByPersonId, new Money(amount)) };
-            _expenseInput.For = new List<PersonMoneyOperation>() { new PersonMoneyOperation(expenseForPersonId, new Money(amount)) };
+            _expenseInput.Payments = new List<PersonMoneyOperation>() { new PersonMoneyOperation(paymentPersonId, new Money(amount)) };
+            _expenseInput.Expenses = new List<PersonMoneyOperation>() { new PersonMoneyOperation(expensePersonId, new Money(amount)) };
 
             return this;
         }
 
-        public ExpenseInputBuilder WithTitle(string title)
+        public GroupExpenseInputBuilder WithTitle(string title)
         {
-            throw new NotImplementedException();
+            _expenseInput.Title = title;
+            return this;
         }
 
-        public ExpenseInput Build()
+        public GroupExpenseInputBuilder WithFutureDate()
         {
-            if (_expenseInput.Date == default(DateTimeOffset))
-                _expenseInput.Date = DateTimeOffset.Now;
+            _expenseInput.Date = DateTimeOffset.Now.AddDays(1);
+            return this;
+        }
 
-            if (String.IsNullOrWhiteSpace(_expenseInput.Title))
-                _expenseInput.Title = "test_expense";
+        public GroupExpenseInputBuilder WithNullPayments()
+        {
+            _expenseInput.Payments = null;
+            return this;
+        }
 
-            if (_expenseInput.For == null)
-                _expenseInput.For = new List<PersonMoneyOperation>();
+        public GroupExpenseInputBuilder WithEmptyPayments()
+        {
+            _expenseInput.Payments = new List<PersonMoneyOperation>();
+            return this;
+        }
 
-            if (_expenseInput.By == null)
-                _expenseInput.By = new List<PersonMoneyOperation>();
+        public GroupExpenseInputBuilder HasPayment(decimal amount)
+        {
+            this.AddPayment(Create(Guid.NewGuid(), amount));
+            return this;
+        }
 
+        public GroupExpenseInputBuilder HasPayment(Guid personId, decimal amount)
+        {
+            this.AddPayment(Create(personId, amount));
+            return this;
+        }
+
+        public GroupExpenseInputBuilder WithNullExpenses()
+        {
+            _expenseInput.Expenses = null;
+            return this;
+        }
+
+        public GroupExpenseInputBuilder WithEmptyExpenses()
+        {
+            _expenseInput.Expenses = new List<PersonMoneyOperation>();
+            return this;
+        }
+
+        private void AddPayment(PersonMoneyOperation payment)
+        {
+            if (ArePaymentsDefaultValue())
+                _expenseInput.Payments = new List<PersonMoneyOperation>();
+
+            _expenseInput.Payments.Add(payment);
+        }
+
+        private bool ArePaymentsDefaultValue()
+        {
+            return _expenseInput.Payments == GroupExpenseBuilder.DefaultPayments;
+        }
+
+        public GroupExpenseInputBuilder HasExpense(decimal amount)
+        {
+            this.AddExpense(Create(Guid.NewGuid(), amount));
+            return this;
+        }
+
+        public GroupExpenseInputBuilder HasExpense(Guid personId, decimal amount)
+        {
+            this.AddExpense(Create(personId, amount));
+            return this;
+        }
+
+        public GroupExpenseInputBuilder HasNullExpense()
+        {
+            this.AddExpense(null);
+            return this;
+        }
+
+        private void AddExpense(PersonMoneyOperation expense)
+        {
+            if (AreExpenseDefaultValue())
+                _expenseInput.Expenses = new List<PersonMoneyOperation>();
+
+            _expenseInput.Expenses.Add(expense);
+        }
+
+        private bool AreExpenseDefaultValue()
+        {
+            return _expenseInput.Expenses == GroupExpenseBuilder.DefaultExpenses;
+        }
+
+        public GroupExpenseInput Build()
+        {
             return _expenseInput;
         }
 
-        public ExpenseInputBuilder WithFutureDate()
+        private static PersonMoneyOperation Create(Guid personId, decimal amount)
         {
-            throw new NotImplementedException();
-        }
-
-        internal ExpenseInputBuilder WithNullPayments()
-        {
-            throw new NotImplementedException();
-        }
-
-        internal ExpenseInputBuilder WithExpensesFor(object p)
-        {
-            throw new NotImplementedException();
-        }
-
-        internal ExpenseInputBuilder WithEmptyPayments()
-        {
-            throw new NotImplementedException();
-        }
-
-        internal ExpenseInputBuilder WithNullExpenses()
-        {
-            throw new NotImplementedException();
-        }
-
-        internal ExpenseInputBuilder HaveExpenseBy(Guid personIdThatWillDuplicate, int amount)
-        {
-            throw new NotImplementedException();
-        }
-
-        internal ExpenseInputBuilder HasPayment(int amount)
-        {
-            throw new NotImplementedException();
-        }
-
-        internal ExpenseInputBuilder HasExpense(int amount)
-        {
-            throw new NotImplementedException();
-        }
-
-        internal ExpenseInputBuilder HasPayment(Guid personIdThatWillDuplicate, int v)
-        {
-            throw new NotImplementedException();
-        }
-
-        internal ExpenseInputBuilder WithEmptyExpenses()
-        {
-            throw new NotImplementedException();
-        }
-
-        internal ExpenseInputBuilder HasExpense(Guid personIdThatWillDuplicate, int v)
-        {
-            throw new NotImplementedException();
+            return new PersonMoneyOperation(personId, new Money(amount));
         }
     }
 }

@@ -19,7 +19,7 @@ namespace Splid.Domain.Main.Entities.Groups
             throw new NotImplementedException();
         }
 
-        internal static Person Create(Guid personId, PersonInput personInput)
+        public static Person Create(Guid personId, PersonInput personInput)
         {
             throw new NotImplementedException();
         }

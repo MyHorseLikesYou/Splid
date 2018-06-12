@@ -82,7 +82,7 @@ namespace Splid.Domain.Main.Services
             _groupsRepository.Update(group);            
         }
 
-        public void AddExpense(Guid groupId, Guid expenseId, ExpenseInput expenseInput)
+        public void AddExpense(Guid groupId, Guid expenseId, GroupExpenseInput expenseInput)
         {
             var isExpenseExists = _groupsRepository.IsExpenseExists(expenseId);
             if (isExpenseExists)
@@ -92,18 +92,18 @@ namespace Splid.Domain.Main.Services
             if (group == null)
                 throw new EntityNotFoundException(groupId);
 
-            group.AddExpense(expenseId, expenseInput);
+            group.AddGroupExpense(expenseId, expenseInput);
 
             _groupsRepository.Update(group);            
         }
 
-        public void ChangeExpense(Guid groupId, Guid expenseId, ExpenseInput expenseInput)
+        public void ChangeExpense(Guid groupId, Guid expenseId, GroupExpenseInput expenseInput)
         {
             var group = _groupsRepository.GetById(groupId);
             if (group == null)
                 throw new EntityNotFoundException(expenseId);
 
-            group.ChangeExpense(expenseId, expenseInput);
+            group.ChangeGroupExpense(expenseId, expenseInput);
 
             _groupsRepository.Update(group);            
         }

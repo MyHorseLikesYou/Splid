@@ -22,9 +22,9 @@ namespace Splid.Domain.Tests.Builders.Groups.Entities
         public GroupBuilder()
         { }
 
-        public GroupBuilder AddExpense(Guid expenseId)
+        public GroupBuilder AddGroupExpense(Guid expenseId)
         {
-            return this.AddExpense(expenseId, Guid.NewGuid(), Guid.NewGuid(), 100);
+            return this.AddGroupExpense(expenseId, Guid.NewGuid(), Guid.NewGuid(), 100);
         }
 
         public GroupBuilder HavePersonsWithNames(params string[] personsNames)
@@ -32,7 +32,7 @@ namespace Splid.Domain.Tests.Builders.Groups.Entities
             throw new NotImplementedException();
         }
 
-        public GroupBuilder AddExpense(Guid expenseId, Guid expenseByPersonId, Guid expenseForPersonId, decimal amount)
+        public GroupBuilder AddGroupExpense(Guid expenseId, Guid expenseByPersonId, Guid expenseForPersonId, decimal amount)
         {
             if (_expenses == null)
                 _expenses = new List<GroupExpense>();

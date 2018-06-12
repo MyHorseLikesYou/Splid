@@ -9,10 +9,5 @@ namespace Splid.Domain.Tests.Builders.Groups.Entities
         {
             throw new NotImplementedException();
         }
-
-        public PaymentBuilder New()
-        {
-            return new PaymentBuilder();
-        }
     }
 }
