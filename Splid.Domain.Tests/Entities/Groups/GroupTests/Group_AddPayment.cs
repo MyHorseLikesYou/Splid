@@ -25,7 +25,7 @@ namespace Splid.Domain.Tests.Entities.Groups.GroupTests
 
             var unknownPaymentByPersonId = Guid.NewGuid();
             var paymentInput = New().PaymentInput()
-                .Set(unknownPaymentByPersonId, paymentForPersonId, 100)
+                .With(unknownPaymentByPersonId, paymentForPersonId, 100)
                 .Build();
 
             Assert.Throws<ArgumentException>(() => group.AddPayment(Guid.NewGuid(), paymentInput));
@@ -41,7 +41,7 @@ namespace Splid.Domain.Tests.Entities.Groups.GroupTests
 
             var unknownPaymentForPersonId = Guid.NewGuid();
             var paymentInput = New().PaymentInput()
-                .Set(paymentByPersonId, unknownPaymentForPersonId, 100)
+                .With(paymentByPersonId, unknownPaymentForPersonId, 100)
                 .Build();
 
             Assert.Throws<ArgumentException>(() => group.AddPayment(Guid.NewGuid(), paymentInput));
@@ -59,7 +59,7 @@ namespace Splid.Domain.Tests.Entities.Groups.GroupTests
 
             var paymentId = Guid.NewGuid();
             var paymentInput = New().PaymentInput()
-                .Set(paymentByPersonId, paymentForPersonId, 1000)
+                .With(paymentByPersonId, paymentForPersonId, 1000)
                 .Build();
 
             group.AddPayment(paymentId, paymentInput);

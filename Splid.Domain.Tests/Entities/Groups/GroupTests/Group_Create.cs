@@ -10,13 +10,13 @@ namespace Splid.Domain.Tests.Entities.Groups.GroupTests
     public class Group_Create
     {
         [Test]
-        public void Create_NullGroupInput_ThrowArgumentNullException()
+        public void CreateGroup_NullGroupInput_ThrowArgumentNullException()
         {
             Assert.Throws<ArgumentNullException>(() => Group.Create(Guid.NewGuid(), null));
         }
 
         [Test]
-        public void Create_ValidArguments_NotNull()
+        public void CreateGroup_ValidArguments_NotNull()
         {
             var groupInput = new GroupInput()
             {                

@@ -8,21 +8,21 @@ namespace Splid.Domain.Main.Entities.Groups
     public class Payment : Entity
     {
         private DateTimeOffset _createdAt;
-        private Guid _personFromId;
-        private Guid _personToId;
+        private Guid _sender;
+        private Guid _recipient;
         private Money _amount;
         private DateTimeOffset _date;
 
-        public Payment(Guid id, Guid personFromId, Guid personToId, Money amount, DateTimeOffset date, DateTimeOffset createdAt)
+        public Payment(Guid id, Guid senderId, Guid recipientId, Money amount, DateTimeOffset date, DateTimeOffset createdAt)
             : base(id)
         {
-            ValidatePersonsAreNotEqual(personFromId, personToId);
+            ValidatePersonsAreNotEqual(senderId, recipientId);
             ValidateDateNotInFuture(createdAt);
             ValidateDateNotInFuture(date);
             ValidateArgumentForAmount(amount);
 
-            _personFromId = personFromId;
-            _personToId = personToId;
+            _sender = senderId;
+            _recipient = recipientId;
             _amount = amount;
             _date = date;
             _createdAt = createdAt;
@@ -30,21 +30,21 @@ namespace Splid.Domain.Main.Entities.Groups
 
         public Guid PersonFromId
         {
-            get => _personFromId;
+            get => _sender;
             set
             {
-                ValidatePersonsAreNotEqual(value, _personToId);
-                _personFromId = value;
+                
+                _sender = value;
             }
         }
 
         public Guid PersonToId
         {
-            get => _personToId;
+            get => _recipient;
             set
             {
-                ValidatePersonsAreNotEqual(_personFromId, value);
-                _personToId = value;
+                ValidatePersonsAreNotEqual(_sender, value);
+                _recipient = value;
             }
         }
 
@@ -53,8 +53,7 @@ namespace Splid.Domain.Main.Entities.Groups
             get => _amount;
             set
             {
-                ValidateArgumentForAmount(value);
-                _amount = value;
+
             }
         }
 
@@ -63,8 +62,7 @@ namespace Splid.Domain.Main.Entities.Groups
             get => _date;
             set
             {
-                ValidateDateNotInFuture(value.Date);
-                _date = value.Date;
+
             }
         }
 
@@ -78,6 +76,9 @@ namespace Splid.Domain.Main.Entities.Groups
         {
             if (amount == null)
                 throw new ArgumentNullException();
+
+            if(amount.Value == 0)
+                throw new ArgumentException();
         }
 
         private static void ValidateDateNotInFuture(DateTimeOffset dateTime)
@@ -86,9 +87,19 @@ namespace Splid.Domain.Main.Entities.Groups
                 throw new ArgumentException();
         }
 
-        internal void Change(PaymentInput paymentInput)
+        public void Change(PaymentInput paymentInput)
         {
-            throw new NotImplementedException();
+            if (paymentInput == null)
+                throw new ArgumentNullException();
+
+            ValidatePersonsAreNotEqual(paymentInput.PersonById, paymentInput.PersonForId);
+            ValidateDateNotInFuture(paymentInput.Date);
+            ValidateArgumentForAmount(paymentInput.Amount);
+
+            _sender = paymentInput.PersonById;
+            _recipient = paymentInput.PersonForId;
+            _date = paymentInput.Date;            
+            _amount = paymentInput.Amount;
         }
 
         public static Payment Create(Guid id, PaymentInput paymentInput)

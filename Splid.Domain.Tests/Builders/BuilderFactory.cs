@@ -35,5 +35,10 @@ namespace Splid.Domain.Tests.Builders
         {
             return new PaymentInputBuilder();
         }
+
+        public PaymentBuilder Payment()
+        {
+            return new PaymentBuilder();
+        }
     }
 }

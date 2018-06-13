@@ -13,7 +13,7 @@ namespace Splid.Domain.Tests.Entities.Groups.GroupTests
         {
             var group = GroupBuilder.New().Build();
 
-            Assert.Throws<ArgumentException>(() => group.Change(null));
+            Assert.Throws<ArgumentNullException>(() => group.Change(null));
         }
 
         [Test]

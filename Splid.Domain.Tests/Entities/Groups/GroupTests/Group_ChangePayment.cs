@@ -13,7 +13,7 @@ namespace Splid.Domain.Tests.Entities.Groups.GroupTests
         public void ChangePayment_NullPaymentInput_ThrowArgumentNullException()
         {
             var paymentId = Guid.NewGuid();
-            var group = GroupBuilder.New()
+            var group = GroupBuilder.New()                
                 .AddPayment(paymentId)
                 .Build();
 
@@ -24,7 +24,7 @@ namespace Splid.Domain.Tests.Entities.Groups.GroupTests
         public void ChangePayment_UnknownPayment_ThrowArgumentException()
         {
             var group = GroupBuilder.New().Build();
-            var paymentInput = PaymentInputBuilder.New().Build();
+            var paymentInput = New().PaymentInput().Build();
             var unknownPaymentId = Guid.NewGuid();
 
             Assert.Throws<ArgumentException>(() => group.ChangePayment(unknownPaymentId, paymentInput));
@@ -41,8 +41,8 @@ namespace Splid.Domain.Tests.Entities.Groups.GroupTests
                 .Build();
 
             var unknowPaymentByPersonId = Guid.NewGuid();
-            var paymentInput = PaymentInputBuilder.New()
-                .Set(unknowPaymentByPersonId, paymentForPersonId, 100)
+            var paymentInput = New().PaymentInput()
+                .With(unknowPaymentByPersonId, paymentForPersonId, 100)
                 .Build();
 
             Assert.Throws<ArgumentException>(() => group.ChangePayment(paymentId, paymentInput));
@@ -59,8 +59,8 @@ namespace Splid.Domain.Tests.Entities.Groups.GroupTests
                 .Build();
 
             var unknowPaymentForPersonId = Guid.NewGuid();
-            var paymentInput = PaymentInputBuilder.New()
-                .Set(paymentByPersonId, unknowPaymentForPersonId, 100)
+            var paymentInput = New().PaymentInput()
+                .With(paymentByPersonId, unknowPaymentForPersonId, 100)
                 .Build();
 
             Assert.Throws<ArgumentException>(() => group.ChangePayment(paymentId, paymentInput));
@@ -77,7 +77,7 @@ namespace Splid.Domain.Tests.Entities.Groups.GroupTests
                 .Build();
 
             var PaymentInput = New().PaymentInput()
-                .Set(paymentByPersonId, paymentForPersonId, 1000)
+                .With(paymentByPersonId, paymentForPersonId, 1000)
                 .Build();
 
             Assert.DoesNotThrow(() => group.ChangePayment(paymentId, PaymentInput));

@@ -14,22 +14,12 @@ namespace Splid.Domain.Tests.Builders.Groups.Entities
         private List<Payment> _payments;
         private List<GroupExpense> _expenses;
 
-        internal GroupBuilder AddPayment(Guid paymentId)
-        {
-            throw new NotImplementedException();
-        }
-
         public GroupBuilder()
         { }
 
         public GroupBuilder AddGroupExpense(Guid expenseId)
         {
             return this.AddGroupExpense(expenseId, Guid.NewGuid(), Guid.NewGuid(), 100);
-        }
-
-        public GroupBuilder HavePersonsWithNames(params string[] personsNames)
-        {
-            throw new NotImplementedException();
         }
 
         public GroupBuilder AddGroupExpense(Guid expenseId, Guid expenseByPersonId, Guid expenseForPersonId, decimal amount)
@@ -54,10 +44,51 @@ namespace Splid.Domain.Tests.Builders.Groups.Entities
             return this;
         }
 
-        internal GroupBuilder AddPayment(Guid paymentId, Guid paymentByPersonId, Guid paymentForPersonId, int v)
+        public GroupBuilder AddPayment(Guid paymentId)
         {
-            throw new NotImplementedException();
+            if (_payments == null)
+                _payments = new List<Payment>();
+
+            var payment = new PaymentBuilder().WithId(paymentId).Build();
+            _payments.Add(payment);
+
+            if (_persons == null)
+                _persons = new List<Person>();
+
+            _persons.Add(new Person(payment.PersonFromId, "kksdf"));
+            _persons.Add(new Person(payment.PersonToId, "12kksdf"));
+
+            return this;
         }
+
+        public GroupBuilder AddPayment(Guid paymentId, Guid paymentByPersonId, Guid paymentForPersonId, decimal amount)
+        {
+            if (_payments == null)
+                _payments = new List<Payment>();
+
+            if (_persons == null)
+                _persons = new List<Person>();
+
+            if (!_persons.Any(p => p.Id == paymentByPersonId))
+                _persons.Add(new Person(paymentByPersonId, "kek"));
+
+            if (!_persons.Any(p => p.Id == paymentForPersonId))
+                _persons.Add(new Person(paymentForPersonId, "kek-2"));
+
+            _payments.Add(new PaymentBuilder().WithId(paymentId).With(paymentByPersonId, paymentForPersonId, amount).Build());
+
+            return this;
+        }
+
+        public GroupBuilder HavePersonsWithNames(params string[] personsNames)
+        {
+            _persons = new List<Person>();
+
+            for (int i = 0; i < personsNames.Length; i++)
+                _persons.Add(new Person(Guid.NewGuid(), personsNames[i]));
+
+            return this;
+        }        
 
         public GroupBuilder HavePersonsWithIds(params Guid[] personsIds)
         {

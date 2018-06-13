@@ -70,7 +70,7 @@ namespace Splid.Domain.Main.Entities.Groups
                 throw new ArgumentException($"Платёж c Id {paymentById.Id} уже есть в группе.");
 
             var paymentToAdd = Payment.Create(paymentId, paymentInput);
-            _payments.Add(paymentById);
+            _payments.Add(paymentToAdd);
         }
 
         public void ChangePayment(Guid paymentId, PaymentInput paymentInput)

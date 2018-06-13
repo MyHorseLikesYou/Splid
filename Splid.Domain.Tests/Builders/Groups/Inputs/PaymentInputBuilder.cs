@@ -1,8 +1,6 @@
-﻿using Splid.Domain.Main.Entities.Groups;
+﻿using Splid.Domain.Main.Values;
 using Splid.Domain.Models.Groups;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Splid.Domain.Tests.Builders.Groups.Inputs
 {
@@ -12,22 +10,38 @@ namespace Splid.Domain.Tests.Builders.Groups.Inputs
 
         public PaymentInputBuilder()
         {
-
+            _paymentInput = new PaymentInput()
+            {
+                PersonById = Guid.NewGuid(),
+                PersonForId = Guid.NewGuid(),
+                Amount = new Money(100),
+                Date = DateTimeOffset.Now,
+            };
         }
 
-        public PaymentInputBuilder Set(Guid unknownPaymentByPersonId, Guid paymentForPersonId, int v)
+        public PaymentInputBuilder With(Guid senderPersonId, Guid recipientPersonId, decimal amount)
         {
-            throw new NotImplementedException();
+            _paymentInput.PersonById = senderPersonId;
+            _paymentInput.PersonForId = recipientPersonId;
+
+            return this;
+        }
+
+        public PaymentInputBuilder WithDateInFuture()
+        {
+            _paymentInput.Date = DateTimeOffset.Now.AddDays(1);
+            return this;
+        }
+
+        public PaymentInputBuilder WithAmount(decimal amount)
+        {
+            _paymentInput.Amount = new Money(amount);
+            return this;
         }
 
         public PaymentInput Build()
         {
-            throw new NotImplementedException();
-        }
-
-        public static PaymentInputBuilder New()
-        {
-            return new PaymentInputBuilder();
+            return _paymentInput;
         }
     }
 }

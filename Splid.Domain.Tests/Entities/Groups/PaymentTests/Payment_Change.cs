@@ -1,91 +1,55 @@
 ﻿using NUnit.Framework;
-using Splid.Domain.Main.Entities.Groups;
-using Splid.Domain.Main.Values;
 using System;
 
 namespace Splid.Domain.Tests.Entities.Groups.PaymentTests
 {
     [TestFixture]
-    public class Payment_Change
+    public class Payment_Change : BaseTest
     {
-        private static DateTimeOffset PastDate = DateTimeOffset.Now.Date.AddDays(-1);
-        private static DateTimeOffset FutureDate = DateTimeOffset.Now.Date.AddDays(1);
-
         [Test]
-        public void SetDate_DateInFuture_ThrowArgumentException()
+        public void ChangePayment_NullInput_ThrowArgumentNullException()
         {
-            var payment = new Payment(Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), new Money(100), PastDate, PastDate);
+            var payment = New().Payment().Build();
 
-            Assert.Throws<ArgumentException>(() => payment.Date = FutureDate);
+            Assert.Throws<ArgumentNullException>(() => payment.Change(null));
         }
 
         [Test]
-        public void SetDate_DateValid_AreEqual()
+        public void ChangePayment_DateInFuture_ThrowArgumentException()
         {
-            var payment = new Payment(Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), new Money(100), PastDate, PastDate);
+            var payment = New().Payment().Build();
+            var paymentInput = New().PaymentInput().WithDateInFuture().Build();
 
-            payment.Date = PastDate;
-
-            Assert.AreEqual(payment.Date, PastDate);
+            Assert.Throws<ArgumentException>(() => payment.Change(paymentInput));
         }
 
         [Test]
-        public void SetAmount_NullAmount_ThrowArgumentNullException()
+        public void ChangePayment_NullAmount_ThrowArgumentException()
         {
-            var payment = new Payment(Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), new Money(100), PastDate, PastDate);
+            var payment = New().Payment().Build();
+            var paymentInput = New().PaymentInput().WithAmount(0).Build();
 
-            Assert.Throws<ArgumentNullException>(() => payment.Amount = null);
+            Assert.Throws<ArgumentException>(() => payment.Change(paymentInput));
         }
 
         [Test]
-        public void SetAmount_ValidAmount_AreEqual()
-        {
-            var payment = new Payment(Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), new Money(100), PastDate, PastDate);
-            var newAmount = new Money(300);
+        public void ChangePayment_SenderEqualsToRecipient_ThrowArgumentException()
+        {            
+            var payment = New().Payment().Build();
 
-            payment.Amount = newAmount;
+            var personId = Guid.NewGuid();
+            var paymentInput = New().PaymentInput().With(personId, personId, 100).Build();
 
-            Assert.AreEqual(payment.Amount, newAmount);
+            Assert.Throws<ArgumentException>(() => payment.Change(paymentInput));
         }
 
         [Test]
-        public void SetPersonFrom_EqualsPersonTo_ThrowArgumentException()
+        public void ChangePayment_ValidArguments_DoesNotThrow()
         {
-            var personTo = Guid.NewGuid();
-            var payment = new Payment(Guid.NewGuid(), Guid.NewGuid(), personTo, new Money(100), PastDate, PastDate);
+            var payment = New().Payment().Build();
+            var paymentInput = New().PaymentInput().Build();
 
-            Assert.Throws<ArgumentException>(() => payment.PersonFromId = personTo);
-        }
-
-        [Test]
-        public void SetPersonFrom_NotEqualsPersonTo_AreEqual()
-        {
-            var payment = new Payment(Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), new Money(100), PastDate, PastDate);
-            var newPersonFrom = Guid.NewGuid();
-
-            payment.PersonFromId = newPersonFrom;
-
-            Assert.AreEqual(payment.PersonFromId, newPersonFrom);
-        }
-
-        [Test]
-        public void SetPersonTo_EqualsPersonFrom_ThrowArgumentException()
-        {
-            var personFromId = Guid.NewGuid();
-            var payment = new Payment(Guid.NewGuid(), personFromId, Guid.NewGuid(), new Money(100), PastDate, PastDate);
-
-            Assert.Throws<ArgumentException>(() => payment.PersonToId = personFromId);
-        }
-
-        [Test]
-        public void SetPersonTo_NotEqualsPersonFrom_AreEqual()
-        {
-            var payment = new Payment(Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), new Money(100), PastDate, PastDate);
-            var newPersonTo = Guid.NewGuid();
-
-            payment.PersonToId = newPersonTo;
-
-            Assert.AreEqual(payment.PersonToId, newPersonTo);
+            Assert.DoesNotThrow(() => payment.Change(paymentInput));
         }
     }
 }
