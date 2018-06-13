@@ -1,4 +1,5 @@
-﻿using Splid.Domain.Models.Groups;
+﻿using System;
+using Splid.Domain.Models.Groups;
 
 namespace Splid.Domain.Tests.Builders.Groups.Inputs
 {

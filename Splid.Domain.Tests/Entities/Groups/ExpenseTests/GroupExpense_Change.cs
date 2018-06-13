@@ -35,12 +35,12 @@ namespace Splid.Domain.Tests.Entities.Groups.ExpenseTests
         }
 
         [Test]
-        public void ChangeGroupExpense_NullPayments_ThrowArgumentExeption()
+        public void ChangeGroupExpense_NullPayments_ThrowArgumentNullExeption()
         {
             var groupExpense = New().GroupExpense().Build();
             var groupExpenseInput = New().GroupExpenseInput().WithNullPayments().Build();
 
-            Assert.Throws<ArgumentException>(() => groupExpense.Change(groupExpenseInput));
+            Assert.Throws<ArgumentNullException>(() => groupExpense.Change(groupExpenseInput));
         }
 
         [Test]
@@ -77,12 +77,24 @@ namespace Splid.Domain.Tests.Entities.Groups.ExpenseTests
         }
 
         [Test]
-        public void ChangeGroupExpense_NullExpenses_ThrowArgumentExeption()
+        public void ChangeGroupExpense_PaymentsHaveNullPayment_ThrowArgumentException()
+        {
+            var groupExpense = New().GroupExpense().Build();
+            var groupExpenseInput = New().GroupExpenseInput()
+                .HasNullPayment()
+                .HasPayment(100)
+                .Build();
+
+            Assert.Throws<ArgumentException>(() => groupExpense.Change(groupExpenseInput));
+        }
+
+        [Test]
+        public void ChangeGroupExpense_NullExpenses_ThrowArgumentNullExeption()
         {
             var groupExpense = New().GroupExpense().Build();
             var groupExpenseInput = New().GroupExpenseInput().WithNullExpenses().Build();
 
-            Assert.Throws<ArgumentException>(() => groupExpense.Change(groupExpenseInput));
+            Assert.Throws<ArgumentNullException>(() => groupExpense.Change(groupExpenseInput));
         }
 
         [Test]

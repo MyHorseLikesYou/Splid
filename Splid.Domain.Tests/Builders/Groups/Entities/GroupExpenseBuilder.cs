@@ -24,10 +24,12 @@ namespace Splid.Domain.Tests.Builders.Groups.Entities
 
         public GroupExpenseBuilder()
         {
+            _id = Guid.NewGuid();
             _title = DefaultTitle;
             _payments = _defaultPayments;
             _expenses = _defaultExpenses;
             _date = DefaultDate;
+            _createdAtDate = DateTimeOffset.Now;
         }
 
         public GroupExpenseBuilder WithId(Guid id)

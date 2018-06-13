@@ -102,6 +102,12 @@ namespace Splid.Domain.Tests.Builders.Groups.Inputs
             return this;
         }
 
+        public GroupExpenseInputBuilder HasNullPayment()
+        {
+            this.AddPayment(null);
+            return this;
+        }
+
         public GroupExpenseInputBuilder HasNullExpense()
         {
             this.AddExpense(null);

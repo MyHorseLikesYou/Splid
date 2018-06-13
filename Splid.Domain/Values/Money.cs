@@ -6,9 +6,11 @@ namespace Splid.Domain.Main.Values
 {
     public class Money : Value
     {
+        public decimal Value { get; private set; }
+
         public Money(decimal value)
         {
-
+            this.Value = value;
         }
     }
 }

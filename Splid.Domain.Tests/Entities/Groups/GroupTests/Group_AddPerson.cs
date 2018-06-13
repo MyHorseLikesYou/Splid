@@ -30,10 +30,10 @@ namespace Splid.Domain.Tests.Entities.Groups.GroupTests
         [Test]
         public void AddPerson_ValidArguments_GroupHasPerson()
         {
-            var group = GroupBuilder.New().Build();
+            var group = New().Group().Build();
 
             var personId = Guid.NewGuid();
-            var personInput = PersonInputBuilder.New().Build();
+            var personInput = New().PersonInput().Build();
 
             group.AddPerson(personId, personInput);
 

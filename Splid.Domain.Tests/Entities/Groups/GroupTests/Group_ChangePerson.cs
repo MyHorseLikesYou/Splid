@@ -1,18 +1,16 @@
 ﻿using NUnit.Framework;
-using Splid.Domain.Tests.Builders.Groups.Entities;
-using Splid.Domain.Tests.Builders.Groups.Inputs;
 using System;
 
 namespace Splid.Domain.Tests.Entities.Groups.GroupTests
 {
     [TestFixture]
-    public class Group_ChangePerson
+    public class Group_ChangePerson : BaseTest
     {
         [Test]
         public void ChangePerson_NullPersonInput_ArgumentNullException()
         {
             var personId = Guid.NewGuid();
-            var group = GroupBuilder.New()
+            var group = New().Group()
                 .HavePersonsWithIds(personId)
                 .Build();
 
@@ -25,13 +23,13 @@ namespace Splid.Domain.Tests.Entities.Groups.GroupTests
             var personToChangeId = Guid.NewGuid();
             var nameThatWillBeTheSame = "test_name";
 
-            var group = GroupBuilder.New()
+            var group = New().Group()
                 .HavePersonsWithIds(personToChangeId)
                 .HavePersonsWithNames(nameThatWillBeTheSame)
                 .Build();
             
-            var personInput = PersonInputBuilder.New()
-                .With(personToChangeId, nameThatWillBeTheSame)
+            var personInput = New().PersonInput()
+                .WithName(nameThatWillBeTheSame)
                 .Build();
 
             Assert.Throws<ArgumentException>(() => group.AddPerson(personToChangeId, personInput));
@@ -41,11 +39,11 @@ namespace Splid.Domain.Tests.Entities.Groups.GroupTests
         public void ChangePerson_ValidArguments_DoesNotThrow()
         {
             var personToChangeId = Guid.NewGuid();
-            var group = GroupBuilder.New()
+            var group = New().Group()
                 .HavePersonsWithIds(personToChangeId)
                 .Build();
 
-            var personInput = PersonInputBuilder.New().Build();            
+            var personInput = New().PersonInput().Build();            
 
             Assert.DoesNotThrow(() => group.ChangePerson(personToChangeId, personInput));
         }

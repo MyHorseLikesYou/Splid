@@ -10,6 +10,16 @@ namespace Splid.Domain.Tests.Builders.Groups.Inputs
     {
         private PaymentInput _paymentInput;
 
+        public PaymentInputBuilder()
+        {
+
+        }
+
+        public PaymentInputBuilder Set(Guid unknownPaymentByPersonId, Guid paymentForPersonId, int v)
+        {
+            throw new NotImplementedException();
+        }
+
         public PaymentInput Build()
         {
             throw new NotImplementedException();
@@ -18,11 +28,6 @@ namespace Splid.Domain.Tests.Builders.Groups.Inputs
         public static PaymentInputBuilder New()
         {
             return new PaymentInputBuilder();
-        }
-
-        internal PaymentInputBuilder Set(Guid unknownPaymentByPersonId, Guid paymentForPersonId, int v)
-        {
-            throw new NotImplementedException();
         }
     }
 }

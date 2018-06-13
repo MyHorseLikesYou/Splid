@@ -23,12 +23,12 @@ namespace Splid.Domain.Tests.Builders
 
         public PersonBuilder Person()
         {
-            throw new NotImplementedException();
+            return new PersonBuilder();
         }
 
         public PersonInputBuilder PersonInput()
         {
-            throw new NotImplementedException();
+            return new PersonInputBuilder();
         }
 
         public PaymentInputBuilder PaymentInput()

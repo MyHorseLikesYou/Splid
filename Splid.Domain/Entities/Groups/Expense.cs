@@ -18,10 +18,10 @@ namespace Splid.Domain.Main.Entities.Groups
         public GroupExpense(Guid id, string title, IEnumerable<PersonMoneyOperation> personsPayments, IEnumerable<PersonMoneyOperation> personsExpenses, DateTimeOffset date, DateTimeOffset createdAt)
             : base(id)
         {
-            ValidateArgumentForTitle(title);
-            ValidateArgumentForDate(date);
-            ValidateArgumentForExpensesBy(personsPayments);
-            ValidateArgumentForExpensesFor(personsExpenses);
+            ValidateTitle(title);
+            ValidateDate(date);
+            ValidatePayments(personsPayments);
+            ValidateExpenses(personsExpenses);
 
             _title = title;
             _personPayments = personsPayments.ToList();
@@ -29,70 +29,77 @@ namespace Splid.Domain.Main.Entities.Groups
             _date = date;
         }
 
-        public string Title
-        {
-            get => _title;
-            set
-            {
-                ValidateArgumentForTitle(value);
-                _title = value;
-            }
-        }
-
-        public DateTimeOffset Date
-        {
-            get => _date;
-            set
-            {
-                ValidateArgumentForDate(value);
-                _date = value.Date;
-            }
-        }
-
         public IReadOnlyCollection<PersonMoneyOperation> ExpensesFor => _personExpenses;
-
         public IReadOnlyCollection<PersonMoneyOperation> ExpensesBy => _personPayments;
 
-        public void Change(GroupExpenseInput expenseInput)
+        public void Change(GroupExpenseInput groupExpenseInput)
         {
-            if (expenseInput == null)
+            if (groupExpenseInput == null)
                 throw new ArgumentNullException();
+
+            ValidateTitle(groupExpenseInput.Title);
+            ValidatePayments(groupExpenseInput.Payments);
+            ValidateExpenses(groupExpenseInput.Expenses);
+            Validate(groupExpenseInput.Expenses, groupExpenseInput.Payments);
+            ValidateDate(groupExpenseInput.Date);
+
+            _title = groupExpenseInput.Title;
+            _personPayments = groupExpenseInput.Payments.ToList();
+            _personExpenses = groupExpenseInput.Expenses.ToList();
+            _date = groupExpenseInput.Date;
         }
 
-        private void SetExpensesFor(IEnumerable<PersonMoneyOperation> expensesFor)
-        {
-            ValidateArgumentForExpensesFor(expensesFor);
-            _personExpenses = expensesFor.ToList();
-        }
-
-        private void SetExpensesBy(IEnumerable<PersonMoneyOperation> expensesBy)
-        {
-            ValidateArgumentForExpensesBy(expensesBy);
-            _personPayments = expensesBy.ToList();
-        }
-
-        private static void ValidateArgumentForTitle(string title)
+        private static void ValidateTitle(string title)
         {
             if (String.IsNullOrWhiteSpace(title))
                 throw new ArgumentException("Название траты не может быть пустым.");
         }
 
-        private static void ValidateArgumentForDate(DateTimeOffset date)
+        private static void ValidateDate(DateTimeOffset date)
         {
             if (date.IsInFuture())
                 throw new ArgumentException("Дата траты не может быть в будующем.");
         }
 
-        private static void ValidateArgumentForExpensesFor(IEnumerable<PersonMoneyOperation> expensesBy)
+        private static void ValidateExpenses(IEnumerable<PersonMoneyOperation> expenses)
         {
-            if (expensesBy == null)
-                throw new ArgumentNullException(nameof(expensesBy));
+            if (expenses == null)
+                throw new ArgumentNullException(nameof(expenses));
+
+            if (!expenses.Any() || HaveNull(expenses) || HaveZeroAmount(expenses) || HaveDuplicatePersons(expenses))
+                throw new ArgumentException(nameof(expenses));
         }
 
-        private static void ValidateArgumentForExpensesBy(IEnumerable<PersonMoneyOperation> expensesBy)
+        private static void ValidatePayments(IEnumerable<PersonMoneyOperation> payments)
         {
-            if (expensesBy == null)
-                throw new ArgumentNullException(nameof(expensesBy));
+            if (payments == null)
+                throw new ArgumentNullException(nameof(payments));
+
+            if (!payments.Any() || HaveNull(payments) || HaveZeroAmount(payments) || HaveDuplicatePersons(payments))
+                throw new ArgumentException(nameof(payments));
+        }
+
+        private static void Validate(List<PersonMoneyOperation> expenses, List<PersonMoneyOperation> payments)
+        {
+            if (expenses.Sum(e => e.Amount.Value) != payments.Sum(p => p.Amount.Value))
+                throw new ArgumentException();
+        }
+
+        private static bool HaveNull(IEnumerable<PersonMoneyOperation> operations)
+        {
+            return operations.Any(o => o == null);
+        }
+
+        private static bool HaveZeroAmount(IEnumerable<PersonMoneyOperation> operations)
+        {
+            return operations.Any(o => o.Amount.Value == 0);
+        }
+
+        private static bool HaveDuplicatePersons(IEnumerable<PersonMoneyOperation> operations)
+        {
+            return operations
+                .GroupBy(e => e.PersonId)
+                .Any(expensesByPerson => expensesByPerson.Count() > 1);
         }
 
         public static GroupExpense Create(Guid id, GroupExpenseInput expenseInput)
