@@ -1,4 +1,5 @@
-﻿using MyApp.Core.Contracts;
+﻿using MediatR;
+using MyApp.Core.Contracts;
 using MyApp.Core.Models;
 using System;
 
@@ -6,7 +7,7 @@ namespace Splid.Application.Handlers.Commands
 {
     public abstract class CommandHandler
     {        
-        protected CommandResult HandleByDefault<ICommand>(ICommand command, Action<ICommand> commandHandler)
+        protected CommandResult HandleByDefault<ICommand>(IRequest command, Action<IRequest> commandHandler)
         {
             try
             {

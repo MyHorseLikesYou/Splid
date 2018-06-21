@@ -15,7 +15,7 @@ namespace Splid.Application.Handlers.Commands
         ICommandHandler<CreateGroupCommand>,
         ICommandHandler<ChangeGroupCommand>,
         ICommandHandler<DeleteGroupCommand>,
-        ICommandHandler<CreateExpenseCommand>,
+        ICommandHandler<CreateGroupExpenseCommand>,
         ICommandHandler<ChangeExpenseCommand>,
         ICommandHandler<DeleteExpenseCommand>,
         ICommandHandler<CreatePaymentCommand>,
@@ -49,9 +49,9 @@ namespace Splid.Application.Handlers.Commands
             return base.HandleByDefault<DeleteGroupCommand>(command, DeleteGroupCommandHandler);
         }
 
-        public CommandResult Handle(CreateExpenseCommand command)
+        public CommandResult Handle(CreateGroupExpenseCommand command)
         {
-            return this.HandleByDefault<CreateExpenseCommand>(command, CreateExpenseCommandHandler);
+            return this.HandleByDefault<CreateGroupExpenseCommand>(command, CreateExpenseCommandHandler);
         }
 
         public CommandResult Handle(ChangeExpenseCommand command)
@@ -117,7 +117,7 @@ namespace Splid.Application.Handlers.Commands
             _groupsService.DeleteGroup(deleteGroupCommand.GroupId);
         }
 
-        private void CreateExpenseCommandHandler(CreateExpenseCommand command)
+        private void CreateExpenseCommandHandler(CreateGroupExpenseCommand command)
         {
             this.ValidateGroupChanging(command.GroupId, command.AuthorId);
             _groupsService.AddExpense(command.GroupId, command.ExpenseId, command.Expense);

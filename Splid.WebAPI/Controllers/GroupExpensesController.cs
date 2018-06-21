@@ -2,29 +2,28 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
+using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Splid.Application.Queries;
 using Splid.WebAPI.Core.Models.Groups;
 
 namespace Splid.WebAPI.Controllers
 {   
-    public class ExpensesController : Controller
+    public class GroupExpensesController : Controller
     {
-        public GetExpenseByIdDto GetById(long expenseId)
-        {
-            return new GetExpenseByIdDto();
-        }
+        private IMediator _mediator;
+        private IMapper _mapper;
 
-        public IEnumerable<GetExpensesByGroupIdItemDto> GetByGroupId(long groupId)
+        public async Task<IActionResult> GetById(Guid groupExpenseId)
         {
-            return new GetExpensesByGroupIdItemDto[] {};
+            var getGroupExpenseByIdQuery = _mapper.Map<GetGroupExpenseByIdQuery>(groupExpenseId);
+            var groupExpense = await _mediator.Send(getGroupExpenseByIdQuery);
+
+            return Ok(groupExpense);
         }
-        
-        public GetExpenseByIdDto Create(long groupId, [FromBody]CreateExpenseDto value)
-        {
-            return new GetExpenseByIdDto();
-        }
-        
+       
         public GetExpenseByIdDto Change(long expenseId, [FromBody]ChangeExpenseDto value)
         {
             return new GetExpenseByIdDto();

@@ -1,5 +1,5 @@
 ﻿namespace Splid.Application.Commands.Expenses
 {
-    public class CreateExpenseCommand : SaveExpenseCommand
+    public class CreateGroupExpenseCommand : SaveExpenseCommand
     { }
 }
