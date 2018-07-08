@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Splid.WebAPI.Core.Models.Persons
+namespace Splid.WebAPI.Models.Persons
 {
     public class ChangePersonDto
     {

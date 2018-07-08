@@ -1,32 +1,64 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Splid.WebAPI.Core.Models.Persons;
+using Splid.Application.Commands.Persons;
+using Splid.Application.Queries;
+using Splid.Domain.Models.Groups;
+using Splid.WebAPI.Models.Persons;
+using System;
+using System.Threading.Tasks;
 
 namespace Splid.WebAPI.Controllers
-{   
+{
     public class PersonsController : Controller
     {
-        public IEnumerable<GetPersonsByGroupIdItemDto> GetByGroupId(long groupId)
+        private IMediator _mediator;
+        private IMapper _mapper;
+
+        public async Task<IActionResult> GetPersonById(Guid groupId, Guid personId)
         {
-            return new GetPersonsByGroupIdItemDto[] {};
+            var getPersonByIdQuery = new GetPersonByIdQuery() { GroupId = groupId, PersonId = personId };
+            var person = await _mediator.Send(getPersonByIdQuery);
+
+            return Ok(person);
         }
-        
-        public GetPersonByIdDto Create(long groupId, [FromBody]CreatePersonDto value)
+
+        public async Task<IActionResult> GetPersonsByGroupId(Guid groupId)
         {
-            return new GetPersonByIdDto();
+            var getPersonsByGroupIdQuery = new GetPersonsByGroupIdQuery() { GroupId = groupId };
+            var persons = await _mediator.Send(getPersonsByGroupIdQuery);
+
+            return Ok(persons);
         }
-        
-        public GetPersonByIdDto Change(long personId, [FromBody]ChangePersonDto value)
+
+        public async Task<IActionResult> CreatePerson(Guid groupId, [FromBody]CreatePersonDto createPersonDto)
         {
-            return new GetPersonByIdDto();
+            var personId = Guid.NewGuid();
+            var personInput = _mapper.Map<PersonInput>(createPersonDto);
+            var createPersonCommand = new CreatePersonCommand() { GroupId = groupId, PersonId = personId, Person = personInput };
+            await _mediator.Send(createPersonCommand);
+
+            var getPersonByIdQuery = new GetPersonByIdQuery() { PersonId = personId };
+            var person = await _mediator.Send(getPersonByIdQuery);
+
+            return CreatedAtAction(nameof(GetPersonById), new { groupId, personId }, person);
         }
-        
-        public void Delete(long personId)
+
+        public async Task<IActionResult> ChangePerson(Guid groupId, Guid personId, [FromBody]ChangePersonDto changePersonDto)
         {
+            var personInput = _mapper.Map<PersonInput>(changePersonDto);
+            var changePersonCommand = new ChangePersonCommand() { GroupId = groupId, PersonId = personId, Person = personInput };
+            await _mediator.Send(changePersonCommand);
+
+            return NoContent();
+        }
+
+        public async Task<IActionResult> DeleteExpense(Guid groupId, Guid personId)
+        {
+            var deletePersonCommand = new DeletePersonCommand() { GroupId = groupId, PersonId = personId };
+            await _mediator.Send(deletePersonCommand);
+
+            return NoContent();
         }
     }
 }

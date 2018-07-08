@@ -1,6 +1,6 @@
 ﻿using MyApp.Core.Contracts;
 using MyApp.Core.Domain;
-using Splid.Domain.Models.Groups;
+using Splid.Domain.Main.Models.Groups;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -96,7 +96,7 @@ namespace Splid.Domain.Main.Entities.Groups
             _payments.Remove(payment);
         }
 
-        public void AddGroupExpense(Guid expenseId, GroupExpenseInput expenseInput)
+        public void AddGroupExpense(Guid expenseId, ExpenseInput expenseInput)
         {
             if (expenseInput == null)
                 throw new ArgumentNullException(nameof(expenseInput));
@@ -111,7 +111,7 @@ namespace Splid.Domain.Main.Entities.Groups
             _expenses.Add(expenseToAdd);
         }
 
-        public void ChangeGroupExpense(Guid expenseId, GroupExpenseInput expenseInput)
+        public void ChangeGroupExpense(Guid expenseId, ExpenseInput expenseInput)
         {
             if (expenseInput == null)
                 throw new ArgumentNullException(nameof(expenseInput));

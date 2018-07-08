@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Splid.Application.Commands.Expenses;
 using Splid.Application.Commands.Groups;
 using Splid.Application.Queries;
-using Splid.WebAPI.Core.Models.Groups;
+using Splid.Domain.Models.Groups;
+using Splid.WebAPI.Models.Groups;
 using System;
 using System.Threading.Tasks;
 
@@ -21,59 +21,42 @@ namespace Splid.WebAPI.Controllers
             _mapper = mapper;
         }
 
-        public async Task<IActionResult> GetById(Guid groupId)
+        public async Task<IActionResult> GetGroupById(Guid groupId)
         {
-            var getGroupByIdQuery = _mapper.Map<GetGroupByIdQuery>(groupId);
+            var getGroupByIdQuery = new GetGroupByIdQuery() { GroupId = groupId };
             var group = await _mediator.Send(getGroupByIdQuery);
 
             return Ok(group);
         }
 
-        public async Task<IActionResult> Create([FromBody]CreateGroupDto createGroupDto)
+        public async Task<IActionResult> CreateGroup([FromBody]CreateGroupDto createGroupDto)
         {
-            var createGroupCommand = _mapper.Map<CreateGroupCommand>(createGroupDto);
+            var groupId = Guid.NewGuid();
+            var groupInput = _mapper.Map<GroupInput>(createGroupDto);
+            var createGroupCommand = new CreateGroupCommand() { GroupId = groupId, Group = groupInput };
             await _mediator.Send(createGroupCommand);
 
-            var getGroupByIdQuery = _mapper.Map<GetGroupByIdQuery>(createGroupCommand.GroupId);
+            var getGroupByIdQuery = new GetGroupByIdQuery() { GroupId = groupId };
             var group = await _mediator.Send(getGroupByIdQuery);
 
-            return CreatedAtAction(nameof(GetById), group.Id, group);
+            return CreatedAtAction(nameof(GetGroupById), new { groupId }, group);
         }
 
-        public async Task<IActionResult> Change(Guid groupId, [FromBody]ChangeGroupDto changeGroupData)
+        public async Task<IActionResult> ChangeGroup(Guid groupId, [FromBody]ChangeGroupDto changeGroupDto)
         {
-            var changeGroupCommand = _mapper.Map<ChangeGroupCommand>(changeGroupData);
+            var groupInput = _mapper.Map<GroupInput>(changeGroupDto);
+            var changeGroupCommand = new ChangeGroupCommand() { GroupId = groupId, Group = groupInput };
             await _mediator.Send(changeGroupCommand);
 
             return NoContent();
         }
 
-        public async Task<IActionResult> Delete(Guid groupId)
+        public async Task<IActionResult> DeleteGroup(Guid groupId)
         {
-            var deleteGroupCommand = _mapper.Map<DeleteGroupCommand>(groupId);
+            var deleteGroupCommand = new DeleteGroupCommand() { GroupId = groupId };
             await _mediator.Send(deleteGroupCommand);
 
             return NoContent();
-        }
-
-        public async Task<IActionResult> GetGroupExpensesByGroupId(Guid groupId)
-        {
-            var getGroupExpensesByGroupIdQuery = _mapper.Map<GetGroupExpensesByGroupIdQuery>(groupId);
-            var groupExpenses = await _mediator.Send(getGroupExpensesByGroupIdQuery);
-
-            return Ok(groupExpenses);
-        }
-
-        public async Task<IActionResult> CreateGroupExpense(Guid groupId, [FromBody]CreateExpenseDto value)
-        {
-            var createGroupExpenseCommand = _mapper.Map<CreateGroupExpenseCommand>(value);
-            createGroupExpenseCommand.GroupId = groupId;
-            await _mediator.Send(createGroupExpenseCommand);
-
-            var getGroupByIdQuery = _mapper.Map<GetGroupExpenseByIdQuery>(createGroupExpenseCommand.ExpenseId);
-            var group = await _mediator.Send(getGroupByIdQuery);
-
-            return CreatedAtAction(nameof(GroupExpensesController.GetById), nameof(GroupExpensesController), createGroupExpenseCommand.ExpenseId);
         }
     }
 }

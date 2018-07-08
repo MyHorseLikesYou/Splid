@@ -1,18 +1,18 @@
-﻿using Splid.Domain.Main.Values;
-using Splid.Domain.Models.Groups;
+﻿using Splid.Domain.Main.Models.Groups;
+using Splid.Domain.Main.Values;
 using Splid.Domain.Tests.Builders.Groups.Entities;
 using System;
 using System.Collections.Generic;
 
 namespace Splid.Domain.Tests.Builders.Groups.Inputs
 {
-    public class GroupExpenseInputBuilder : IBuilder<GroupExpenseInput>
+    public class GroupExpenseInputBuilder : IBuilder<ExpenseInput>
     {
-        private GroupExpenseInput _expenseInput;
+        private ExpenseInput _expenseInput;
 
         public GroupExpenseInputBuilder()
         {
-            _expenseInput = new GroupExpenseInput()
+            _expenseInput = new ExpenseInput()
             {
                 Title = GroupExpenseBuilder.DefaultTitle,
                 Payments = GroupExpenseBuilder.DefaultPayments,
@@ -127,7 +127,7 @@ namespace Splid.Domain.Tests.Builders.Groups.Inputs
             return _expenseInput.Expenses == GroupExpenseBuilder.DefaultExpenses;
         }
 
-        public GroupExpenseInput Build()
+        public ExpenseInput Build()
         {
             return _expenseInput;
         }

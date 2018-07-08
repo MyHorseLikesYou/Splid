@@ -1,7 +1,7 @@
-﻿using Splid.Application.Exceptions;
-using Splid.Domain.Contracts.Repositories;
+﻿using MyApp.Core.Exceptions;
 using Splid.Domain.Main.Entities.Groups;
-using Splid.Domain.Models.Groups;
+using Splid.Domain.Main.Interfaces.Repositories;
+using Splid.Domain.Main.Models.Groups;
 using System;
 
 namespace Splid.Domain.Main.Services
@@ -19,7 +19,7 @@ namespace Splid.Domain.Main.Services
         {
             var isGroupExists = _groupsRepository.IsGroupExists(groupId);
             if (isGroupExists)
-                throw new EntityExistsException(groupId);
+                throw new EntityExistsException<Group>(groupId);
 
             var group = Group.Create(groupId, groupInput);
 
@@ -30,7 +30,7 @@ namespace Splid.Domain.Main.Services
         {
             var group = _groupsRepository.GetById(groupId);
             if (group == null)
-                throw new EntityNotFoundException(groupId);
+                throw new EntityNotFoundException<Group>(groupId);
 
             group.Change(groupInput);
 
@@ -40,20 +40,16 @@ namespace Splid.Domain.Main.Services
         public void DeleteGroup(Guid groupId)
         {
             if (!_groupsRepository.IsGroupExists(groupId))
-                throw new EntityNotFoundException(groupId);
+                throw new EntityNotFoundException<Group>(groupId);
 
             _groupsRepository.Remove(groupId);            
         }
 
         public void AddPayment(Guid groupId, Guid paymentId, PaymentInput paymentInput)
         {
-            var isPaymentExists = _groupsRepository.IsPaymentExists(paymentId);
-            if (isPaymentExists)
-                throw new EntityExistsException(paymentId);
-
             var group = _groupsRepository.GetById(groupId);
             if (group == null)
-                throw new EntityNotFoundException(groupId);
+                throw new EntityNotFoundException<Group>(groupId);
 
             group.AddPayment(paymentId, paymentInput);
 
@@ -64,7 +60,7 @@ namespace Splid.Domain.Main.Services
         {
             var group = _groupsRepository.GetById(groupId);
             if (group == null)
-                throw new EntityNotFoundException(paymentId);
+                throw new EntityNotFoundException<Group>(groupId);
 
             group.ChangePayment(paymentId, paymentInput);
 
@@ -75,33 +71,29 @@ namespace Splid.Domain.Main.Services
         {
             var group = _groupsRepository.GetById(groupId);
             if (group == null)
-                throw new EntityNotFoundException(groupId);
+                throw new EntityNotFoundException<Group>(groupId);
 
             group.DeletePayment(paymentId);
 
             _groupsRepository.Update(group);            
         }
 
-        public void AddExpense(Guid groupId, Guid expenseId, GroupExpenseInput expenseInput)
+        public void AddExpense(Guid groupId, Guid expenseId, ExpenseInput expenseInput)
         {
-            var isExpenseExists = _groupsRepository.IsExpenseExists(expenseId);
-            if (isExpenseExists)
-                throw new EntityExistsException(expenseId);
-
             var group = _groupsRepository.GetById(groupId);
             if (group == null)
-                throw new EntityNotFoundException(groupId);
+                throw new EntityNotFoundException<Group>(groupId);
 
             group.AddGroupExpense(expenseId, expenseInput);
 
             _groupsRepository.Update(group);            
         }
 
-        public void ChangeExpense(Guid groupId, Guid expenseId, GroupExpenseInput expenseInput)
+        public void ChangeExpense(Guid groupId, Guid expenseId, ExpenseInput expenseInput)
         {
             var group = _groupsRepository.GetById(groupId);
             if (group == null)
-                throw new EntityNotFoundException(expenseId);
+                throw new EntityNotFoundException<Group>(groupId);
 
             group.ChangeGroupExpense(expenseId, expenseInput);
 
@@ -112,7 +104,7 @@ namespace Splid.Domain.Main.Services
         {
             var group = _groupsRepository.GetById(groupId);
             if (group == null)
-                throw new EntityNotFoundException(expenseId);
+                throw new EntityNotFoundException<Group>(expenseId);
 
             group.DeleteExpense(expenseId);
 
@@ -121,13 +113,9 @@ namespace Splid.Domain.Main.Services
 
         public void AddPerson(Guid groupId, Guid personId, PersonInput personInput)
         {
-            var isPersonExists = _groupsRepository.IsPersonExists(personId);
-            if (isPersonExists)
-                throw new EntityExistsException(groupId);
-
             var group = _groupsRepository.GetById(groupId);
             if (group == null)
-                throw new EntityNotFoundException(groupId);
+                throw new EntityNotFoundException<Group>(groupId);
 
             group.AddPerson(personId, personInput);
 
@@ -138,7 +126,7 @@ namespace Splid.Domain.Main.Services
         {
             var group = _groupsRepository.GetById(groupId);
             if (group == null)
-                throw new EntityNotFoundException(groupId);
+                throw new EntityNotFoundException<Group>(groupId);
 
             group.ChangePerson(personId, personInput);
 
@@ -149,7 +137,7 @@ namespace Splid.Domain.Main.Services
         {
             var group = _groupsRepository.GetById(groupId);
             if (group == null)
-                throw new EntityNotFoundException(groupId);
+                throw new EntityNotFoundException<Group>(groupId);
 
             group.DeletePerson(personId);
 

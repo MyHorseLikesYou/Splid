@@ -1,5 +1,5 @@
 ﻿using NUnit.Framework;
-using Splid.Domain.Models.Groups;
+using Splid.Domain.Main.Models.Groups;
 using Splid.Domain.Tests.Builders.Groups.Entities;
 using System;
 

@@ -1,5 +1,5 @@
 ﻿using MyApp.Core.Domain;
-using Splid.Domain.Models.Groups;
+using Splid.Domain.Main.Models.Groups;
 using System;
 
 namespace Splid.Domain.Main.Entities.Groups

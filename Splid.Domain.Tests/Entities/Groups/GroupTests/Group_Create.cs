@@ -1,7 +1,7 @@
 ﻿using NUnit.Framework;
 using NUnit.Framework.Internal;
 using Splid.Domain.Main.Entities.Groups;
-using Splid.Domain.Models.Groups;
+using Splid.Domain.Main.Models.Groups;
 using System;
 
 namespace Splid.Domain.Tests.Entities.Groups.GroupTests

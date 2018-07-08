@@ -1,7 +1,7 @@
 ﻿using MyApp.Core.Domain;
 using MyApp.Core.Extensions;
+using Splid.Domain.Main.Models.Groups;
 using Splid.Domain.Main.Values;
-using Splid.Domain.Models.Groups;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,7 +32,7 @@ namespace Splid.Domain.Main.Entities.Groups
         public IReadOnlyCollection<PersonMoneyOperation> ExpensesFor => _personExpenses;
         public IReadOnlyCollection<PersonMoneyOperation> ExpensesBy => _personPayments;
 
-        public void Change(GroupExpenseInput groupExpenseInput)
+        public void Change(ExpenseInput groupExpenseInput)
         {
             if (groupExpenseInput == null)
                 throw new ArgumentNullException();
@@ -102,7 +102,7 @@ namespace Splid.Domain.Main.Entities.Groups
                 .Any(expensesByPerson => expensesByPerson.Count() > 1);
         }
 
-        public static GroupExpense Create(Guid id, GroupExpenseInput expenseInput)
+        public static GroupExpense Create(Guid id, ExpenseInput expenseInput)
         {
             if (expenseInput == null)
                 throw new ArgumentNullException();

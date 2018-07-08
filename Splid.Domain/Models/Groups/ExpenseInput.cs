@@ -2,9 +2,9 @@
 using System;
 using System.Collections.Generic;
 
-namespace Splid.Domain.Models.Groups
+namespace Splid.Domain.Main.Models.Groups
 {
-    public class GroupExpenseInput
+    public class ExpenseInput
     {        
         public string Title { get; set; }
         public List<PersonMoneyOperation> Payments { get; set; }
