@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Splid.Application.Commands.Payments;
+using Splid.Application.Commands.Groups.Payments;
 using Splid.Application.Queries;
-using Splid.Domain.Models.Groups;
+using Splid.Domain.Main.Models.Groups;
 using Splid.WebAPI.Models.Payments;
 using System;
 using System.Threading.Tasks;
@@ -53,7 +53,7 @@ namespace Splid.WebAPI.Controllers
         public async Task<IActionResult> Change(Guid groupId, Guid paymentId, [FromBody]ChangePaymentDto changePaymentDto)
         {
             var paymentInput = _mapper.Map<PaymentInput>(changePaymentDto);
-            var changePaymentCommand = new ChangePaymentCommand() { GroupId = groupId, PaymentId = paymentId, Payment = paymentInput);
+            var changePaymentCommand = new ChangePaymentCommand() { GroupId = groupId, PaymentId = paymentId, Payment = paymentInput };
             await _mediator.Send(changePaymentCommand);
 
             return NoContent();

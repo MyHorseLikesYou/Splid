@@ -16,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Splid.Domain\Splid.Domain.Main.csproj" />
+    <ProjectReference Include="..\Splid.Domain.Main\Splid.Domain.Main.csproj" />
   </ItemGroup>
 
 </Project>

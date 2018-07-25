@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Splid.Application.Commands.Persons;
+using Splid.Application.Commands.Groups.Persons;
 using Splid.Application.Queries;
-using Splid.Domain.Models.Groups;
+using Splid.Domain.Main.Models.Groups;
 using Splid.WebAPI.Models.Persons;
 using System;
 using System.Threading.Tasks;

@@ -3,7 +3,7 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Splid.Application.Commands.Groups;
 using Splid.Application.Queries;
-using Splid.Domain.Models.Groups;
+using Splid.Domain.Main.Models.Groups;
 using Splid.WebAPI.Models.Groups;
 using System;
 using System.Threading.Tasks;
