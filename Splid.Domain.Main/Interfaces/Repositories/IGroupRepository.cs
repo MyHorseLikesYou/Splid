@@ -4,7 +4,7 @@ using System;
 
 namespace Splid.Domain.Main.Interfaces.Repositories
 {
-    public interface IGroupsRepository : IRepository<Group>
+    public interface IGroupRepository : IRepository<Group>
     {
         bool IsGroupExists(Guid groupId);
     }

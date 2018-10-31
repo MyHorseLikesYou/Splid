@@ -5,7 +5,8 @@ using System.Collections.Generic;
 namespace Splid.Domain.Main.Models.Groups
 {
     public class ExpenseInput
-    {        
+    {     
+        public Guid GroupId { get; set; }
         public string Title { get; set; }
         public List<PersonMoneyOperation> Payments { get; set; }
         public List<PersonMoneyOperation> Expenses { get; set; }
