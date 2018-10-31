@@ -6,6 +6,6 @@ namespace Splid.Application.Commands.Groups.Expenses
     public abstract class SaveExpenseCommand : GroupCommand
     {
         public Guid ExpenseId { get; set; }
-        public ExpenseInput Expense { get; set; }
+        public GroupExpenseInput Expense { get; set; }
     }
 }

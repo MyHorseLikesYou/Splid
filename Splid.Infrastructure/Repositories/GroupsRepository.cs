@@ -12,7 +12,7 @@ using DbPersonMoneyOperation = Splid.Infrastructure.Models.PersonMoneyOperation;
 
 namespace Splid.Infrastructure.Repositories
 {
-    public class GroupsRepository : IGroupsRepository
+    public class GroupsRepository : IGroupRepository
     {
         private readonly SplidDbContext _context;
 
@@ -44,13 +44,13 @@ namespace Splid.Infrastructure.Repositories
             _context.Groups.Update(dbGroup);
         }
 
-        public void Remove(Group id)
+        public void Delete(Group id)
         {
             var dbGroup = ToDbGroup(id);
             _context.Groups.Remove(dbGroup);
         }
 
-        public void Remove(Guid id)
+        public void Delete(Guid id)
         {
             var dbGroup = _context.Groups.SingleOrDefault(g => g.Id == id);
             _context.Groups.Remove(dbGroup);

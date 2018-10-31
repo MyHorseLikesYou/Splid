@@ -8,9 +8,9 @@ namespace Splid.Domain.Main.Services
 {
     public class GroupsService
     {        
-        private IGroupsRepository _groupsRepository;
+        private IGroupRepository _groupsRepository;
 
-        public GroupsService(IGroupsRepository groupsRepository)
+        public GroupsService(IGroupRepository groupsRepository)
         {
             _groupsRepository = groupsRepository ?? throw new ArgumentNullException(nameof(groupsRepository));
         }
@@ -42,10 +42,10 @@ namespace Splid.Domain.Main.Services
             if (!_groupsRepository.IsGroupExists(groupId))
                 throw new EntityNotFoundException<Group>(groupId);
 
-            _groupsRepository.Remove(groupId);            
+            _groupsRepository.Delete(groupId);            
         }
 
-        public void AddPayment(Guid groupId, Guid paymentId, PaymentInput paymentInput)
+        public void AddPayment(Guid paymentId, PaymentInput paymentInput)
         {
             var group = _groupsRepository.GetById(groupId);
             if (group == null)
@@ -56,7 +56,7 @@ namespace Splid.Domain.Main.Services
             _groupsRepository.Update(group);            
         }
 
-        public void ChangePayment(Guid groupId, Guid paymentId, PaymentInput paymentInput)
+        public void ChangePayment(Guid paymentId, PaymentInput paymentInput)
         {
             var group = _groupsRepository.GetById(groupId);
             if (group == null)
@@ -78,38 +78,7 @@ namespace Splid.Domain.Main.Services
             _groupsRepository.Update(group);            
         }
 
-        public void AddExpense(Guid groupId, Guid expenseId, ExpenseInput expenseInput)
-        {
-            var group = _groupsRepository.GetById(groupId);
-            if (group == null)
-                throw new EntityNotFoundException<Group>(groupId);
 
-            group.AddGroupExpense(expenseId, expenseInput);
-
-            _groupsRepository.Update(group);            
-        }
-
-        public void ChangeExpense(Guid groupId, Guid expenseId, ExpenseInput expenseInput)
-        {
-            var group = _groupsRepository.GetById(groupId);
-            if (group == null)
-                throw new EntityNotFoundException<Group>(groupId);
-
-            group.ChangeGroupExpense(expenseId, expenseInput);
-
-            _groupsRepository.Update(group);            
-        }
-
-        public void DeleteExpense(Guid groupId, Guid expenseId)
-        {
-            var group = _groupsRepository.GetById(groupId);
-            if (group == null)
-                throw new EntityNotFoundException<Group>(expenseId);
-
-            group.DeleteExpense(expenseId);
-
-            _groupsRepository.Update(group);
-        }
 
         public void AddPerson(Guid groupId, Guid personId, PersonInput personInput)
         {

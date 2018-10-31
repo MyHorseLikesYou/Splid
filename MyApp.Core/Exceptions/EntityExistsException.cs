@@ -2,7 +2,7 @@
 
 namespace MyApp.Core.Exceptions
 {
-    public class EntityExistsException<TEntity> : Exception
+    public class EntityExistsException<TEntity> : InvalidDomainOperationException
     {
         public EntityExistsException()
         {

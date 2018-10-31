@@ -2,7 +2,7 @@
 
 namespace MyApp.Core.Exceptions
 {
-    public class EntityNotFoundException<TEntity> : Exception
+    public class EntityNotFoundException<TEntity> : InvalidDomainOperationException
     {
         public EntityNotFoundException()
         {

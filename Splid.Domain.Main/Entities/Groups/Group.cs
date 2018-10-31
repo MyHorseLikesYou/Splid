@@ -96,7 +96,7 @@ namespace Splid.Domain.Main.Entities.Groups
             _payments.Remove(payment);
         }
 
-        public void AddGroupExpense(Guid expenseId, ExpenseInput expenseInput)
+        public void AddGroupExpense(Guid expenseId, GroupExpenseInput expenseInput)
         {
             if (expenseInput == null)
                 throw new ArgumentNullException(nameof(expenseInput));
@@ -111,7 +111,7 @@ namespace Splid.Domain.Main.Entities.Groups
             _expenses.Add(expenseToAdd);
         }
 
-        public void ChangeGroupExpense(Guid expenseId, ExpenseInput expenseInput)
+        public void ChangeGroupExpense(Guid expenseId, GroupExpenseInput expenseInput)
         {
             if (expenseInput == null)
                 throw new ArgumentNullException(nameof(expenseInput));

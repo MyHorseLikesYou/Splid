@@ -40,7 +40,7 @@ namespace Splid.Host.WebAPI.Controllers
         public async Task<IActionResult> CreateExpense(Guid groupId, [FromBody] CreateExpenseDto createExpenseDto)
         {
             var expenseId = Guid.NewGuid();
-            var expenseInput = _mapper.Map<ExpenseInput>(createExpenseDto);
+            var expenseInput = _mapper.Map<GroupExpenseInput>(createExpenseDto);
             var createExpenseCommand = new CreateExpenseCommand()
                 {GroupId = groupId, ExpenseId = expenseId, Expense = expenseInput};
             await _mediator.Send(createExpenseCommand);
@@ -54,7 +54,7 @@ namespace Splid.Host.WebAPI.Controllers
         public async Task<IActionResult> ChangeExpense(Guid groupId, Guid expenseId,
             [FromBody] ChangeExpenseDto changeExpenseDto)
         {
-            var expenseInput = _mapper.Map<ExpenseInput>(changeExpenseDto);
+            var expenseInput = _mapper.Map<GroupExpenseInput>(changeExpenseDto);
             var changeExpenseCommand = new ChangeExpenseCommand()
                 {GroupId = groupId, ExpenseId = expenseId, Expense = expenseInput};
             await _mediator.Send(changeExpenseCommand);

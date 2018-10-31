@@ -31,8 +31,9 @@ namespace Splid.Domain.Main.Entities.Groups
 
         public IReadOnlyCollection<PersonMoneyOperation> ExpensesFor => _personExpenses;
         public IReadOnlyCollection<PersonMoneyOperation> ExpensesBy => _personPayments;
+        public Guid GroupId { get; set; }
 
-        public void Change(ExpenseInput groupExpenseInput)
+        public void Change(GroupExpenseInput groupExpenseInput)
         {
             if (groupExpenseInput == null)
                 throw new ArgumentNullException();
@@ -102,7 +103,7 @@ namespace Splid.Domain.Main.Entities.Groups
                 .Any(expensesByPerson => expensesByPerson.Count() > 1);
         }
 
-        public static GroupExpense Create(Guid id, ExpenseInput expenseInput)
+        public static GroupExpense Create(Guid id, GroupExpenseInput expenseInput)
         {
             if (expenseInput == null)
                 throw new ArgumentNullException();

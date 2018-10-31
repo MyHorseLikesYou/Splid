@@ -6,13 +6,13 @@ using System.Collections.Generic;
 
 namespace Splid.Domain.Tests.Builders.Groups.Inputs
 {
-    public class GroupExpenseInputBuilder : IBuilder<ExpenseInput>
+    public class GroupExpenseInputBuilder : IBuilder<GroupExpenseInput>
     {
-        private ExpenseInput _expenseInput;
+        private GroupExpenseInput _expenseInput;
 
         public GroupExpenseInputBuilder()
         {
-            _expenseInput = new ExpenseInput()
+            _expenseInput = new GroupExpenseInput()
             {
                 Title = GroupExpenseBuilder.DefaultTitle,
                 Payments = GroupExpenseBuilder.DefaultPayments,
@@ -127,7 +127,7 @@ namespace Splid.Domain.Tests.Builders.Groups.Inputs
             return _expenseInput.Expenses == GroupExpenseBuilder.DefaultExpenses;
         }
 
-        public ExpenseInput Build()
+        public GroupExpenseInput Build()
         {
             return _expenseInput;
         }
