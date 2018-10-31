@@ -10,7 +10,7 @@ namespace MyApp.Core.Contracts
         TEntity GetById(Guid id);
         IQueryable<TEntity> GetAll();
         void Update(TEntity obj);
-        void Remove(TEntity id);
-        void Remove(Guid id);        
+        void Delete(TEntity id);
+        void Delete(Guid id);        
     }
 }
