@@ -1,19 +1,26 @@
-﻿using Splid.Application.Commands.Groups.Expenses;
+﻿using System;
+using Splid.Application.Commands.Groups.Expenses;
 using Splid.Domain.Main.Services;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace Splid.Application.Handlers.Commands.Groups.Expenses
 {
-    public class CreateExpenseCommandHandler : GroupCommandHandler<CreateExpenseCommand>
+    public class CreateExpenseCommandHandler
     {
-        protected CreateExpenseCommandHandler(GroupsService groupsService)
-            : base(groupsService)
-        { }
+        private readonly GroupExpenseService _groupExpenseService;
 
-        protected override Task Handle(CreateExpenseCommand createExpenseCommand, CancellationToken cancellationToken)
+        protected CreateExpenseCommandHandler(GroupExpenseService groupExpenseService)
         {
-            return Task.Run(() => _groupsService.AddExpense(createExpenseCommand.GroupId, createExpenseCommand.ExpenseId, createExpenseCommand.Expense));
+            _groupExpenseService = groupExpenseService ?? throw new ArgumentNullException(nameof(groupExpenseService));
+        }
+
+        protected Task Handle(CreateExpenseCommand createExpenseCommand, CancellationToken cancellationToken)
+        {
+            if (createExpenseCommand == null) 
+                throw new ArgumentNullException(nameof(createExpenseCommand));
+            
+            return Task.Run(() => _groupExpenseService.Create(createExpenseCommand.ExpenseId, createExpenseCommand.GroupId, createExpenseCommand.Expense), cancellationToken);
         }
     }
 }

@@ -1,19 +1,26 @@
-﻿using Splid.Application.Commands.Groups.Payments;
+﻿using System;
+using Splid.Application.Commands.Groups.Payments;
 using Splid.Domain.Main.Services;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace Splid.Application.Handlers.Commands.Groups.Payments
 {
-    public class CreatePaymentCommandHandler : GroupCommandHandler<CreatePaymentCommand>
+    public class CreatePaymentCommandHandler
     {
-        protected CreatePaymentCommandHandler(GroupsService groupsService)
-            : base(groupsService)
-        { }
+        private readonly PaymentService _paymentService;
 
-        protected override Task Handle(CreatePaymentCommand createPaymentCommand, CancellationToken cancellationToken)
+        protected CreatePaymentCommandHandler(PaymentService paymentService)
         {
-            return Task.Run(() => _groupsService.AddPayment(createPaymentCommand.GroupId, createPaymentCommand.PaymentId, createPaymentCommand.Payment));
+            _paymentService = paymentService ?? throw new ArgumentNullException(nameof(paymentService));
+        }
+
+        protected Task Handle(CreatePaymentCommand createPaymentCommand, CancellationToken cancellationToken)
+        {
+            if (createPaymentCommand == null) 
+                throw new ArgumentNullException(nameof(createPaymentCommand));
+            
+            return Task.Run(() => _paymentService.AddPayment(createPaymentCommand.PaymentId, createPaymentCommand.GroupId, createPaymentCommand.Payment), cancellationToken);
         }
     }
 }

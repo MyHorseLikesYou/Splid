@@ -1,19 +1,26 @@
-﻿using Splid.Application.Commands.Groups;
+﻿using System;
+using Splid.Application.Commands.Groups;
 using Splid.Domain.Main.Services;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace Splid.Application.Handlers.Commands.Groups
 {
-    public class DeleteGroupCommandHandler : GroupCommandHandler<DeleteGroupCommand>
+    public class DeleteGroupCommandHandler 
     {
-        protected DeleteGroupCommandHandler(GroupsService groupsService)
-            : base(groupsService)
-        { }
+        private readonly GroupsService _groupsService;
 
-        protected override async Task Handle(DeleteGroupCommand deleteGroupCommand, CancellationToken cancellationToken)
+        public DeleteGroupCommandHandler(GroupsService groupsService)
         {
-            await Task.Run(() => _groupsService.DeleteGroup(deleteGroupCommand.GroupId));
+            _groupsService = groupsService ?? throw new ArgumentNullException(nameof(groupsService));
+        }
+
+        protected async Task Handle(DeleteGroupCommand deleteGroupCommand, CancellationToken cancellationToken)
+        {
+            if (deleteGroupCommand == null) 
+                throw new ArgumentNullException(nameof(deleteGroupCommand));
+            
+            await Task.Run(() => _groupsService.DeleteGroup(deleteGroupCommand.GroupId), cancellationToken);
         }
     }
 }

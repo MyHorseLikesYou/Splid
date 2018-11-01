@@ -38,8 +38,6 @@ namespace Splid.Domain.Main.Services
             if (groupExpense == null)
                 throw new EntityNotFoundException<GroupExpense>(groupExpenseId);
 
-            var group = _groupRepository.GetById(groupExpense.GroupId);
-
             groupExpense.Change(groupExpenseInput);
 
             _groupExpenseRepository.Update(groupExpense);

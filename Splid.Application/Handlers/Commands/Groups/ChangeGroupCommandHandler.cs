@@ -1,19 +1,26 @@
-﻿using Splid.Application.Commands.Groups;
+﻿using System;
+using Splid.Application.Commands.Groups;
 using Splid.Domain.Main.Services;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace Splid.Application.Handlers.Commands.Groups
 {
-    public class ChangeGroupCommandHandler : GroupCommandHandler<ChangeGroupCommand>
+    public class ChangeGroupCommandHandler
     {
-        protected ChangeGroupCommandHandler(GroupsService groupsService)
-            : base(groupsService)
-        { }
+        private readonly GroupsService _groupsService;
 
-        protected override Task Handle(ChangeGroupCommand changeGroupCommand, CancellationToken cancellationToken)
+        public ChangeGroupCommandHandler(GroupsService groupsService)            
         {
-            return Task.Run(() => _groupsService.ChangeGroup(changeGroupCommand.GroupId, changeGroupCommand.Group));
+            _groupsService = groupsService ?? throw new ArgumentNullException(nameof(groupsService));
+        }
+
+        protected Task Handle(ChangeGroupCommand changeGroupCommand, CancellationToken cancellationToken)
+        {
+            if (changeGroupCommand == null) 
+                throw new ArgumentNullException(nameof(changeGroupCommand));
+            
+            return Task.Run(() => _groupsService.ChangeGroup(changeGroupCommand.GroupId, changeGroupCommand.Group), cancellationToken);
         }
     }
 }

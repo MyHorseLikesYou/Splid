@@ -45,41 +45,6 @@ namespace Splid.Domain.Main.Services
             _groupsRepository.Delete(groupId);            
         }
 
-        public void AddPayment(Guid paymentId, PaymentInput paymentInput)
-        {
-            var group = _groupsRepository.GetById(groupId);
-            if (group == null)
-                throw new EntityNotFoundException<Group>(groupId);
-
-            group.AddPayment(paymentId, paymentInput);
-
-            _groupsRepository.Update(group);            
-        }
-
-        public void ChangePayment(Guid paymentId, PaymentInput paymentInput)
-        {
-            var group = _groupsRepository.GetById(groupId);
-            if (group == null)
-                throw new EntityNotFoundException<Group>(groupId);
-
-            group.ChangePayment(paymentId, paymentInput);
-
-            _groupsRepository.Update(group);            
-        }
-
-        public void DeletePayment(Guid groupId, Guid paymentId)
-        {
-            var group = _groupsRepository.GetById(groupId);
-            if (group == null)
-                throw new EntityNotFoundException<Group>(groupId);
-
-            group.DeletePayment(paymentId);
-
-            _groupsRepository.Update(group);            
-        }
-
-
-
         public void AddPerson(Guid groupId, Guid personId, PersonInput personInput)
         {
             var group = _groupsRepository.GetById(groupId);

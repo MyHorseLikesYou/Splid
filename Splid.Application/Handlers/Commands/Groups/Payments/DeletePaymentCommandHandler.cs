@@ -1,19 +1,26 @@
-﻿using Splid.Application.Commands.Groups.Payments;
+﻿using System;
+using Splid.Application.Commands.Groups.Payments;
 using Splid.Domain.Main.Services;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace Splid.Application.Handlers.Commands.Groups.Payments
 {
-    public class DeletePaymentCommandHandler : GroupCommandHandler<DeletePaymentCommand>
+    public class DeletePaymentCommandHandler
     {
-        protected DeletePaymentCommandHandler(GroupsService groupsService)
-            : base(groupsService)
-        { }
+        private readonly PaymentService _paymentService;
 
-        protected override Task Handle(DeletePaymentCommand deletePaymentCommand, CancellationToken cancellationToken)
+        protected DeletePaymentCommandHandler(PaymentService paymentService)
         {
-            return Task.Run(() => _groupsService.DeletePayment(deletePaymentCommand.GroupId, deletePaymentCommand.PaymentId));
+            _paymentService = paymentService ?? throw new ArgumentNullException(nameof(paymentService));
+        }
+
+        protected Task Handle(DeletePaymentCommand deletePaymentCommand, CancellationToken cancellationToken)
+        {
+            if (deletePaymentCommand == null) 
+                throw new ArgumentNullException(nameof(deletePaymentCommand));
+            
+            return Task.Run(() => _paymentService.DeletePayment(deletePaymentCommand.PaymentId), cancellationToken);
         }
     }
 }
