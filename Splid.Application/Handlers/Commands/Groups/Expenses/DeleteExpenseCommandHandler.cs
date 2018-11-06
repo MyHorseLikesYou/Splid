@@ -20,7 +20,7 @@ namespace Splid.Application.Handlers.Commands.Groups.Expenses
             if (deleteExpenseCommand == null) 
                 throw new ArgumentNullException(nameof(deleteExpenseCommand));
             
-            return Task.Run(() => _groupExpenseService.DeleteExpense(deleteExpenseCommand.ExpenseId), cancellationToken);
+            return Task.Run(() => _groupExpenseService.DeleteGroupExpense(deleteExpenseCommand.ExpenseId), cancellationToken);
         }
     }
 }

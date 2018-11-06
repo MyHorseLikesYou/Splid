@@ -1,8 +1,8 @@
-﻿using Splid.Domain.Main.Models.Groups;
+﻿using System;
+using Splid.Domain.Main.Models.Groups;
 using Splid.Domain.Main.Values;
-using System;
 
-namespace Splid.Domain.Tests.Builders.Groups.Inputs
+namespace Splid.Domain.Main.Tests.Builders.Groups.Inputs
 {
     public class PaymentInputBuilder : IBuilder<PaymentInput>
     {
@@ -12,8 +12,8 @@ namespace Splid.Domain.Tests.Builders.Groups.Inputs
         {
             _paymentInput = new PaymentInput()
             {
-                PersonById = Guid.NewGuid(),
-                PersonForId = Guid.NewGuid(),
+                SenderId = Guid.NewGuid(),
+                RecipientId = Guid.NewGuid(),
                 Amount = new Money(100),
                 Date = DateTimeOffset.Now,
             };
@@ -21,11 +21,14 @@ namespace Splid.Domain.Tests.Builders.Groups.Inputs
 
         public PaymentInputBuilder With(Guid senderPersonId, Guid recipientPersonId, decimal amount)
         {
-            _paymentInput.PersonById = senderPersonId;
-            _paymentInput.PersonForId = recipientPersonId;
+            _paymentInput.SenderId = senderPersonId;
+            _paymentInput.RecipientId = recipientPersonId;
 
             return this;
         }
+
+        public PaymentInputBuilder With(Guid senderPersonId, Guid recipientPersonId) =>
+            this.With(senderPersonId, recipientPersonId, 100);
 
         public PaymentInputBuilder WithDateInFuture()
         {

@@ -1,7 +1,7 @@
-﻿using Splid.Domain.Main.Entities.Groups;
-using System;
+﻿using System;
+using Splid.Domain.Main.Entities.Groups;
 
-namespace Splid.Domain.Tests.Builders.Groups.Entities
+namespace Splid.Domain.Main.Tests.Builders.Groups.Entities
 {
     public class PaymentBuilder : IBuilder<Payment>
     {
@@ -30,13 +30,18 @@ namespace Splid.Domain.Tests.Builders.Groups.Entities
             return this;
         }
 
-        public PaymentBuilder With(Guid paymentByPersonId, Guid paymentForPersonId, decimal amount)
+        public PaymentBuilder With(Guid paymentByPersonId, Guid paymentForPersonId, decimal amount = 100)
         {
             _senderId = paymentByPersonId;
             _recipientId = paymentForPersonId;
             _amount = amount;
 
             return this;
+        }       
+
+        public PaymentBuilder WithGroupId(Guid groupId)
+        {
+            throw new NotImplementedException();
         }
     }
 }

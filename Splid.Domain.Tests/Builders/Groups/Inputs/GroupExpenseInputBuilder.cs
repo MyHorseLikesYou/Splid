@@ -1,10 +1,10 @@
-﻿using Splid.Domain.Main.Models.Groups;
-using Splid.Domain.Main.Values;
-using Splid.Domain.Tests.Builders.Groups.Entities;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using Splid.Domain.Main.Models.Groups;
+using Splid.Domain.Main.Tests.Builders.Groups.Entities;
+using Splid.Domain.Main.Values;
 
-namespace Splid.Domain.Tests.Builders.Groups.Inputs
+namespace Splid.Domain.Main.Tests.Builders.Groups.Inputs
 {
     public class GroupExpenseInputBuilder : IBuilder<GroupExpenseInput>
     {

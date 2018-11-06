@@ -1,6 +1,6 @@
-﻿using Splid.Domain.Tests.Builders;
+﻿using Splid.Domain.Main.Tests.Builders;
 
-namespace Splid.Domain.Tests
+namespace Splid.Domain.Main.Tests
 {
     public class BaseTest
     {

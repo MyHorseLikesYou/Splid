@@ -1,9 +1,9 @@
-﻿using NUnit.Framework;
+﻿using System;
+using NUnit.Framework;
 using Splid.Domain.Main.Models.Groups;
-using Splid.Domain.Tests.Builders.Groups.Entities;
-using System;
+using Splid.Domain.Main.Tests.Builders.Groups.Entities;
 
-namespace Splid.Domain.Tests.Entities.Groups.GroupTests
+namespace Splid.Domain.Main.Tests.Entities.Groups.GroupTests
 {
     [TestFixture]
     public class Group_Change

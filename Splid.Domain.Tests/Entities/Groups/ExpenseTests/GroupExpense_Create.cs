@@ -1,8 +1,8 @@
-﻿using NUnit.Framework;
+﻿using System;
+using NUnit.Framework;
 using Splid.Domain.Main.Entities.Groups;
-using System;
 
-namespace Splid.Domain.Tests.Entities.Groups.ExpenseTests
+namespace Splid.Domain.Main.Tests.Entities.Groups.ExpenseTests
 {
     [TestFixture]
     public class GroupExpense_Create : BaseTest

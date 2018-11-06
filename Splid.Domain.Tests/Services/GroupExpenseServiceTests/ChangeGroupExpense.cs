@@ -1,10 +1,10 @@
-﻿using NUnit.Framework;
-using System;
+﻿using System;
+using NUnit.Framework;
 
-namespace Splid.Domain.Tests.Entities.Groups.GroupTests
+namespace Splid.Domain.Main.Tests.Entities.Groups.GroupTests
 {
     [TestFixture]
-    public class Group_ChangeGroupExpense : BaseTest
+    public class ChangeGroupExpense : BaseTest
     {
         [Test]
         public void ChangeGroupExpense_NullInput_ThrowArgumentNullException()

@@ -1,7 +1,7 @@
-﻿using Splid.Domain.Main.Entities.Groups;
-using System;
+﻿using System;
+using Splid.Domain.Main.Entities.Groups;
 
-namespace Splid.Domain.Tests.Builders.Groups.Entities
+namespace Splid.Domain.Main.Tests.Builders.Groups.Entities
 {
     public class PersonBuilder : IBuilder<Person>
     {

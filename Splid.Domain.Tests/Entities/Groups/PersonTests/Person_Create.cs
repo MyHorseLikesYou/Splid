@@ -1,9 +1,8 @@
-﻿using NUnit.Framework;
-using NUnit.Framework.Internal;
+﻿using System;
+using NUnit.Framework;
 using Splid.Domain.Main.Entities.Groups;
-using System;
 
-namespace Splid.Domain.Tests.Entities.Groups.PersonTests
+namespace Splid.Domain.Main.Tests.Entities.Groups.PersonTests
 {
     [TestFixture]
     public class Person_Create : BaseTest

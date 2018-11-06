@@ -1,10 +1,10 @@
-﻿using Splid.Domain.Main.Entities.Groups;
-using Splid.Domain.Main.Values;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Splid.Domain.Main.Entities.Groups;
+using Splid.Domain.Main.Values;
 
-namespace Splid.Domain.Tests.Builders.Groups.Entities
+namespace Splid.Domain.Main.Tests.Builders.Groups.Entities
 {
     public class GroupBuilder : IBuilder<Group>
     {
@@ -129,6 +129,11 @@ namespace Splid.Domain.Tests.Builders.Groups.Entities
                 })
                 .Select(builder => builder.Build())
                 .ToList();
+        }
+
+        public GroupBuilder WithId(Guid groupId)
+        {
+            throw new NotImplementedException();
         }
     }
 }

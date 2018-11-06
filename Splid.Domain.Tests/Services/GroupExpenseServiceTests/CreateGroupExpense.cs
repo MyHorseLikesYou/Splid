@@ -1,12 +1,12 @@
-﻿using NUnit.Framework;
-using Splid.Domain.Tests.Builders.Groups.Entities;
-using System;
+﻿using System;
 using System.Linq;
+using NUnit.Framework;
+using Splid.Domain.Main.Tests.Builders.Groups.Entities;
 
-namespace Splid.Domain.Tests.Entities.Groups.GroupTests
+namespace Splid.Domain.Main.Tests.Services.GroupExpenseServiceTests
 {
     [TestFixture]
-    public class Group_AddGroupExpense : BaseTest
+    public class CreateGroupExpense : BaseTest
     {
         [Test]
         public void AddGroupExpense_NullInput_ThrowArgumentNullException()

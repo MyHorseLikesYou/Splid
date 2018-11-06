@@ -1,9 +1,9 @@
-﻿using Splid.Domain.Main.Entities.Groups;
-using Splid.Domain.Main.Values;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using Splid.Domain.Main.Entities.Groups;
+using Splid.Domain.Main.Values;
 
-namespace Splid.Domain.Tests.Builders.Groups.Entities
+namespace Splid.Domain.Main.Tests.Builders.Groups.Entities
 {
     public class GroupExpenseBuilder : IBuilder<GroupExpense>
     {       

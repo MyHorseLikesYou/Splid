@@ -1,10 +1,9 @@
-﻿using NUnit.Framework;
-using Splid.Domain.Tests.Builders.Groups.Entities;
-using Splid.Domain.Tests.Builders.Groups.Inputs;
-using System;
+﻿using System;
 using System.Linq;
+using NUnit.Framework;
+using Splid.Domain.Main.Tests.Builders.Groups.Entities;
 
-namespace Splid.Domain.Tests.Entities.Groups.GroupTests
+namespace Splid.Domain.Main.Tests.Entities.Groups.GroupTests
 {
     [TestFixture]
     public class Group_AddPerson : BaseTest

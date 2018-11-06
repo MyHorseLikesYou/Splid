@@ -66,6 +66,8 @@ namespace Splid.Domain.Main.Entities.Groups
             }
         }
 
+        public Guid GroupId { get; set; }
+
         private static void ValidatePersonsAreNotEqual(Guid personFromId, Guid personToId)
         {
             if (personFromId == personToId)
@@ -92,12 +94,12 @@ namespace Splid.Domain.Main.Entities.Groups
             if (paymentInput == null)
                 throw new ArgumentNullException();
 
-            ValidatePersonsAreNotEqual(paymentInput.PersonById, paymentInput.PersonForId);
+            ValidatePersonsAreNotEqual(paymentInput.SenderId, paymentInput.RecipientId);
             ValidateDateNotInFuture(paymentInput.Date);
             ValidateArgumentForAmount(paymentInput.Amount);
 
-            _sender = paymentInput.PersonById;
-            _recipient = paymentInput.PersonForId;
+            _sender = paymentInput.SenderId;
+            _recipient = paymentInput.RecipientId;
             _date = paymentInput.Date;            
             _amount = paymentInput.Amount;
         }
@@ -107,7 +109,7 @@ namespace Splid.Domain.Main.Entities.Groups
             if (paymentInput == null)
                 throw new ArgumentNullException();
 
-            return new Payment(id, paymentInput.PersonById, paymentInput.PersonForId, paymentInput.Amount, paymentInput.Date, DateTimeOffset.Now);
+            return new Payment(id, paymentInput.SenderId, paymentInput.RecipientId, paymentInput.Amount, paymentInput.Date, DateTimeOffset.Now);
         }
     }
 }

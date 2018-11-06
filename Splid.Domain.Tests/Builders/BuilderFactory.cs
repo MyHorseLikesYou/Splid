@@ -1,8 +1,9 @@
-﻿using System;
-using Splid.Domain.Tests.Builders.Groups.Entities;
-using Splid.Domain.Tests.Builders.Groups.Inputs;
+﻿using Splid.Domain.Main.Tests.Builders.Groups.Entities;
+using Splid.Domain.Main.Tests.Builders.Groups.Inputs;
+using Splid.Domain.Main.Tests.Builders.Repositories;
+using Splid.Domain.Main.Tests.Builders.Services;
 
-namespace Splid.Domain.Tests.Builders
+namespace Splid.Domain.Main.Tests.Builders
 {
     public class BuilderFactory
     {
@@ -39,6 +40,21 @@ namespace Splid.Domain.Tests.Builders
         public PaymentBuilder Payment()
         {
             return new PaymentBuilder();
+        }
+
+        public PaymentRepositoryBuilder PaymentRepository()
+        {
+            return new PaymentRepositoryBuilder();
+        }
+        
+        public GroupRepositoryBuilder GroupRepository()
+        {
+            return new GroupRepositoryBuilder();
+        }
+
+        public PaymentServiceBuilder PaymentService()
+        {
+            return new PaymentServiceBuilder();
         }
     }
 }

@@ -1,8 +1,8 @@
-﻿using NUnit.Framework;
+﻿using System;
+using NUnit.Framework;
 using Splid.Domain.Main.Entities.Groups;
-using System;
 
-namespace Splid.Domain.Tests.Entities.Groups.PaymentTests
+namespace Splid.Domain.Main.Tests.Entities.Groups.PaymentTests
 {
     [TestFixture]
     public class Payment_Create : BaseTest

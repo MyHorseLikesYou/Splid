@@ -1,6 +1,6 @@
 ﻿using Splid.Domain.Main.Models.Groups;
 
-namespace Splid.Domain.Tests.Builders.Groups.Inputs
+namespace Splid.Domain.Main.Tests.Builders.Groups.Inputs
 {
     public class PersonInputBuilder : IBuilder<PersonInput>
     {

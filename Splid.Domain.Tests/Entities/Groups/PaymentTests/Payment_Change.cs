@@ -1,7 +1,7 @@
-﻿using NUnit.Framework;
-using System;
+﻿using System;
+using NUnit.Framework;
 
-namespace Splid.Domain.Tests.Entities.Groups.PaymentTests
+namespace Splid.Domain.Main.Tests.Entities.Groups.PaymentTests
 {
     [TestFixture]
     public class Payment_Change : BaseTest

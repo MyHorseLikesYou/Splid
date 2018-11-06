@@ -1,10 +1,9 @@
-﻿using NUnit.Framework;
-using NUnit.Framework.Internal;
+﻿using System;
+using NUnit.Framework;
 using Splid.Domain.Main.Entities.Groups;
 using Splid.Domain.Main.Models.Groups;
-using System;
 
-namespace Splid.Domain.Tests.Entities.Groups.GroupTests
+namespace Splid.Domain.Main.Tests.Entities.Groups.GroupTests
 {
     [TestFixture]
     public class Group_Create
