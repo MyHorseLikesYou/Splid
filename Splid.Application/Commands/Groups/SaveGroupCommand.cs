@@ -1,4 +1,4 @@
-﻿using Splid.Domain.Main.Models.Groups;
+﻿using Splid.Domain.Main.Models;
 
 namespace Splid.Application.Commands.Groups
 {

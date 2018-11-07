@@ -5,7 +5,7 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Splid.Application.Commands.Groups;
 using Splid.Application.Queries;
-using Splid.Domain.Main.Models.Groups;
+using Splid.Domain.Main.Models;
 using Splid.Host.WebAPI.Models.Groups;
 
 namespace Splid.Host.WebAPI.Controllers

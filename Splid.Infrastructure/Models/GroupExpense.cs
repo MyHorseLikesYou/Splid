@@ -8,8 +8,8 @@ namespace Splid.Infrastructure.Models
     {
         public Guid Id { get; set; }
         public string Title { get; set; }
-        public List<PersonMoneyOperation> PersonPayments { get; set; }
-        public List<PersonMoneyOperation> PersonExpenses { get; set; }
+        public List<PersonMoneyOperation> Payments { get; set; }
+        public List<PersonMoneyOperation> Expenses { get; set; }
         public DateTimeOffset Date { get; set; }
         public DateTimeOffset CreatedAt { get; set; }
     }

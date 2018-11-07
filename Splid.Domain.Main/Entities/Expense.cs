@@ -1,12 +1,12 @@
-﻿using MyApp.Core.Domain;
-using MyApp.Core.Extensions;
-using Splid.Domain.Main.Models.Groups;
-using Splid.Domain.Main.Values;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using MyApp.Core.Domain;
+using MyApp.Core.Extensions;
+using Splid.Domain.Main.Models;
+using Splid.Domain.Main.Values;
 
-namespace Splid.Domain.Main.Entities.Groups
+namespace Splid.Domain.Main.Entities
 {
     public class GroupExpense : Entity
     {
@@ -15,17 +15,18 @@ namespace Splid.Domain.Main.Entities.Groups
         private List<PersonMoneyOperation> _personExpenses;
         private DateTimeOffset _date;
 
-        public GroupExpense(Guid id, string title, IEnumerable<PersonMoneyOperation> personsPayments, IEnumerable<PersonMoneyOperation> personsExpenses, DateTimeOffset date, DateTimeOffset createdAt)
+        public GroupExpense(Guid id, string title, IEnumerable<PersonMoneyOperation> personPayments,
+            IEnumerable<PersonMoneyOperation> personExpenses, DateTimeOffset date, DateTimeOffset createdAt)
             : base(id)
         {
             ValidateTitle(title);
             ValidateDate(date);
-            ValidatePayments(personsPayments);
-            ValidateExpenses(personsExpenses);
+            ValidatePayments(personPayments);
+            ValidateExpenses(personExpenses);
 
             _title = title;
-            _personPayments = personsPayments.ToList();
-            _personExpenses = personsExpenses.ToList();
+            _personPayments = personPayments.ToList();
+            _personExpenses = personExpenses.ToList();
             _date = date;
         }
 
@@ -86,29 +87,23 @@ namespace Splid.Domain.Main.Entities.Groups
                 throw new ArgumentException();
         }
 
-        private static bool HaveNull(IEnumerable<PersonMoneyOperation> operations)
-        {
-            return operations.Any(o => o == null);
-        }
+        private static bool HaveNull(IEnumerable<PersonMoneyOperation> operations) => operations.Any(o => o == null);
 
-        private static bool HaveZeroAmount(IEnumerable<PersonMoneyOperation> operations)
-        {
-            return operations.Any(o => o.Amount.Value == 0);
-        }
+        private static bool HaveZeroAmount(IEnumerable<PersonMoneyOperation> operations) =>
+            operations.Any(o => o.Amount.Value == 0);
 
-        private static bool HaveDuplicatePersons(IEnumerable<PersonMoneyOperation> operations)
-        {
-            return operations
+        private static bool HaveDuplicatePersons(IEnumerable<PersonMoneyOperation> operations) =>
+            operations
                 .GroupBy(e => e.PersonId)
                 .Any(expensesByPerson => expensesByPerson.Count() > 1);
-        }
 
-        public static GroupExpense Create(Guid id, GroupExpenseInput expenseInput)
+        public static GroupExpense Create(Guid groupExpenseId, GroupExpenseInput groupExpenseInput)
         {
-            if (expenseInput == null)
+            if (groupExpenseInput == null)
                 throw new ArgumentNullException();
 
-            return new GroupExpense(id, expenseInput.Title, expenseInput.Payments, expenseInput.Expenses, expenseInput.Date, DateTimeOffset.Now);
+            return new GroupExpense(groupExpenseId, groupExpenseInput.Title, groupExpenseInput.Payments,
+                groupExpenseInput.Expenses, groupExpenseInput.Date, DateTimeOffset.Now);
         }
     }
 }

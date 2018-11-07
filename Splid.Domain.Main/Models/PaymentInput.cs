@@ -1,7 +1,7 @@
-﻿using Splid.Domain.Main.Values;
-using System;
+﻿using System;
+using Splid.Domain.Main.Values;
 
-namespace Splid.Domain.Main.Models.Groups
+namespace Splid.Domain.Main.Models
 {
     public class PaymentInput
     {       

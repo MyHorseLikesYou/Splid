@@ -1,4 +1,4 @@
-﻿namespace Splid.Domain.Main.Models.Groups
+﻿namespace Splid.Domain.Main.Models
 {
     public class PersonInput
     {

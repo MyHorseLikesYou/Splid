@@ -1,9 +1,9 @@
-﻿using MyApp.Core.Domain;
-using Splid.Domain.Main.Models.Groups;
+﻿using System;
+using MyApp.Core.Domain;
+using Splid.Domain.Main.Models;
 using Splid.Domain.Main.Values;
-using System;
 
-namespace Splid.Domain.Main.Entities.Groups
+namespace Splid.Domain.Main.Entities
 {
     public class Payment : Entity
     {

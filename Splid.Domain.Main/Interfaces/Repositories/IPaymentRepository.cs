@@ -1,6 +1,6 @@
 using System;
 using MyApp.Core.Contracts;
-using Splid.Domain.Main.Entities.Groups;
+using Splid.Domain.Main.Entities;
 
 namespace Splid.Domain.Main.Interfaces.Repositories
 {

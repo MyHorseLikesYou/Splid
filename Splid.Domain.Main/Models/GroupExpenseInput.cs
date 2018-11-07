@@ -1,8 +1,8 @@
-﻿using Splid.Domain.Main.Values;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using Splid.Domain.Main.Values;
 
-namespace Splid.Domain.Main.Models.Groups
+namespace Splid.Domain.Main.Models
 {
     public class GroupExpenseInput
     {

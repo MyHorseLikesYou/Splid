@@ -1,11 +1,11 @@
-﻿using MyApp.Core.Contracts;
-using MyApp.Core.Domain;
-using Splid.Domain.Main.Models.Groups;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using MyApp.Core.Contracts;
+using MyApp.Core.Domain;
+using Splid.Domain.Main.Models;
 
-namespace Splid.Domain.Main.Entities.Groups
+namespace Splid.Domain.Main.Entities
 {
     public sealed class Group : Entity, IAgregateRoot
     {

@@ -1,8 +1,8 @@
-﻿using MyApp.Core.Domain;
-using Splid.Domain.Main.Models.Groups;
-using System;
+﻿using System;
+using MyApp.Core.Domain;
+using Splid.Domain.Main.Models;
 
-namespace Splid.Domain.Main.Entities.Groups
+namespace Splid.Domain.Main.Entities
 {
     public class Person : Entity
     {

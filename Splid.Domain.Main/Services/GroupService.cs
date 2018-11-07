@@ -1,8 +1,8 @@
 ﻿using MyApp.Core.Exceptions;
-using Splid.Domain.Main.Entities.Groups;
 using Splid.Domain.Main.Interfaces.Repositories;
-using Splid.Domain.Main.Models.Groups;
 using System;
+using Splid.Domain.Main.Entities;
+using Splid.Domain.Main.Models;
 
 namespace Splid.Domain.Main.Services
 {

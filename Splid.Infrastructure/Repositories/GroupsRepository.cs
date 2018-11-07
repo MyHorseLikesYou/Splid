@@ -1,9 +1,7 @@
 using System;
 using System.Linq;
-using System.Net.Http.Headers;
-using Splid.Domain.Main.Entities.Groups;
+using Splid.Domain.Main.Entities;
 using Splid.Domain.Main.Interfaces.Repositories;
-using Splid.Domain.Main.Values;
 using DbGroup = Splid.Infrastructure.Models.Group;
 using DbPayment = Splid.Infrastructure.Models.Payment;
 using DbGroupExpense = Splid.Infrastructure.Models.GroupExpense;
@@ -20,7 +18,7 @@ namespace Splid.Infrastructure.Repositories
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }
-        
+
         public void Add(Group obj)
         {
             var dbGroup = ToDbGroup(obj);
@@ -60,45 +58,39 @@ namespace Splid.Infrastructure.Repositories
         {
             return _context.Groups.Any(g => g.Id == groupId);
         }
-        
+
         public void Dispose()
         {
             _context.Dispose();
         }
 
-        private static Group ToGroupEntity(DbGroup group)
+        private static Group ToGroupEntity(DbGroup dbGroup)
+        {
+            if (dbGroup == null)
+                return null;
+
+            var dbGroupPersons = dbGroup.Persons
+                .Select(p => new Person(p.Id, p.Name))
+                .ToList();
+
+            return new Group(dbGroup.Id, dbGroup.Name, dbGroupPersons);
+        }
+
+        private static DbGroup ToDbGroup(Group group)
         {
             if (group == null)
                 return null;
-            
-            var expenses = group.Expenses.Select(e => 
-                new GroupExpense(
-                    e.Id, 
-                    e.Title,
-                    e.PersonPayments.Select(pp => new PersonMoneyOperation(pp.PersonId, new Money(pp.Amount))),
-                    e.PersonExpenses.Select(pe => new PersonMoneyOperation(pe.PersonId, new Money(pe.Amount))),
-                    e.Date,
-                    e.CreatedAt)
-                );
-            
-            var payments = group.Payments.Select(e => 
-                new Payment(
-                    e.Id, 
-                    e.SenderId,
-                    e.RecipientId,
-                    new Money(e.Amount), 
-                    e.Date,
-                    e.CreatedAt)
-            );
 
-            var persons = group.Persons.Select(p => new Person(p.Id, p.Name));
-            
-            return new Group(group.Id, group.Name, persons, payments, expenses);
-        }
-        
-        private static DbGroup ToDbGroup(Group group)
-        {
-            throw new NotImplementedException();            
+            var persons = group.Persons
+                .Select(p => new DbPerson {Id = p.Id, Name = p.Name})
+                .ToList();
+
+            return new DbGroup
+            {
+                Id = group.Id,
+                Name = group.Name,
+                Persons = persons
+            };
         }
     }
 }

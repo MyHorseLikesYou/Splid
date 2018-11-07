@@ -1,5 +1,5 @@
-﻿using Splid.Domain.Main.Models.Groups;
-using System;
+﻿using System;
+using Splid.Domain.Main.Models;
 
 namespace Splid.Application.Commands.Groups.Persons
 {

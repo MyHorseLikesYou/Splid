@@ -7,8 +7,6 @@ namespace Splid.Infrastructure.Models
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
-        public List<Person> Persons { get; set; }
-        public List<Payment> Payments { get; set; }
-        public List<GroupExpense> Expenses { get; set; }
+        public List<Person> Persons { get; set; }        
     }
 }
