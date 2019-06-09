@@ -45,7 +45,7 @@ namespace Auth.Application.Services
 
             var tokenId = Guid.NewGuid().ToString();
 
-            return await this.GenerateJwtToken(tokenId, user);
+            return await GenerateJwtToken(tokenId, user);
         }
 
         private async Task<JwtToken> GenerateJwtToken(string jti, User user)

@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using MyApp.Core.Exceptions;
 using NUnit.Framework;
-using Splid.Domain.Main.Entities.Groups;
-using Splid.Domain.Main.Tests.Builders.Groups.Entities;
 
 namespace Splid.Domain.Main.Tests.Services.PaymentServiceTests
 {

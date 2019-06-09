@@ -1,5 +1,4 @@
 ﻿using MediatR;
-using MyApp.Core.Models;
 using System;
 
 namespace Splid.Application.Commands.Groups

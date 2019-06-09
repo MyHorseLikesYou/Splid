@@ -1,5 +1,4 @@
 ﻿using System;
-using Splid.Domain.Main.Entities.Groups;
 
 namespace Splid.Domain.Main.Tests.Builders.Groups.Entities
 {
@@ -18,9 +17,9 @@ namespace Splid.Domain.Main.Tests.Builders.Groups.Entities
             _amount = 110;
         }
 
-        public Payment Build()
+        public Payment Please()
         {
-            return new Payment(_id, _senderId, _recipientId, new Main.Values.Money(_amount), DateTimeOffset.Now.Date, DateTimeOffset.Now);
+            return new Payment(_id, _senderId, _recipientId, new Values.Money(_amount), DateTimeOffset.Now.Date, DateTimeOffset.Now);
         }
 
         public PaymentBuilder WithId(Guid id)

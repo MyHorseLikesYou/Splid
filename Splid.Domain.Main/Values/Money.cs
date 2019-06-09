@@ -1,16 +1,14 @@
-﻿using MyApp.Core.Contracts;
-using MyApp.Core.Domain;
-using System;
+﻿using MyApp.Core.Domain;
 
 namespace Splid.Domain.Main.Values
 {
     public class Money : Value
     {
-        public decimal Value { get; private set; }
+        public decimal Value { get; }
 
         public Money(decimal value)
         {
-            this.Value = value;
+            Value = value;
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Splid.Domain.Main.Entities.Groups;
+using Splid.Domain.Main.Entities;
 using Splid.Domain.Main.Values;
 
 namespace Splid.Domain.Main.Tests.Builders.Groups.Entities
@@ -14,12 +14,9 @@ namespace Splid.Domain.Main.Tests.Builders.Groups.Entities
         private List<Payment> _payments;
         private List<GroupExpense> _expenses;
 
-        public GroupBuilder()
-        { }
-
         public GroupBuilder AddGroupExpense(Guid expenseId)
         {
-            return this.AddGroupExpense(expenseId, Guid.NewGuid(), Guid.NewGuid(), 100);
+            return AddGroupExpense(expenseId, Guid.NewGuid(), Guid.NewGuid(), 100);
         }
 
         public GroupBuilder AddGroupExpense(Guid expenseId, Guid expenseByPersonId, Guid expenseForPersonId, decimal amount)
@@ -44,12 +41,17 @@ namespace Splid.Domain.Main.Tests.Builders.Groups.Entities
             return this;
         }
 
+        public GroupBuilder WithPerson(Person person)
+        {
+            throw new NotImplementedException();
+        }
+        
         public GroupBuilder AddPayment(Guid paymentId)
         {
             if (_payments == null)
                 _payments = new List<Payment>();
 
-            var payment = new PaymentBuilder().WithId(paymentId).Build();
+            var payment = new PaymentBuilder().WithId(paymentId).Please();
             _payments.Add(payment);
 
             if (_persons == null)
@@ -75,7 +77,7 @@ namespace Splid.Domain.Main.Tests.Builders.Groups.Entities
             if (!_persons.Any(p => p.Id == paymentForPersonId))
                 _persons.Add(new Person(paymentForPersonId, "kek-2"));
 
-            _payments.Add(new PaymentBuilder().WithId(paymentId).With(paymentByPersonId, paymentForPersonId, amount).Build());
+            _payments.Add(new PaymentBuilder().WithId(paymentId).With(paymentByPersonId, paymentForPersonId, amount).Please());
 
             return this;
         }
@@ -100,7 +102,7 @@ namespace Splid.Domain.Main.Tests.Builders.Groups.Entities
             return this;
         }
 
-        public Group Build()
+        public Group Please()
         {
             return new Group
                 (
@@ -127,7 +129,7 @@ namespace Splid.Domain.Main.Tests.Builders.Groups.Entities
                     builderConfiguration.Invoke(builder);
                     return builder;
                 })
-                .Select(builder => builder.Build())
+                .Select(builder => builder.Please())
                 .ToList();
         }
 

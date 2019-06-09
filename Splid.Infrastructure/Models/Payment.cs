@@ -1,5 +1,4 @@
 using System;
-using Splid.Domain.Main.Values;
 
 namespace Splid.Infrastructure.Models
 {

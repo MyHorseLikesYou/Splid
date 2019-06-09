@@ -42,11 +42,11 @@ namespace Splid.Domain.Main.Entities
             if (personInput == null)
                 throw new ArgumentNullException(nameof(personInput));
 
-            var personById = this.GetPersonById(personId);
+            var personById = GetPersonById(personId);
             if (personById != null)
                 throw new ArgumentException($"Участник c Id {personId} уже есть в группе.");
 
-            var personByName = this.GetPersonByName(personInput.Name);
+            var personByName = GetPersonByName(personInput.Name);
             if (personByName != null)
                 throw new ArgumentException($"Участник c именем {personInput.Name} уже есть в группе.");
 
@@ -59,11 +59,11 @@ namespace Splid.Domain.Main.Entities
             if (personInput == null)
                 throw new ArgumentNullException(nameof(personInput));
 
-            var personByName = this.GetPersonByName(personInput.Name);
+            var personByName = GetPersonByName(personInput.Name);
             if (personByName != null && personByName.Id != personId)
                 throw new ArgumentException($"Участник c именем {personInput.Name} уже есть в группе.");
 
-            var personToChange = personByName ?? this.GetPersonById(personId);
+            var personToChange = personByName ?? GetPersonById(personId);
             if (personToChange == null)
                 throw new ArgumentException($"Участника c Id {personId} нет в группе.");
 
@@ -72,7 +72,7 @@ namespace Splid.Domain.Main.Entities
 
         public void DeletePerson(Guid personId)
         {
-            var person = this.GetPersonById(personId);
+            var person = GetPersonById(personId);
             if (person == null)
                 throw new ArgumentException($"Участника c Id {personId} нет в группе.");
 

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Splid.Domain.Main.Models.Groups;
 using Splid.Domain.Main.Tests.Builders.Groups.Entities;
 using Splid.Domain.Main.Values;
 
@@ -55,13 +54,13 @@ namespace Splid.Domain.Main.Tests.Builders.Groups.Inputs
 
         public GroupExpenseInputBuilder HasPayment(decimal amount)
         {
-            this.AddPayment(Create(Guid.NewGuid(), amount));
+            AddPayment(Create(Guid.NewGuid(), amount));
             return this;
         }
 
         public GroupExpenseInputBuilder HasPayment(Guid personId, decimal amount)
         {
-            this.AddPayment(Create(personId, amount));
+            AddPayment(Create(personId, amount));
             return this;
         }
 
@@ -92,25 +91,25 @@ namespace Splid.Domain.Main.Tests.Builders.Groups.Inputs
 
         public GroupExpenseInputBuilder HasExpense(decimal amount)
         {
-            this.AddExpense(Create(Guid.NewGuid(), amount));
+            AddExpense(Create(Guid.NewGuid(), amount));
             return this;
         }
 
         public GroupExpenseInputBuilder HasExpense(Guid personId, decimal amount)
         {
-            this.AddExpense(Create(personId, amount));
+            AddExpense(Create(personId, amount));
             return this;
         }
 
         public GroupExpenseInputBuilder HasNullPayment()
         {
-            this.AddPayment(null);
+            AddPayment(null);
             return this;
         }
 
         public GroupExpenseInputBuilder HasNullExpense()
         {
-            this.AddExpense(null);
+            AddExpense(null);
             return this;
         }
 
@@ -127,7 +126,7 @@ namespace Splid.Domain.Main.Tests.Builders.Groups.Inputs
             return _expenseInput.Expenses == GroupExpenseBuilder.DefaultExpenses;
         }
 
-        public GroupExpenseInput Build()
+        public GroupExpenseInput Please()
         {
             return _expenseInput;
         }

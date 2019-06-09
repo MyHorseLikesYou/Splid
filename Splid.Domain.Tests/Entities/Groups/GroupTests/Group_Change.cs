@@ -1,6 +1,5 @@
 ﻿using System;
 using NUnit.Framework;
-using Splid.Domain.Main.Models.Groups;
 using Splid.Domain.Main.Tests.Builders.Groups.Entities;
 
 namespace Splid.Domain.Main.Tests.Entities.Groups.GroupTests
@@ -11,7 +10,7 @@ namespace Splid.Domain.Main.Tests.Entities.Groups.GroupTests
         [Test]
         public void ChangeGroup_NullGroupInput_ThrowArgumentNullException()
         {
-            var group = GroupBuilder.New().Build();
+            var group = GroupBuilder.New().Please();
 
             Assert.Throws<ArgumentNullException>(() => group.Change(null));
         }
@@ -22,7 +21,7 @@ namespace Splid.Domain.Main.Tests.Entities.Groups.GroupTests
         [TestCase(" ")]
         public void ChangeGroup_InvalidName_ThrowArgumentException(string name)
         {
-            var group = GroupBuilder.New().Build();
+            var group = GroupBuilder.New().Please();
             var groupInput = new GroupInput() { Name = name };
 
             Assert.Throws<ArgumentException>(() => group.Change(groupInput));
@@ -31,7 +30,7 @@ namespace Splid.Domain.Main.Tests.Entities.Groups.GroupTests
         [Test]
         public void ChangeGroup_ValidArguments_DoesNotThrow()
         {
-            var group = GroupBuilder.New().Build();
+            var group = GroupBuilder.New().Please();
             var groupInput = new GroupInput() { Name = "test_group" };
 
             Assert.DoesNotThrow(() => group.Change(groupInput));

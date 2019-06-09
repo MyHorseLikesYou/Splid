@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using NUnit.Framework;
 using Splid.Domain.Main.Tests.Builders.Groups.Entities;
 
@@ -34,7 +33,7 @@ namespace Splid.Domain.Main.Tests.Services.GroupExpenseServiceTests
             var paymentPersonId = Guid.NewGuid();
             var group = GroupBuilder.New()
                 .HavePersonsWithIds(paymentPersonId)
-                .Build();
+                .Please();
 
             var unknownExpensePersonId = Guid.NewGuid();
             var groupExpenseInput = New().GroupExpenseInput()

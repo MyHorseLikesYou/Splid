@@ -10,8 +10,8 @@ namespace Splid.Domain.Main.Values
 
         public PersonMoneyOperation(Guid personId, Money amount)
         {
-            this.PersonId = personId;
-            this.Amount = amount ?? throw new ArgumentNullException(nameof(amount));
+            PersonId = personId;
+            Amount = amount ?? throw new ArgumentNullException(nameof(amount));
         }
     }
 }

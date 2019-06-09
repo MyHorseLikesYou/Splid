@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Splid.Domain.Main.Entities.Groups;
 using Splid.Domain.Main.Values;
 
 namespace Splid.Domain.Main.Tests.Builders.Groups.Entities
@@ -52,7 +51,7 @@ namespace Splid.Domain.Main.Tests.Builders.Groups.Entities
             return this;
         }
 
-        public GroupExpense Build()
+        public GroupExpense Please()
         {
             return new GroupExpense(_id, _title, _payments, _expenses, _date, _createdAtDate);
         }

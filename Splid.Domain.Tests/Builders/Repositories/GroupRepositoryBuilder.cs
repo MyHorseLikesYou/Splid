@@ -1,14 +1,13 @@
 using System;
-using Splid.Domain.Main.Entities.Groups;
 using Splid.Domain.Main.Interfaces.Repositories;
 
 namespace Splid.Domain.Main.Tests.Builders.Repositories
 {
     public class GroupRepositoryBuilder : IBuilder<IGroupRepository>
     {
-        public IGroupRepository Build()
+        public IGroupRepository Please()
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public GroupRepositoryBuilder HaveGroupWithId(Guid groupId)

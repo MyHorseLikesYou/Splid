@@ -2,8 +2,8 @@
 {
     public class JwtToken
     {
-        public string Value { get; private set; }
-        public int ExpiresIn { get; private set; }
+        public string Value { get; }
+        public int ExpiresIn { get; }
 
         public JwtToken(string value, int expiresIn)
         {

@@ -12,13 +12,13 @@ namespace MyApp.Jwt.Models
         public JwtIssuerOptions(string issuer, string subject, string audience, TimeSpan notBefore, TimeSpan validFor, SigningCredentials signingCredentials)
         {
             if (notBefore < TimeSpan.Zero)
-                throw new ArgumentException("Must be a no negative TimeSpan.", nameof(JwtIssuerOptions.ValidFor));
+                throw new ArgumentException("Must be a no negative TimeSpan.", nameof(ValidFor));
 
             if (validFor <= TimeSpan.Zero)
-                throw new ArgumentException("Must be a non-zero TimeSpan.", nameof(JwtIssuerOptions.ValidFor));
+                throw new ArgumentException("Must be a non-zero TimeSpan.", nameof(ValidFor));
 
             if (signingCredentials == null)
-                throw new ArgumentNullException(nameof(JwtIssuerOptions.SigningCredentials));
+                throw new ArgumentNullException(nameof(SigningCredentials));
 
             Issuer = issuer;
             Subject = subject;
@@ -33,31 +33,31 @@ namespace MyApp.Jwt.Models
         /// <summary>
         /// 4.1.1.  "iss" (Issuer) Claim - The "iss" (issuer) claim identifies the principal that issued the JWT.
         /// </summary>
-        public string Issuer { get; private set; }
+        public string Issuer { get; }
 
         /// <summary>
         /// 4.1.2.  "sub" (Subject) Claim - The "sub" (subject) claim identifies the principal that is the subject of the JWT.
         /// </summary>
-        public string Subject { get; private set; }
+        public string Subject { get; }
 
         /// <summary>
         /// 4.1.3.  "aud" (Audience) Claim - The "aud" (audience) claim identifies the recipients that the JWT is intended for.
         /// </summary>
-        public string Audience { get; private set; }
+        public string Audience { get; }
 
         /// <summary>
         /// Set the timespan before which the token NOT be accepted for processing. (default is 0 sec) 
         /// </summary>
-        public TimeSpan NotBefore { get; private set; }
+        public TimeSpan NotBefore { get; }
 
         /// <summary>
         /// Set the timespan the token will be valid for (default is 120 min)
         /// </summary>
-        public TimeSpan ValidFor { get; private set; }
+        public TimeSpan ValidFor { get; }
 
         /// <summary>
         /// The signing key to use when generating tokens.
         /// </summary>
-        public SigningCredentials SigningCredentials { get; private set; }
+        public SigningCredentials SigningCredentials { get; }
     }
 }

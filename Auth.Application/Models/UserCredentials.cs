@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Auth.Application.Models
+﻿namespace Auth.Application.Models
 {
     public class UserCredentials
     {

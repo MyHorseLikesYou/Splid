@@ -1,5 +1,4 @@
 ﻿using System;
-using Splid.Domain.Main.Models.Groups;
 using Splid.Domain.Main.Values;
 
 namespace Splid.Domain.Main.Tests.Builders.Groups.Inputs
@@ -28,7 +27,7 @@ namespace Splid.Domain.Main.Tests.Builders.Groups.Inputs
         }
 
         public PaymentInputBuilder With(Guid senderPersonId, Guid recipientPersonId) =>
-            this.With(senderPersonId, recipientPersonId, 100);
+            With(senderPersonId, recipientPersonId, 100);
 
         public PaymentInputBuilder WithDateInFuture()
         {
@@ -42,7 +41,7 @@ namespace Splid.Domain.Main.Tests.Builders.Groups.Inputs
             return this;
         }
 
-        public PaymentInput Build()
+        public PaymentInput Please()
         {
             return _paymentInput;
         }

@@ -17,13 +17,13 @@ namespace MyApp.Core.Domain
         {
             var compareTo = obj as Entity;
 
-            if (Object.ReferenceEquals(this, compareTo))
+            if (ReferenceEquals(this, compareTo))
                 return true;
 
             if (compareTo is null)
                 return false;
 
-            return this.Id.Equals(compareTo.Id);
+            return Id.Equals(compareTo.Id);
         }
 
         public static bool operator ==(Entity a, Entity b)
@@ -44,12 +44,12 @@ namespace MyApp.Core.Domain
 
         public override int GetHashCode()
         {
-            return (this.GetType().GetHashCode() * 907) + this.Id.GetHashCode();
+            return (GetType().GetHashCode() * 907) + Id.GetHashCode();
         }
 
         public override string ToString()
         {
-            return this.GetType().Name + " [Id=" + this.Id + "]";
+            return GetType().Name + " [Id=" + Id + "]";
         }
     }
 }

@@ -1,6 +1,5 @@
 ﻿using System;
 using NUnit.Framework;
-using Splid.Domain.Main.Entities.Groups;
 
 namespace Splid.Domain.Main.Tests.Entities.Groups.PaymentTests
 {

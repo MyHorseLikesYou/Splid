@@ -1,7 +1,5 @@
 ﻿using System;
 using NUnit.Framework;
-using Splid.Domain.Main.Entities.Groups;
-using Splid.Domain.Main.Models.Groups;
 
 namespace Splid.Domain.Main.Tests.Entities.Groups.GroupTests
 {

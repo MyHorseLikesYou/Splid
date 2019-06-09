@@ -1,29 +1,28 @@
 ﻿using System;
-using Splid.Domain.Main.Entities.Groups;
+using Splid.Domain.Main.Entities;
 
 namespace Splid.Domain.Main.Tests.Builders.Groups.Entities
 {
     public class PersonBuilder : IBuilder<Person>
     {
-        private const string defaultName = "test_person";
-
         private Guid _id;
         private string _name;
 
-        public PersonBuilder()
+        public PersonBuilder WithId(Guid id)
         {
-            _id = Guid.NewGuid();
-            _name = defaultName;
+            _id = id;
+            return this;
         }
-
-        public Person Build()
+        
+        public PersonBuilder WithName(string name)
+        {
+            _name = name;
+            return this;
+        }
+        
+        public Person Please()
         {
             return new Person(_id, _name);
-        }
-
-        public static string GetDefaultName()
-        {
-            return defaultName;
         }
     }
 }

@@ -5,56 +5,17 @@ using Splid.Domain.Main.Tests.Builders.Services;
 
 namespace Splid.Domain.Main.Tests.Builders
 {
-    public class BuilderFactory
+    public static class Create
     {
-        public GroupBuilder Group()
-        {
-            return new GroupBuilder();
-        }
-
-        public GroupExpenseBuilder GroupExpense()
-        {
-            return new GroupExpenseBuilder();
-        }
-
-        public GroupExpenseInputBuilder GroupExpenseInput()
-        {
-            return new GroupExpenseInputBuilder();
-        }
-
-        public PersonBuilder Person()
-        {
-            return new PersonBuilder();
-        }
-
-        public PersonInputBuilder PersonInput()
-        {
-            return new PersonInputBuilder();
-        }
-
-        public PaymentInputBuilder PaymentInput()
-        {
-            return new PaymentInputBuilder();
-        }
-
-        public PaymentBuilder Payment()
-        {
-            return new PaymentBuilder();
-        }
-
-        public PaymentRepositoryBuilder PaymentRepository()
-        {
-            return new PaymentRepositoryBuilder();
-        }
-        
-        public GroupRepositoryBuilder GroupRepository()
-        {
-            return new GroupRepositoryBuilder();
-        }
-
-        public PaymentServiceBuilder PaymentService()
-        {
-            return new PaymentServiceBuilder();
-        }
+        public static GroupBuilder Group => new GroupBuilder();
+        public static GroupExpenseBuilder GroupExpense => new GroupExpenseBuilder();
+        public static GroupExpenseInputBuilder GroupExpenseInput => new GroupExpenseInputBuilder();
+        public static PersonBuilder Person => new PersonBuilder();
+        public static PersonInputBuilder PersonInput => new PersonInputBuilder();
+        public static PaymentInputBuilder PaymentInput => new PaymentInputBuilder();
+        public static PaymentBuilder Payment => new PaymentBuilder();
+        public static PaymentRepositoryBuilder PaymentRepository => new PaymentRepositoryBuilder();
+        public static GroupRepositoryBuilder GroupRepository => new GroupRepositoryBuilder();
+        public static PaymentServiceBuilder PaymentService => new PaymentServiceBuilder();
     }
 }

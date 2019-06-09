@@ -5,7 +5,7 @@ namespace Splid.Domain.Main.Tests.Builders.Services
 {
     public class PaymentServiceBuilder : IBuilder<PaymentService>
     {
-        public PaymentService Build()
+        public PaymentService Please()
         {
             throw new System.NotImplementedException();
         }

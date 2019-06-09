@@ -7,7 +7,7 @@ namespace Auth.Host.WebAPI.ViewModels.Mappings
     {
         public UserCredetialsViewModelMappingProfile()
         {
-            this.CreateMap<UserCredentialsViewModel, UserCredentials>();                
+            CreateMap<UserCredentialsViewModel, UserCredentials>();                
         }
     }
 }
