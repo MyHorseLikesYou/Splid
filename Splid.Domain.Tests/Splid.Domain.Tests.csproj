@@ -23,4 +23,8 @@
     <ProjectReference Include="..\Splid.Domain.Main\Splid.Domain.Main.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Builders\Constants\Values" />
+  </ItemGroup>
+
 </Project>

@@ -2,13 +2,9 @@ using Splid.Domain.Main.Values;
 
 namespace Splid.Domain.Main.Tests.Builders.Groups.Values
 {
-    public class MoneyBuilder : IBuilder<Money>
+    public static class MoneyBuilder
     {
-        private decimal _amount;
-
-        public Money Please()
-        {
-            return new Money(_amount);
-        }
+        public static Money Dollars(this int amount) => new Money(amount);
+        public static Money Dollars(this decimal amount) => new Money(amount);
     }
 }

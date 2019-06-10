@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using Splid.Domain.Main.Models;
 using Splid.Domain.Main.Tests.Builders.Groups.Entities;
@@ -46,6 +47,12 @@ namespace Splid.Domain.Main.Tests.Builders.Groups.Inputs
             _expenseInput.Payments = null;
             return this;
         }
+        
+        public GroupExpenseInputBuilder WithAnyPayments()
+        {
+            _expenseInput.Payments = null;
+            return this;
+        }
 
         public GroupExpenseInputBuilder WithEmptyPayments()
         {
@@ -58,6 +65,7 @@ namespace Splid.Domain.Main.Tests.Builders.Groups.Inputs
             AddPayment(Create(Guid.NewGuid(), amount));
             return this;
         }
+        
 
         public GroupExpenseInputBuilder WithPayment(Guid personId, decimal amount)
         {
@@ -102,9 +110,9 @@ namespace Splid.Domain.Main.Tests.Builders.Groups.Inputs
             return this;
         }
         
-        public GroupExpenseInputBuilder WithExpense(Money money)
+        public GroupExpenseInputBuilder WithExpense(MoneyOperation moneyOperation)
         {
-            AddExpense(Create(Guid.NewGuid(), amount));
+            throw new NotImplementedException();
             return this;
         }
 

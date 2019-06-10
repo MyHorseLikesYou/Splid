@@ -9,5 +9,15 @@ namespace Splid.Domain.Main.Tests.Builders.Groups.Values
         {
             return Create.MoneyOperation.Of(personId).With(money);
         }
+        
+        public static MoneyOperationBuilder OfAnyone(this Money money)
+        {
+            return Create.MoneyOperation.Of(Guid.NewGuid()).With(money);
+        }
+        
+        public static MoneyOperationBuilder OfAnyoneElse(this Money money)
+        {
+            return Create.MoneyOperation.Of(Guid.NewGuid()).With(money);
+        }
     }
 }
