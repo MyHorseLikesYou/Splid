@@ -33,8 +33,8 @@ namespace Splid.Domain.Main.Tests.Builders.Groups.Entities
             if (!_persons.Any(p => p.Id == expenseForPersonId))
                 _persons.Add(new Person(expenseForPersonId, $"test_person_2"));
 
-            var expensesBy = new List<PersonMoneyOperation>() { new PersonMoneyOperation(expenseByPersonId, new Money(amount)) };
-            var expensesFor = new List<PersonMoneyOperation>() { new PersonMoneyOperation(expenseForPersonId, new Money(amount)) };
+            var expensesBy = new List<MoneyOperation>() { new MoneyOperation(expenseByPersonId, new Money(amount)) };
+            var expensesFor = new List<MoneyOperation>() { new MoneyOperation(expenseForPersonId, new Money(amount)) };
 
             _expenses.Add(new GroupExpense(expenseId, "test_expense", expensesBy, expensesFor, DateTimeOffset.Now, DateTimeOffset.Now));
 

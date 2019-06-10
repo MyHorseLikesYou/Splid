@@ -11,12 +11,12 @@ namespace Splid.Domain.Main.Entities
     public class GroupExpense : Entity
     {
         private string _title;
-        private List<PersonMoneyOperation> _personPayments;
-        private List<PersonMoneyOperation> _personExpenses;
+        private List<MoneyOperation> _personPayments;
+        private List<MoneyOperation> _personExpenses;
         private DateTimeOffset _date;
 
-        public GroupExpense(Guid id, string title, IEnumerable<PersonMoneyOperation> personPayments,
-            IEnumerable<PersonMoneyOperation> personExpenses, DateTimeOffset date, DateTimeOffset createdAt)
+        public GroupExpense(Guid id, string title, IEnumerable<MoneyOperation> personPayments,
+            IEnumerable<MoneyOperation> personExpenses, DateTimeOffset date, DateTimeOffset createdAt)
             : base(id)
         {
             ValidateTitle(title);
@@ -30,8 +30,8 @@ namespace Splid.Domain.Main.Entities
             _date = date;
         }
 
-        public IReadOnlyCollection<PersonMoneyOperation> ExpensesFor => _personExpenses;
-        public IReadOnlyCollection<PersonMoneyOperation> ExpensesBy => _personPayments;
+        public IReadOnlyCollection<MoneyOperation> ExpensesFor => _personExpenses;
+        public IReadOnlyCollection<MoneyOperation> ExpensesBy => _personPayments;
         public Guid GroupId { get; set; }
 
         public void Change(GroupExpenseInput groupExpenseInput)
@@ -63,7 +63,7 @@ namespace Splid.Domain.Main.Entities
                 throw new ArgumentException("Дата траты не может быть в будующем.");
         }
 
-        private static void ValidateExpenses(IEnumerable<PersonMoneyOperation> expenses)
+        private static void ValidateExpenses(IEnumerable<MoneyOperation> expenses)
         {
             if (expenses == null)
                 throw new ArgumentNullException(nameof(expenses));
@@ -72,7 +72,7 @@ namespace Splid.Domain.Main.Entities
                 throw new ArgumentException(nameof(expenses));
         }
 
-        private static void ValidatePayments(IEnumerable<PersonMoneyOperation> payments)
+        private static void ValidatePayments(IEnumerable<MoneyOperation> payments)
         {
             if (payments == null)
                 throw new ArgumentNullException(nameof(payments));
@@ -81,18 +81,18 @@ namespace Splid.Domain.Main.Entities
                 throw new ArgumentException(nameof(payments));
         }
 
-        private static void Validate(List<PersonMoneyOperation> expenses, List<PersonMoneyOperation> payments)
+        private static void Validate(List<MoneyOperation> expenses, List<MoneyOperation> payments)
         {
             if (expenses.Sum(e => e.Amount.Value) != payments.Sum(p => p.Amount.Value))
                 throw new ArgumentException();
         }
 
-        private static bool HaveNull(IEnumerable<PersonMoneyOperation> operations) => operations.Any(o => o == null);
+        private static bool HaveNull(IEnumerable<MoneyOperation> operations) => operations.Any(o => o == null);
 
-        private static bool HaveZeroAmount(IEnumerable<PersonMoneyOperation> operations) =>
+        private static bool HaveZeroAmount(IEnumerable<MoneyOperation> operations) =>
             operations.Any(o => o.Amount.Value == 0);
 
-        private static bool HaveDuplicatePersons(IEnumerable<PersonMoneyOperation> operations) =>
+        private static bool HaveDuplicatePersons(IEnumerable<MoneyOperation> operations) =>
             operations
                 .GroupBy(e => e.PersonId)
                 .Any(expensesByPerson => expensesByPerson.Count() > 1);

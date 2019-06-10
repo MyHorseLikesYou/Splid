@@ -1,5 +1,6 @@
 ﻿using Splid.Domain.Main.Tests.Builders.Groups.Entities;
 using Splid.Domain.Main.Tests.Builders.Groups.Inputs;
+using Splid.Domain.Main.Tests.Builders.Groups.Values;
 using Splid.Domain.Main.Tests.Builders.Repositories;
 using Splid.Domain.Main.Tests.Builders.Services;
 
@@ -17,5 +18,7 @@ namespace Splid.Domain.Main.Tests.Builders
         public static PaymentRepositoryBuilder PaymentRepository => new PaymentRepositoryBuilder();
         public static GroupRepositoryBuilder GroupRepository => new GroupRepositoryBuilder();
         public static PaymentServiceBuilder PaymentService => new PaymentServiceBuilder();
+        public static MoneyBuilder Money => new MoneyBuilder();
+        public static MoneyOperationBuilder MoneyOperation => new MoneyOperationBuilder();
     }
 }

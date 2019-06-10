@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Splid.Domain.Main.Models;
 using Splid.Domain.Main.Tests.Builders.Groups.Entities;
 using Splid.Domain.Main.Values;
 
@@ -22,8 +23,8 @@ namespace Splid.Domain.Main.Tests.Builders.Groups.Inputs
 
         public GroupExpenseInputBuilder With(Guid paymentPersonId, Guid expensePersonId, decimal amount)
         {
-            _expenseInput.Payments = new List<PersonMoneyOperation>() { new PersonMoneyOperation(paymentPersonId, new Money(amount)) };
-            _expenseInput.Expenses = new List<PersonMoneyOperation>() { new PersonMoneyOperation(expensePersonId, new Money(amount)) };
+            _expenseInput.Payments = new List<MoneyOperation>() { new MoneyOperation(paymentPersonId, new Money(amount)) };
+            _expenseInput.Expenses = new List<MoneyOperation>() { new MoneyOperation(expensePersonId, new Money(amount)) };
 
             return this;
         }
@@ -48,7 +49,7 @@ namespace Splid.Domain.Main.Tests.Builders.Groups.Inputs
 
         public GroupExpenseInputBuilder WithEmptyPayments()
         {
-            _expenseInput.Payments = new List<PersonMoneyOperation>();
+            _expenseInput.Payments = new List<MoneyOperation>();
             return this;
         }
 
@@ -58,7 +59,13 @@ namespace Splid.Domain.Main.Tests.Builders.Groups.Inputs
             return this;
         }
 
-        public GroupExpenseInputBuilder HasPayment(Guid personId, decimal amount)
+        public GroupExpenseInputBuilder WithPayment(Guid personId, decimal amount)
+        {
+            AddPayment(Create(personId, amount));
+            return this;
+        }
+
+        public GroupExpenseInputBuilder WithPayment(MoneyOperation payment)
         {
             AddPayment(Create(personId, amount));
             return this;
@@ -72,14 +79,14 @@ namespace Splid.Domain.Main.Tests.Builders.Groups.Inputs
 
         public GroupExpenseInputBuilder WithEmptyExpenses()
         {
-            _expenseInput.Expenses = new List<PersonMoneyOperation>();
+            _expenseInput.Expenses = new List<MoneyOperation>();
             return this;
         }
 
-        private void AddPayment(PersonMoneyOperation payment)
+        private void AddPayment(MoneyOperation payment)
         {
             if (ArePaymentsDefaultValue())
-                _expenseInput.Payments = new List<PersonMoneyOperation>();
+                _expenseInput.Payments = new List<MoneyOperation>();
 
             _expenseInput.Payments.Add(payment);
         }
@@ -89,7 +96,13 @@ namespace Splid.Domain.Main.Tests.Builders.Groups.Inputs
             return _expenseInput.Payments == GroupExpenseBuilder.DefaultPayments;
         }
 
-        public GroupExpenseInputBuilder HasExpense(decimal amount)
+        public GroupExpenseInputBuilder WithExpense(decimal amount)
+        {
+            AddExpense(Create(Guid.NewGuid(), amount));
+            return this;
+        }
+        
+        public GroupExpenseInputBuilder WithExpense(Money money)
         {
             AddExpense(Create(Guid.NewGuid(), amount));
             return this;
@@ -113,10 +126,10 @@ namespace Splid.Domain.Main.Tests.Builders.Groups.Inputs
             return this;
         }
 
-        private void AddExpense(PersonMoneyOperation expense)
+        private void AddExpense(MoneyOperation expense)
         {
             if (AreExpenseDefaultValue())
-                _expenseInput.Expenses = new List<PersonMoneyOperation>();
+                _expenseInput.Expenses = new List<MoneyOperation>();
 
             _expenseInput.Expenses.Add(expense);
         }
@@ -131,9 +144,9 @@ namespace Splid.Domain.Main.Tests.Builders.Groups.Inputs
             return _expenseInput;
         }
 
-        private static PersonMoneyOperation Create(Guid personId, decimal amount)
+        private static MoneyOperation Create(Guid personId, decimal amount)
         {
-            return new PersonMoneyOperation(personId, new Money(amount));
+            return new MoneyOperation(personId, new Money(amount));
         }
     }
 }

@@ -1,5 +1,8 @@
 ﻿using System;
 using NUnit.Framework;
+using Splid.Domain.Main.Tests.Builders;
+using Splid.Domain.Main.Tests.Builders.Constants.Values;
+using Splid.Domain.Main.Tests.Builders.Groups.Values;
 
 namespace Splid.Domain.Main.Tests.Entities.Groups.ExpenseTests
 {
@@ -62,16 +65,15 @@ namespace Splid.Domain.Main.Tests.Entities.Groups.ExpenseTests
         }
 
         [Test]
-        public void ChangeGroupExpense_DuplicatePaymentPerson_ThrowArgumentExeption()
+        public void When_PaymentPersonIsDuplicated_Then_ThrowArgumentExeption()
         {
-            var groupExpense = New().GroupExpense().Build();
+            var groupExpense = Create.GroupExpense.Please();
 
-            var personIdThatWillDuplicate = Guid.NewGuid();
-            var groupExpenseInput = New().GroupExpenseInput()
-                .HasPayment(personIdThatWillDuplicate, 100)
-                .HasPayment(personIdThatWillDuplicate, 100)
-                .HasExpense(200)
-                .Build();
+            var duplicatedPersonId = Guid.NewGuid();
+            var groupExpenseInput = Create.GroupExpenseInput
+                .WithPayment(Dollars.Amount(100).Of(duplicatedPersonId))
+                .WithPayment(Dollars.Amount(100).Of(duplicatedPersonId))
+                .Please();
 
             Assert.Throws<ArgumentException>(() => groupExpense.Change(groupExpenseInput));
         }

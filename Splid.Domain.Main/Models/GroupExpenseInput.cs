@@ -7,8 +7,8 @@ namespace Splid.Domain.Main.Models
     public class GroupExpenseInput
     {
         public string Title { get; set; }
-        public List<PersonMoneyOperation> Payments { get; set; }
-        public List<PersonMoneyOperation> Expenses { get; set; }
+        public List<MoneyOperation> Payments { get; set; }
+        public List<MoneyOperation> Expenses { get; set; }
         public DateTimeOffset Date { get; set; }
     }
 }
